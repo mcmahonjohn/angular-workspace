@@ -29,8 +29,13 @@ ng update my-lib@4.0.0
 ng update my-lib@5.0.0
 ng update my-lib@6.0.0
 
+# Alternative: Update to latest in major version range
+ng update my-lib@3    # Updates to latest 3.x version (e.g., 3.2.1)
+ng update my-lib@4    # Updates to latest 4.x version (e.g., 4.1.0)
+
 # Dry run to preview changes
 ng update my-lib@3.0.0 --dry-run
+ng update my-lib@3 --dry-run
 ```
 
 ### Template Structure

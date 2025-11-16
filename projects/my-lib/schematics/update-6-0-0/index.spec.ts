@@ -1,5 +1,5 @@
 import { Tree } from '@angular-devkit/schematics';
-import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
 
 const collectionPath = path.join(__dirname, '../collection.json');
@@ -23,14 +23,16 @@ const collectionPath = path.join(__dirname, '../collection.json');
  */
 describe('Update to v6.0.0', () => {
   let runner: SchematicTestRunner;
+  let appTree: UnitTestTree;
 
   beforeEach(() => {
-    runner = new SchematicTestRunner('schematics', collectionPath);
+    runner = new SchematicTestRunner('my-lib', collectionPath);
+    appTree = new UnitTestTree(Tree.empty());
   });
 
-  it('should run successfully', () => {
-    const tree = runner.runSchematic('update-6-0-0', {}, Tree.empty());
-    expect(tree).toBeDefined();
+  it('should run successfully', async () => {
+    const tree = await runner.runSchematic('update-6-0-0', {}, appTree);
+    expect(typeof tree).toEqual('object');
   });
 
   // TODO: Add specific migration tests

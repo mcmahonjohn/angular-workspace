@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on: []
+
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: gis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - osm-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  import:
+    build:
+      context: .
+      dockerfile: map.Dockerfile
+    environment:
+      - IMPORT_OSM=1
+    volumes:
+      - ./data:/data:ro
+      - osm-db-data:/var/lib/postgresql/data
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: /entrypoint.sh
+
+  tileserver:
+    build:
+      context: .
+      dockerfile: map.Dockerfile
+    environment:
+      - IMPORT_OSM=0
+    ports:
+      - "8080:80"
+    volumes:
+      - osm-db-data:/var/lib/postgresql/data
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: /entrypoint.sh
+
+volumes:
+  osm-db-data:

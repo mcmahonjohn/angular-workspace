@@ -3,18 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build my-lib",
+    "build": "ng build my-lib && npm run link:lib",
+    "build:schematics": "tsc -p projects/my-lib/schematics/tsconfig.schematics.json && cp projects/my-lib/schematics/collection.json projects/my-lib/schematics/dist/schematics/collection.json && mkdir -p projects/my-lib/schematics/dist/schematics/update-2-0-0 && cp projects/my-lib/schematics/update-2-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-2-0-0/schema.json",
     "link:lib": "npm link ./dist/my-lib",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": "ng serve my-app",
-    "test:unit": "ng test my-lib --karma-config=./karma.conf.js --code-coverage=true --watch=false",
     "test:app": "ng test my-app --karma-config=./karma.conf.js --code-coverage=true --watch=false",
-    "test:unit:clean": "npm run test:unit 2>&1 | grep -v 'Could not resolve keysym\\|Errors from xkbcomp'",
-    "watch-lib": "ng build my-lib --watch --configuration development",
-    "watch-app": "ng serve my-app --watch",
     "test:schematics": "npx nyc --reporter=lcov --reporter=text npx jasmine projects/my-lib/schematics/dist/schematics/**/*.spec.js",
-    "build:schematics": "tsc -p projects/my-lib/schematics/tsconfig.schematics.json && cp projects/my-lib/schematics/collection.json projects/my-lib/schematics/dist/schematics/collection.json && mkdir -p projects/my-lib/schematics/dist/schematics/update-2-0-0 && cp projects/my-lib/schematics/update-2-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-2-0-0/schema.json"
+    "test:unit": "ng test my-lib --karma-config=./karma.conf.js --code-coverage=true --watch=false",
+    "test:unit:clean": "npm run test:unit 2>&1 | grep -v 'Could not resolve keysym\\|Errors from xkbcomp'",
+    "watch-app": "ng serve my-app --watch",
+    "watch-lib": "ng build my-lib --watch --configuration development"
   },
   "private": true,
   "dependencies": {

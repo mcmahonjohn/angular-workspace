@@ -4,9 +4,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        build_type: build:app
     ports:
       - "4200:80"
-    depends_on: []
+    depends_on:
+      tileserver:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   db:
     image: postgis/postgis:16-3.4
@@ -35,6 +44,11 @@ services:
       db:
         condition: service_healthy
     entrypoint: /entrypoint.sh
+    healthcheck:
+      test: ["CMD", "test", "!", "-f", "/data/map.osm.pbf" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   tileserver:
     build:
@@ -47,9 +61,14 @@ services:
     volumes:
       - osm-db-data:/var/lib/postgresql/data
     depends_on:
-      db:
+      import:
         condition: service_healthy
     entrypoint: /entrypoint.sh
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/tiles/0/0/0.png"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
 volumes:
   osm-db-data:

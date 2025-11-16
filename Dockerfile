@@ -7,8 +7,9 @@ RUN npm ci && npm run build
 # Stage 2: Build my-app (after my-lib is built and linked)
 FROM node:20 AS build-app
 WORKDIR /workspace
+ARG build_type=build:app
 COPY --from=build-lib /workspace /workspace
-RUN npm run build --workspace=my-app
+RUN npm run $build_type
 
 # Stage 3: Serve
 FROM nginx:alpine

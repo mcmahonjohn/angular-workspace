@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build my-lib && npm run link:lib",
+    "build:app": "ng build my-app --configuration production --base-href index.html",
+    "build:app:dev": "ng build my-app --configuration development --base-href index.html",
     "build:schematics": "tsc -p projects/my-lib/schematics/tsconfig.schematics.json && cp projects/my-lib/schematics/collection.json projects/my-lib/schematics/dist/schematics/collection.json && mkdir -p projects/my-lib/schematics/dist/schematics/update-2-0-0 projects/my-lib/schematics/dist/schematics/update-3-0-0 projects/my-lib/schematics/dist/schematics/update-4-0-0 projects/my-lib/schematics/dist/schematics/update-5-0-0 projects/my-lib/schematics/dist/schematics/update-6-0-0 && cp projects/my-lib/schematics/update-2-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-2-0-0/schema.json && cp projects/my-lib/schematics/update-3-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-3-0-0/schema.json && cp projects/my-lib/schematics/update-4-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-4-0-0/schema.json && cp projects/my-lib/schematics/update-5-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-5-0-0/schema.json && cp projects/my-lib/schematics/update-6-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-6-0-0/schema.json",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",

@@ -11,10 +11,12 @@ The following migration schematics are available to handle breaking changes betw
 | Version | Status | Description |
 |---------|---------|------------|
 | `update-2-0-0` | ✅ **Implemented** | Updates imports from 'my-lib' to 'library' in TypeScript files |
-| `update-3-0-0` | 📋 **Template Ready** | Migration for v3.0.0 breaking changes |
-| `update-4-0-0` | 📋 **Template Ready** | Migration for v4.0.0 breaking changes |
-| `update-5-0-0` | 📋 **Template Ready** | Migration for v5.0.0 breaking changes |
-| `update-6-0-0` | 📋 **Template Ready** | Migration for v6.0.0 breaking changes |
+| `update-3-0-0` | 📋 **Template Ready** | Migration for v3.0.0 breaking changes* |
+| `update-4-0-0` | 📋 **Template Ready** | Migration for v4.0.0 breaking changes* |
+| `update-5-0-0` | 📋 **Template Ready** | Migration for v5.0.0 breaking changes* |
+| `update-6-0-0` | 📋 **Template Ready** | Migration for v6.0.0 breaking changes* |
+
+**Migration templates are pre-created for versions 3.0.0 through 6.0.0 and ready for implementation when breaking changes are introduced.*
 
 ### Usage
 
@@ -68,6 +70,14 @@ When implementing migration logic for a specific version:
 - [Angular Migrations][angular-migrations] - Reference implementations from Angular CLI
 - [Material Migrations][material-migrations] - Production examples from Angular Material
 
+### Building
+
+Compile schematics for distribution:
+
+```bash
+npm run build:schematics
+```
+
 ### Testing
 
 Run schematic tests:
@@ -83,17 +93,7 @@ Test individual migrations:
 npm run test:schematics -- --grep "Update to v3.0.0"
 ```
 
-### Building
-
-Compile schematics for distribution:
-
-```bash
-npm run build:schematics
-```
-
 ---
-
-*Migration templates are pre-created for versions 3.0.0 through 6.0.0 and ready for implementation when breaking changes are introduced.*
 
 [migration-guide]: https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support
 [ts-morph]: https://ts-morph.com/

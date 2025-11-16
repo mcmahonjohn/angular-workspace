@@ -96,6 +96,8 @@ npm run test:unit
 
 This project includes Angular Schematics for `my-lib` to provide automated code generation and migration capabilities.
 
+> 📚 **Detailed Documentation**: See the [Schematics README](projects/my-lib/schematics/README.md) for comprehensive implementation guides, migration templates, and development workflows.
+
 ### Existing Schematics
 
 #### Update Migration (update-2-0-0)
@@ -129,6 +131,8 @@ The following schematics could be implemented to enhance developer experience:
 - **Configuration Generator**: `ng generate my-lib:config` - Generate configuration files and interfaces
 - **Migration Schematics**: Automated migrations for breaking changes between major versions
 - **Theme Generator**: `ng generate my-lib:theme` - Create custom themes and styling configurations
+
+> 💡 **Migration Templates**: Pre-built migration schematics for versions 3.0.0 through 6.0.0 are ready for implementation. See the [Schematics README](projects/my-lib/schematics/README.md) for details.
 
 ### Creating Custom Schematics
 

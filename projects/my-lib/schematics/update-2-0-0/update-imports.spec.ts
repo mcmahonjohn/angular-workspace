@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 const { SchematicTestRunner, UnitTestTree } = require('@angular-devkit/schematics/testing');
+const { updateImports } = require('./update-imports');
 const path = require('path');
 
 describe('update-imports schematic', () => {
@@ -21,5 +22,165 @@ describe('update-imports schematic', () => {
     const content = tree.readContent('src/app/example.ts');
     expect(content).toContain(`import { Foo } from 'library';`);
     expect(content).not.toContain('my-lib');
+  });
+
+  describe('updateImports function', () => {
+    let mockContext;
+    let testTree;
+
+    beforeEach(() => {
+      const { EmptyTree } = require('@angular-devkit/schematics');
+      testTree = new UnitTestTree(new EmptyTree());
+      mockContext = {
+        logger: {
+          info: jasmine.createSpy('info')
+        }
+      };
+    });
+
+    it('should update single quotes import', () => {
+      testTree.create('/test.ts', `import { Service } from 'my-lib';`);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/test.ts');
+      expect(content).toContain(`import { Service } from 'library';`);
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
+    });
+
+    it('should update double quotes import', () => {
+      testTree.create('/test.ts', `import { Component } from "my-lib";`);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/test.ts');
+      expect(content).toContain(`import { Component } from "library";`);
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
+    });
+
+    it('should update multiple imports in same file', () => {
+      testTree.create('/test.ts', `
+        import { Service } from 'my-lib';
+        import { Component } from "my-lib";
+        import { Utils } from 'my-lib';
+      `);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/test.ts');
+      expect(content).toContain(`import { Service } from 'library';`);
+      expect(content).toContain(`import { Component } from "library";`);
+      expect(content).toContain(`import { Utils } from 'library';`);
+      expect(content).not.toContain('my-lib');
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
+    });
+
+    it('should handle files with no my-lib imports', () => {
+      testTree.create('/test.ts', `import { Component } from '@angular/core';\nconst x = 1;`);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/test.ts');
+      expect(content).toContain(`import { Component } from '@angular/core';`);
+      expect(mockContext.logger.info).not.toHaveBeenCalled();
+    });
+
+    it('should only process .ts files', () => {
+      testTree.create('/test.js', `import { Service } from 'my-lib';`);
+      testTree.create('/test.html', `<div>my-lib</div>`);
+      testTree.create('/test.css', `.my-lib { color: red; }`);
+      
+      updateImports(testTree, mockContext);
+      
+      // JS, HTML, and CSS files should not be modified
+      expect(testTree.readContent('/test.js')).toContain('my-lib');
+      expect(testTree.readContent('/test.html')).toContain('my-lib');
+      expect(testTree.readContent('/test.css')).toContain('my-lib');
+      expect(mockContext.logger.info).not.toHaveBeenCalled();
+    });
+
+    it('should handle empty TypeScript files', () => {
+      testTree.create('/empty.ts', '');
+      
+      updateImports(testTree, mockContext);
+      
+      expect(testTree.readContent('/empty.ts')).toEqual('');
+      expect(mockContext.logger.info).not.toHaveBeenCalled();
+    });
+
+    it('should handle TypeScript files with mixed content', () => {
+      testTree.create('/mixed.ts', `
+        import { Service } from 'my-lib';
+        import { Component } from '@angular/core';
+        
+        const myLibString = 'this contains my-lib but should not be changed';
+        // Comment about my-lib
+        export class TestClass {
+          // my-lib reference in comment
+        }
+      `);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/mixed.ts');
+      expect(content).toContain(`import { Service } from 'library';`);
+      expect(content).toContain(`import { Component } from '@angular/core';`);
+      // Only imports should be changed, not other occurrences
+      expect(content).toContain(`const myLibString = 'this contains my-lib but should not be changed';`);
+      expect(content).toContain(`// Comment about my-lib`);
+      expect(content).toContain(`// my-lib reference in comment`);
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /mixed.ts');
+    });
+
+    it('should handle complex import patterns', () => {
+      testTree.create('/complex.ts', `
+        import * as MyLib from 'my-lib';
+        import { default as DefaultExport } from 'my-lib';
+        import MyLibDefault, { Service, Component } from 'my-lib';
+      `);
+      
+      updateImports(testTree, mockContext);
+      
+      const content = testTree.readContent('/complex.ts');
+      expect(content).toContain(`import * as MyLib from 'library';`);
+      expect(content).toContain(`import { default as DefaultExport } from 'library';`);
+      expect(content).toContain(`import MyLibDefault, { Service, Component } from 'library';`);
+      expect(content).not.toContain('my-lib');
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /complex.ts');
+    });
+
+    it('should handle nested directory structures', () => {
+      testTree.create('/src/app/components/test.ts', `import { Service } from 'my-lib';`);
+      testTree.create('/src/lib/utils/helper.ts', `import { Utils } from 'my-lib';`);
+      
+      updateImports(testTree, mockContext);
+      
+      expect(testTree.readContent('/src/app/components/test.ts')).toContain(`import { Service } from 'library';`);
+      expect(testTree.readContent('/src/lib/utils/helper.ts')).toContain(`import { Utils } from 'library';`);
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /src/app/components/test.ts');
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /src/lib/utils/helper.ts');
+    });
+
+    it('should handle files that cannot be read (null buffer)', () => {
+      // Create a mock tree that returns null for read operations
+      const mockTree = {
+        visit: jasmine.createSpy('visit').and.callFake((visitor) => {
+          // Simulate visiting a .ts file that returns null buffer
+          visitor('/unreadable.ts');
+        }),
+        read: jasmine.createSpy('read').and.returnValue(null),
+        overwrite: jasmine.createSpy('overwrite')
+      };
+      
+      // This should not throw an error and should handle null buffer gracefully
+      expect(() => {
+        updateImports(mockTree, mockContext);
+      }).not.toThrow();
+      
+      // Verify that read was called but overwrite was not (due to null buffer)
+      expect(mockTree.read).toHaveBeenCalledWith('/unreadable.ts');
+      expect(mockTree.overwrite).not.toHaveBeenCalled();
+      expect(mockContext.logger.info).not.toHaveBeenCalled();
+    });
   });
 });

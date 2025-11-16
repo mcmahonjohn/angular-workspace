@@ -50,7 +50,17 @@ npm run test:schematics
 
 ### Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+This project uses Cypress for end-to-end testing. To run e2e tests for the my-app application:
+
+```bash
+npm run e2e
+```
+
+Or use the Angular CLI directly:
+
+```bash
+ng e2e my-app
+```
 
 ---
 
@@ -62,6 +72,9 @@ Below are the available npm scripts (excluding `ng`):
 |-----------------------|---------------------------------------------------------------------------------------------|
 | build                 | Build the my-lib library.                                                                    |
 | build:schematics      | Compile my-lib schematics and copy required files for testing.                               |
+| cypress:open          | Open Cypress Test Runner in interactive mode for my-app.                                     |
+| cypress:run           | Run Cypress tests in headless mode for my-app.                                              |
+| e2e                   | Run end-to-end tests for my-app using Cypress.                                               |
 | link:lib              | Link the built my-lib library for local development.                                         |
 | lint                  | Lint all source files using ESLint.                                                          |
 | lint:fix              | Lint and automatically fix problems in all source files.                                     |

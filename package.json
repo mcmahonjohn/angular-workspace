@@ -5,6 +5,9 @@
     "ng": "ng",
     "build": "ng build my-lib && npm run link:lib",
     "build:schematics": "tsc -p projects/my-lib/schematics/tsconfig.schematics.json && cp projects/my-lib/schematics/collection.json projects/my-lib/schematics/dist/schematics/collection.json && mkdir -p projects/my-lib/schematics/dist/schematics/update-2-0-0 && cp projects/my-lib/schematics/update-2-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-2-0-0/schema.json",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e": "ng e2e",
     "link:lib": "npm link ./dist/my-lib",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -31,7 +34,6 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "nyc": "^15.1.0",
     "@angular-devkit/build-angular": "^18.2.21",
     "@angular-eslint/builder": "^20.6.0",
     "@angular-eslint/eslint-plugin": "^20.6.0",
@@ -40,9 +42,11 @@
     "@angular-eslint/template-parser": "^20.6.0",
     "@angular/cli": "^18.2.21",
     "@angular/compiler-cli": "^18.2.0",
+    "@cypress/schematic": "^4.1.4",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
+    "cypress": "15.6.0",
     "eslint": "^9.39.1",
     "eslint-plugin-jsonc": "^2.21.0",
     "jasmine-core": "~5.2.0",
@@ -52,7 +56,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^18.2.0",
+    "nyc": "^15.1.0",
     "typescript": "~5.5.2",
-    "typescript-eslint": "^8.46.4"
+    "typescript-eslint": "^8.46.4",
   }
 }

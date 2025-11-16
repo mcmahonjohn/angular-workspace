@@ -1,19 +1,17 @@
-// @ts-nocheck
-
-const { SchematicTestRunner, UnitTestTree } = require('@angular-devkit/schematics/testing');
-const { updateImports } = require('./update-imports');
-const path = require('path');
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import { Tree, SchematicContext } from '@angular-devkit/schematics';
+import { updateImports } from './update-imports';
+import * as path from 'path';
 
 describe('update-imports schematic', () => {
   const collectionPath = path.join(__dirname, '../collection.json');
   const schematicName = 'update-2-0-0';
-  let runner;
-  let appTree;
+  let runner: SchematicTestRunner;
+  let appTree: UnitTestTree;
 
   beforeEach(() => {
       runner = new SchematicTestRunner('my-lib', collectionPath);
-      const { EmptyTree } = require('@angular-devkit/schematics');
-      appTree = new UnitTestTree(new EmptyTree());
+      appTree = new UnitTestTree(Tree.empty());
       appTree.create('src/app/example.ts', `import { Foo } from 'my-lib';\nconst x = 1;`);
   });
 
@@ -25,12 +23,11 @@ describe('update-imports schematic', () => {
   });
 
   describe('updateImports function', () => {
-    let mockContext;
-    let testTree;
+    let mockContext: any;
+    let testTree: UnitTestTree;
 
     beforeEach(() => {
-      const { EmptyTree } = require('@angular-devkit/schematics');
-      testTree = new UnitTestTree(new EmptyTree());
+      testTree = new UnitTestTree(Tree.empty());
       mockContext = {
         logger: {
           info: jasmine.createSpy('info')
@@ -163,7 +160,7 @@ describe('update-imports schematic', () => {
 
     it('should handle files that cannot be read (null buffer)', () => {
       // Create a mock tree that returns null for read operations
-      const mockTree = {
+      const mockTree: any = {
         visit: jasmine.createSpy('visit').and.callFake((visitor) => {
           // Simulate visiting a .ts file that returns null buffer
           visitor('/unreadable.ts');

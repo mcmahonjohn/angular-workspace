@@ -13,7 +13,7 @@
     "test:unit:clean": "npm run test:unit 2>&1 | grep -v 'Could not resolve keysym\\|Errors from xkbcomp'",
     "watch-lib": "ng build my-lib --watch --configuration development",
     "watch-app": "ng serve my-app --watch",
-    "test:schematics": "npx jasmine projects/my-lib/schematics/dist/schematics/**/*.spec.js",
+    "test:schematics": "npx nyc --reporter=lcov --reporter=text npx jasmine projects/my-lib/schematics/dist/schematics/**/*.spec.js",
     "build:schematics": "tsc -p projects/my-lib/schematics/tsconfig.schematics.json && cp projects/my-lib/schematics/collection.json projects/my-lib/schematics/dist/schematics/collection.json && mkdir -p projects/my-lib/schematics/dist/schematics/update-2-0-0 && cp projects/my-lib/schematics/update-2-0-0/schema.json projects/my-lib/schematics/dist/schematics/update-2-0-0/schema.json"
   },
   "private": true,
@@ -31,6 +31,7 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
+    "nyc": "^15.1.0",
     "@angular-devkit/build-angular": "^18.2.21",
     "@angular-eslint/builder": "^20.6.0",
     "@angular-eslint/eslint-plugin": "^20.6.0",

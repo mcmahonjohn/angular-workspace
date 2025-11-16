@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "update-2-0-0-schema",
+  "title": "Update my-lib to v2.0.0",
+  "type": "object",
+  "properties": {}
+}

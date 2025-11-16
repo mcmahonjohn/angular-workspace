@@ -1,0 +1,9 @@
+{
+  "spec_dir": "projects/my-lib/schematics",
+  "spec_files": [
+    "**/*[sS]pec.ts"
+  ],
+  "helpers": [
+    "jasmine-ts.js"
+  ]
+}

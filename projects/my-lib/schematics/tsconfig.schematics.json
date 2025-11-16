@@ -1,0 +1,12 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/schematics",
+    "rootDir": ".",
+    "declaration": true,
+    "module": "commonjs",
+    "target": "es2018",
+    "moduleResolution": "node"
+  },
+  "include": ["**/*.ts", "**/*.spec.ts"]
+}

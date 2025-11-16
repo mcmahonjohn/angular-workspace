@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json.schemastore.org/schematics",
+  "schematics": {
+    "update-2-0-0": {
+      "version": "2.0.0",
+      "description": "Update imports from 'my-lib' to 'library' in TS files.",
+      "factory": "./update-2-0-0/index#updateToV2",
+      "schema": "./update-2-0-0/schema.json"
+    }
+  }
+}

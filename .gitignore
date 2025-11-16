@@ -12,7 +12,9 @@ npm-debug.log
 yarn-error.log
 
 # IDEs and editors
+.github
 .idea/
+.vscode
 .project
 .classpath
 .c9/
@@ -29,7 +31,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/.angular
 .sass-cache/
 /connect.lock
 /coverage

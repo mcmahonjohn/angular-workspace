@@ -1,4 +1,9 @@
+
 # AngularWorkspace
+
+This Angular 18 monorepo contains:
+- **my-app**: An Angular application
+- **my-lib**: An Angular library
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
 
@@ -10,9 +15,22 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
+
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+To build the application:
+
+```bash
+npx ng build my-app
+```
+
+To build the library:
+
+```bash
+npx ng build my-lib
+```
+
+The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 

@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build my-lib",
+    "link:lib": "npm link ./dist/my-lib",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "ng serve",
+    "start": "ng serve my-app",
     "test": "ng test",
-    "watch": "ng build --watch --configuration development"
+    "watch:lib": "ng build my-lib --watch --configuration development",
+    "watch:app": "ng serve my-app --watch"
   },
   "private": true,
   "dependencies": {

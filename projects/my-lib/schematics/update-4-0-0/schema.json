@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "update-4-0-0-schema",
+  "title": "Update my-lib to v4.0.0",
+  "type": "object",
+  "properties": {
+    "skipConfirmation": {
+      "type": "boolean",
+      "description": "Skip migration confirmation prompts",
+      "default": false
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "Show what would be migrated without making changes",
+      "default": false
+    }
+  }
+}

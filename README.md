@@ -135,9 +135,33 @@ The following schematics could be implemented to enhance developer experience:
 Here's guidance on implementing the key schematic types for this library:
 
 **Essential Resources:**
-- [Angular Schematics Official Guide](https://angular.dev/tools/cli/schematics)
-- [Schematics API Documentation](https://angular.dev/tools/cli/schematics-authoring)
-- [Angular DevKit Schematics Package](https://www.npmjs.com/package/@angular-devkit/schematics)
+
+**Core Angular Schematics:**
+- [Angular Schematics Official Guide](https://angular.dev/tools/cli/schematics) - Primary documentation
+- [Schematics API Documentation](https://angular.dev/tools/cli/schematics-authoring) - API reference
+- [Angular DevKit Schematics Package](https://www.npmjs.com/package/@angular-devkit/schematics) - NPM package docs
+
+**Cross-Platform Schematics (Mental Model):**
+- [NestJS Schematics](https://docs.nestjs.com/cli/overview#nest-generate) - Server-side framework using Angular Schematics
+- [Nx Schematics](https://nx.dev/packages/devkit) - Monorepo tooling built on Angular Schematics
+- [Nrwl DevKit](https://nx.dev/packages/devkit/documents/nx_devkit) - Advanced schematic patterns and utilities
+
+**Learning the Mental Model:**
+- [Schematics Concepts Deep Dive](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2) - Fundamental concepts
+- [Tree Data Structure](https://angular.dev/tools/cli/schematics-authoring#tree) - Core abstraction for file operations
+- [Rules and Actions Pattern](https://angular.dev/tools/cli/schematics-authoring#rules) - Functional programming approach
+- [Virtual File System](https://medium.com/@tomastrajan/total-guide-to-angular-6-dependency-injection-providedin-vs-providers-85b7a347b59f) - Understanding the staging area
+
+**Advanced Patterns & Examples:**
+- [RxJS Operators for Schematics](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/src/rules/base.ts) - Composing transformations
+- [AST Transformations](https://ts-ast-viewer.com/) - TypeScript AST manipulation tool
+- [Workspace APIs](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/core) - Project configuration manipulation
+- [Schematics Testing Patterns](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/test.ts) - Testing utilities and patterns
+
+**Real-World Implementations:**
+- [Angular Material Schematics](https://github.com/angular/components/tree/main/src/cdk/schematics) - Production examples
+- [NgRx Schematics](https://github.com/ngrx/platform/tree/main/modules/schematics) - State management patterns
+- [Firebase Schematics](https://github.com/angular/angularfire/tree/main/src/schematics) - Third-party integration patterns
 
 #### Component Generator Schematic
 Create a schematic to generate components with library-specific patterns:

@@ -23,7 +23,7 @@ npm run build
 
 The build artifacts will be stored in the `dist/` directory.
 
-## Run the application
+### Running the application
 
 Run `npm run start` to serve the my-app dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
@@ -64,7 +64,7 @@ ng e2e my-app
 
 ---
 
-## NPM Scripts
+### NPM Scripts
 
 Below are the available npm scripts (excluding `ng`):
 

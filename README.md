@@ -130,6 +130,156 @@ The following schematics could be implemented to enhance developer experience:
 - **Migration Schematics**: Automated migrations for breaking changes between major versions
 - **Theme Generator**: `ng generate my-lib:theme` - Create custom themes and styling configurations
 
+### Creating Custom Schematics
+
+Here's guidance on implementing the key schematic types for this library:
+
+#### Component Generator Schematic
+Create a schematic to generate components with library-specific patterns:
+
+```bash
+# Create schematic files
+mkdir -p projects/my-lib/schematics/component
+touch projects/my-lib/schematics/component/{index.ts,schema.json,files/__name@dasherize__.component.ts.template}
+```
+
+**Key implementation points:**
+- Define schema with component name, selector prefix, and styling options
+- Use template files with Angular naming conventions (`__name@dasherize__`)
+- Include proper imports for library dependencies
+- Add component to library's public API if needed
+- Generate corresponding test files
+
+#### Service Generator Schematic
+Generate services with proper dependency injection setup:
+
+```bash
+# Create schematic structure
+mkdir -p projects/my-lib/schematics/service/files
+touch projects/my-lib/schematics/service/{index.ts,schema.json}
+```
+
+**Implementation guidance:**
+- Schema should include service name and injection scope (root, platform, any)
+- Template should include proper `@Injectable()` decorator
+- Consider library-specific service patterns and interfaces
+- Auto-register in library module if applicable
+
+#### Initialization Schematics
+Handle project setup and library integration scenarios:
+
+##### New Project Schematic (`ng new` support)
+Create complete project templates that include your library from the start:
+
+```bash
+# Create ng-new schematic for full project setup
+mkdir -p projects/my-lib/schematics/ng-new
+touch projects/my-lib/schematics/ng-new/{index.ts,schema.json,files/**/*}
+```
+
+**Features for ng-new schematic:**
+- Generate complete Angular workspace with my-lib pre-configured
+- Include example components demonstrating library usage
+- Set up recommended project structure and conventions
+- Prompt for whether it'll be deployed to Sharepoint or as a Docker container.
+- Configure build pipeline with library-specific optimizations
+- Include starter documentation and README templates
+- Pre-configure testing setup for both unit and e2e tests
+
+##### Library Addition Schematic (`ng add` support)
+Enable `ng add my-lib` functionality for adding the library to existing projects:
+
+```bash
+# Create ng-add schematic
+mkdir -p projects/my-lib/schematics/ng-add
+touch projects/my-lib/schematics/ng-add/{index.ts,schema.json}
+```
+
+**Key features to implement:**
+- Add library to package.json dependencies
+- Import library module in app.module.ts or main.ts (standalone)
+- Generate initial configuration files
+- Set up default theme/styling if applicable
+- Create example usage files and components
+- Update angular.json with library-specific build options
+- Configure providers and services in application bootstrap
+- Add necessary peer dependencies automatically
+
+#### Configuration Generator
+Create configuration files and interfaces:
+
+```bash
+# Setup config generator
+mkdir -p projects/my-lib/schematics/config/files
+touch projects/my-lib/schematics/config/{index.ts,schema.json}
+```
+
+**Configuration schematic should:**
+- Generate TypeScript interfaces for library config
+- Create default configuration files (JSON/TS)
+- Add configuration injection tokens
+- Update app configuration to include library settings
+- Provide type safety for configuration options
+
+#### Migration Schematics
+Handle breaking changes between library versions:
+
+```bash
+# Create migration for major version
+mkdir -p projects/my-lib/schematics/migration-v3
+touch projects/my-lib/schematics/migration-v3/{index.ts,schema.json}
+```
+
+**Migration best practices:**
+- Use AST transformations for code modifications
+- Update import statements and module references
+- Rename deprecated APIs to new equivalents
+- Update configuration file structures
+- Add TODO comments for manual updates needed
+- Include rollback instructions in migration logs
+- Test migrations against various project structures
+
+#### Schema Registration
+Update `collection.json` to register new schematics:
+
+```json
+{
+  "schematics": {
+    "component": {
+      "description": "Generate a my-lib component",
+      "factory": "./component/index#componentSchematic",
+      "schema": "./component/schema.json"
+    },
+    "service": {
+      "description": "Generate a my-lib service", 
+      "factory": "./service/index#serviceSchematic",
+      "schema": "./service/schema.json"
+    },
+    "ng-add": {
+      "description": "Add my-lib to an Angular project",
+      "factory": "./ng-add/index#ngAdd",
+      "schema": "./ng-add/schema.json"
+    }
+  }
+}
+```
+
+#### Testing Schematics
+Create comprehensive tests for each schematic:
+
+```bash
+# Test file structure
+touch projects/my-lib/schematics/component/index.spec.ts
+touch projects/my-lib/schematics/service/index.spec.ts
+```
+
+**Testing approach:**
+- Use `@angular-devkit/schematics/testing` for unit tests
+- Test file generation, content, and placement
+- Verify schema validation and error handling
+- Test integration with existing project structures
+- Include tests for edge cases and error scenarios
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

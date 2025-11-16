@@ -163,8 +163,21 @@ Here's guidance on implementing the key schematic types for this library:
 - [NgRx Schematics](https://github.com/ngrx/platform/tree/main/modules/schematics) - State management patterns
 - [Firebase Schematics](https://github.com/angular/angularfire/tree/main/src/schematics) - Third-party integration patterns
 
+**Schematic Generators (Bootstrap Your Schematics):**
+- [Schematics CLI](https://www.npmjs.com/package/@angular-devkit/schematics-cli) - `schematics blank my-schematic` - Generate blank schematic
+- [Angular CLI Collection Generator](https://angular.dev/tools/cli/schematics-authoring#creating-a-schematics-collection) - `ng generate library` includes schematics setup
+- [Nx Schematic Generator](https://nx.dev/packages/plugin) - `nx g @nx/plugin:generator my-generator` - Generate Nx-style schematics
+- [NestJS Schematic CLI](https://docs.nestjs.com/cli/usages#nest-generate) - `nest g schematic my-schematic` - Server-side schematic generation
+- [Yeoman Generator for Schematics](https://github.com/saniyusuf/generator-schematics) - Interactive schematic project setup
+
+**Available Schematic Templates:**
+- **ng-add Templates**: [Angular Material ng-add](https://github.com/angular/components/tree/main/src/material/schematics/ng-add) provides excellent starter code
+- **Migration Templates**: [Angular Update Migrations](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations) for reference patterns
+
 #### Component Generator Schematic
 Create a schematic to generate components with library-specific patterns:
+
+- Use `schematics @schematics/angular:component --name=my-component --dry-run` as template
 
 **References:**
 - [Component Schematic Tutorial](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)
@@ -186,6 +199,8 @@ touch projects/my-lib/schematics/component/{index.ts,schema.json,files/__name@da
 
 #### Service Generator Schematic
 Generate services with proper dependency injection setup:
+
+- Use `schematics @schematics/angular:service --name=my-service --dry-run` as template
 
 **References:**
 - [Service Schematic Example](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/service)

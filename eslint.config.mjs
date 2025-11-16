@@ -5,7 +5,7 @@ import angularEslintPlugin from '@angular-eslint/eslint-plugin';
 import angularEslintTemplatePlugin from '@angular-eslint/eslint-plugin-template';
 import jsonc from 'eslint-plugin-jsonc';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').ESLint.Config[]} */
 export default [
   js.configs.recommended,
   {

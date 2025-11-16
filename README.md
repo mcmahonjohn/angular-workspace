@@ -92,6 +92,44 @@ You can run any script with `npm run <script-name>`. For example:
 npm run test:unit
 ```
 
+## Angular Schematics
+
+This project includes Angular Schematics for `my-lib` to provide automated code generation and migration capabilities.
+
+### Existing Schematics
+
+#### Update Migration (update-2-0-0)
+- **Purpose**: Updates imports from 'my-lib' to 'library' in TypeScript files
+- **Version**: 2.0.0
+- **Usage**: Automatically runs during library updates via `ng update`
+
+### Building Schematics
+
+To compile the schematics:
+
+```bash
+npm run build:schematics
+```
+
+### Testing Schematics
+
+To run schematic tests:
+
+```bash
+npm run test:schematics
+```
+
+### Future Schematic Ideas
+
+The following schematics could be implemented to enhance developer experience:
+
+- **Component Generator**: `ng generate my-lib:component` - Generate components with library-specific patterns
+- **Service Generator**: `ng generate my-lib:service` - Create services with proper dependency injection setup
+- **Init Schematic**: `ng add my-lib` - Initial setup and configuration for consuming applications
+- **Configuration Generator**: `ng generate my-lib:config` - Generate configuration files and interfaces
+- **Migration Schematics**: Automated migrations for breaking changes between major versions
+- **Theme Generator**: `ng generate my-lib:theme` - Create custom themes and styling configurations
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

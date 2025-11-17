@@ -1,0 +1,431 @@
+# Contributing Guide
+
+Thank you for your interest in contributing to this Angular monorepo! This guide provides all the information you need to develop, test, and contribute code to the project.
+
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Development Setup](#development-setup)
+- [NPM Scripts](#npm-scripts)
+- [Building](#building)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Linting](#linting)
+- [Schematics](#schematics)
+- [Docker & Tile Server](#docker--tile-server)
+- [Pull Requests](#pull-requests)
+- [Code Style](#code-style)
+- [Further Resources](#further-resources)
+
+---
+
+## Project Structure
+
+- `projects/my-app/`: Main Angular application
+- `projects/my-lib/`: Angular library
+- `projects/my-lib/schematics/`: Custom Angular schematics and migrations
+- `dist/`: Build output
+- `data/`: Place your `.osm.pbf` file here for OSM tile server
+
+## Development Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repo-url>
+   cd angular-workspace
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm ci
+   ```
+
+## NPM Scripts
+
+| Script                | Description                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------|
+| build                 | Build the my-lib library.                                                                    |
+| build:app             | Build my-app in production mode.                                                             |
+| build:app:dev         | Build my-app in development mode.                                                            |
+| build:schematics      | Compile my-lib schematics and copy required files for testing.                               |
+| cypress:open          | Open Cypress Test Runner in interactive mode for my-app.                                     |
+| cypress:run           | Run Cypress tests in headless mode for my-app.                                               |
+| e2e                   | Run end-to-end tests for my-app using Cypress.                                               |
+| link:lib              | Link the built my-lib library for local development.                                         |
+| lint                  | Lint all source files using ESLint.                                                          |
+| lint:fix              | Lint and automatically fix problems in all source files.                                     |
+| start                 | Serve the my-app Angular application locally.                                                |
+| test:app              | Run unit tests for my-app in headless Chrome with code coverage (single run, no watch).      |
+| test:schematics       | Run schematic tests for my-lib with code coverage using Jasmine and nyc.                     |
+| test:unit             | Run unit tests for my-lib in headless Chrome with code coverage (single run, no watch).      |
+| test:unit:clean       | Run my-lib unit tests and suppress xkbcomp warnings in the output.                           |
+| watch-app             | Serve my-app in watch mode for live development.                                             |
+| watch-lib             | Build my-lib in watch mode for live development.                                             |
+
+Run any script with `npm run <script-name>`.
+
+## Building
+
+- **Library:**
+  ```bash
+  npm run build
+  ```
+- **App (production):**
+  ```bash
+  npm run build:app
+  ```
+- **App (development):**
+  ```bash
+  npm run build:app:dev
+  ```
+
+## Running the Application locally
+
+- **Development server:**
+  ```bash
+  npm run start
+  # Visit http://localhost:4200/
+  ```
+
+## Testing
+
+- **Library unit tests:**
+  ```bash
+  npm run test:unit
+  ```
+- **App unit tests:**
+  ```bash
+  npm run test:app
+  ```
+- **Schematic tests:**
+  ```bash
+  npm run test:schematics
+  ```
+- **E2E tests (Cypress):**
+  ```bash
+  npm run e2e
+  ```
+
+## Linting
+
+- **Lint all files:**
+  ```bash
+  npm run lint
+  ```
+- **Auto-fix lint issues:**
+  ```bash
+  npm run lint:fix
+  ```
+
+
+## Angular Schematics
+
+This project includes Angular Schematics for `my-lib` to provide automated code generation and migration capabilities.
+
+> 📚 **Detailed Documentation**: See the [Schematics README](projects/my-lib/schematics/README.md) for comprehensive implementation guides, migration templates, and development workflows.
+
+### Existing Schematics
+
+#### Update Migration (update-2-0-0)
+- **Purpose**: Updates imports from 'my-lib' to 'library' in TypeScript files
+- **Version**: 2.0.0
+- **Usage**: Automatically runs during library updates via `ng update`
+
+### Building Schematics
+
+To compile the schematics:
+
+```bash
+npm run build:schematics
+```
+
+### Testing Schematics
+
+To run schematic tests:
+
+```bash
+npm run test:schematics
+```
+
+### Future Schematic Ideas
+
+The following schematics could be implemented to enhance developer experience:
+
+- **Component Generator**: `ng generate my-lib:component` - Generate components with library-specific patterns
+- **Service Generator**: `ng generate my-lib:service` - Create services with proper dependency injection setup
+- **Init Schematic**: `ng add my-lib` - Initial setup and configuration for consuming applications
+- **Configuration Generator**: `ng generate my-lib:config` - Generate configuration files and interfaces
+- **Migration Schematics**: Automated migrations for breaking changes between major versions
+- **Theme Generator**: `ng generate my-lib:theme` - Create custom themes and styling configurations
+
+> 💡 **Migration Templates**: Pre-built migration schematics for versions 3.0.0 through 6.0.0 are ready for implementation. See the [Schematics README](projects/my-lib/schematics/README.md) for details.
+
+### Creating Custom Schematics
+
+Here's guidance on implementing the key schematic types for this library:
+
+**Essential Resources:**
+
+**Core Angular Schematics:**
+- [Angular Schematics Official Guide](https://angular.dev/tools/cli/schematics) - Primary documentation
+- [Schematics API Documentation](https://angular.dev/tools/cli/schematics-authoring) - API reference
+- [Angular DevKit Schematics Package](https://www.npmjs.com/package/@angular-devkit/schematics) - NPM package docs
+
+**Cross-Platform Schematics (Mental Model):**
+- [NestJS Schematics](https://docs.nestjs.com/cli/overview#nest-generate) - Server-side framework using Angular Schematics
+- [Nx Schematics](https://nx.dev/packages/devkit) - Monorepo tooling built on Angular Schematics
+- [Nrwl DevKit](https://nx.dev/packages/devkit/documents/nx_devkit) - Advanced schematic patterns and utilities
+
+**Learning the Mental Model:**
+- [Schematics Concepts Deep Dive](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2) - Fundamental concepts
+- [Tree Data Structure](https://angular.dev/tools/cli/schematics-authoring#tree) - Core abstraction for file operations
+- [Rules and Actions Pattern](https://angular.dev/tools/cli/schematics-authoring#rules) - Functional programming approach
+- [Virtual File System](https://medium.com/@tomastrajan/total-guide-to-angular-6-dependency-injection-providedin-vs-providers-85b7a347b59f) - Understanding the staging area
+
+**Advanced Patterns & Examples:**
+- [RxJS Operators for Schematics](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/src/rules/base.ts) - Composing transformations
+- [AST Transformations](https://ts-ast-viewer.com/) - TypeScript AST manipulation tool
+- [Workspace APIs](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/core) - Project configuration manipulation
+- [Schematics Testing Patterns](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/test.ts) - Testing utilities and patterns
+
+**Real-World Implementations:**
+- [Angular Material Schematics](https://github.com/angular/components/tree/main/src/cdk/schematics) - Production examples
+- [NgRx Schematics](https://github.com/ngrx/platform/tree/main/modules/schematics) - State management patterns
+- [Firebase Schematics](https://github.com/angular/angularfire/tree/main/src/schematics) - Third-party integration patterns
+
+**Schematic Generators (Bootstrap Your Schematics):**
+- [Schematics CLI](https://www.npmjs.com/package/@angular-devkit/schematics-cli) - `schematics blank my-schematic` - Generate blank schematic
+- [Angular CLI Collection Generator](https://angular.dev/tools/cli/schematics-authoring#creating-a-schematics-collection) - `ng generate library` includes schematics setup
+- [Nx Schematic Generator](https://nx.dev/packages/plugin) - `nx g @nx/plugin:generator my-generator` - Generate Nx-style schematics
+- [NestJS Schematic CLI](https://docs.nestjs.com/cli/usages#nest-generate) - `nest g schematic my-schematic` - Server-side schematic generation
+- [Yeoman Generator for Schematics](https://github.com/saniyusuf/generator-schematics) - Interactive schematic project setup
+
+**Available Schematic Templates:**
+- **ng-add Templates**: [Angular Material ng-add](https://github.com/angular/components/tree/main/src/material/schematics/ng-add) provides excellent starter code
+- **Migration Templates**: [Angular Update Migrations](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations) for reference patterns
+
+#### Component Generator Schematic
+Create a schematic to generate components with library-specific patterns:
+
+- Use `schematics @schematics/angular:component --name=my-component --dry-run` as template
+
+**References:**
+- [Component Schematic Tutorial](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)
+- [Template Files Guide](https://angular.dev/tools/cli/schematics-authoring#template-files)
+- [Angular Component Schematics Source](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/component)
+
+```bash
+# Create schematic files
+mkdir -p projects/my-lib/schematics/component
+touch projects/my-lib/schematics/component/{index.ts,schema.json,files/__name@dasherize__.component.ts.template}
+```
+
+**Implementation guidance:**
+- Define schema with component name, selector prefix, and styling options
+- Use template files with Angular naming conventions (`__name@dasherize__`)
+- Include proper imports for library dependencies
+- Add component to library's public API if needed
+- Generate corresponding test files
+
+#### Service Generator Schematic
+Generate services with proper dependency injection setup:
+
+- Use `schematics @schematics/angular:service --name=my-service --dry-run` as template
+
+**References:**
+- [Service Schematic Example](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/service)
+- [Injectable Decorator Guide](https://angular.dev/guide/dependency-injection)
+- [Tree Manipulation API](https://angular.dev/tools/cli/schematics-authoring#tree)
+
+```bash
+# Create schematic structure
+mkdir -p projects/my-lib/schematics/service/files
+touch projects/my-lib/schematics/service/{index.ts,schema.json}
+```
+
+**Implementation guidance:**
+- Schema should include service name and injection scope (root, platform, any)
+- Template should include proper `@Injectable()` decorator
+- Consider library-specific service patterns and interfaces
+- Auto-register in library module if applicable
+
+#### Initialization Schematics
+Handle project setup and library integration scenarios:
+
+**Essential Resources:**
+- [ng-add Schematic Guide](https://angular.dev/tools/cli/schematics-for-libraries#providing-installation-support)
+- [Workspace Manipulation](https://angular.dev/tools/cli/schematics-authoring#workspace)
+- [Package Installation API](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/tasks/package-manager/install-task.ts)
+
+##### New Project Schematic (`ng new` support)
+Create complete project templates that include your library from the start:
+
+**Implementation guidance:**
+- [ng-new Collection Example](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/ng-new)
+- [Workspace Schema](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/workspace/schema.json)
+- [Application Schematic Reference](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/application)
+- [File Creation API](https://angular.dev/tools/cli/schematics-authoring#creating-files)
+
+```bash
+# Create ng-new schematic for full project setup
+mkdir -p projects/my-lib/schematics/ng-new
+touch projects/my-lib/schematics/ng-new/{index.ts,schema.json,files/**/*}
+```
+
+**Features for ng-new schematic:**
+- Generate complete Angular workspace with my-lib pre-configured
+- Include example components demonstrating library usage
+- Set up recommended project structure and conventions
+- Prompt for whether it'll be deployed to Sharepoint or as a Docker container.
+- Configure build pipeline with library-specific optimizations
+- Include starter documentation and README templates
+- Pre-configure testing setup for both unit and e2e tests
+
+##### Library Addition Schematic (`ng add` support)
+Enable `ng add my-lib` functionality for adding the library to existing projects:
+
+**Implementation guidance:**
+- [ng-add Schematic Tutorial](https://angular.dev/tools/cli/schematics-for-libraries#providing-installation-support)
+- [Material ng-add Example](https://github.com/angular/components/tree/main/src/material/schematics/ng-add)
+- [Package.json Manipulation](https://angular.dev/tools/cli/schematics-authoring#packagejson)
+
+```bash
+# Create ng-add schematic
+mkdir -p projects/my-lib/schematics/ng-add
+touch projects/my-lib/schematics/ng-add/{index.ts,schema.json}
+```
+
+**Key features to implement:**
+- Add library to package.json dependencies
+- Import library module in app.module.ts or main.ts (standalone)
+- Generate initial configuration files
+- Set up default theme/styling if applicable
+- Create example usage files and components
+- Update angular.json with library-specific build options
+- Configure providers and services in application bootstrap
+- Add necessary peer dependencies automatically
+
+#### Configuration Generator
+Create configuration files and interfaces:
+
+**References:**
+- [File Creation API](https://angular.dev/tools/cli/schematics-authoring#creating-files)
+- [Configuration Pattern Examples](https://github.com/ngrx/platform/tree/main/modules/schematics/src/store)
+- [Schema Validation Guide](https://angular.dev/tools/cli/schematics-authoring#schema-validation)
+
+```bash
+# Setup config generator
+mkdir -p projects/my-lib/schematics/config/files
+touch projects/my-lib/schematics/config/{index.ts,schema.json}
+```
+
+**Configuration schematic should:**
+- Generate TypeScript interfaces for library config
+- Create default configuration files (JSON/TS)
+- Add configuration injection tokens
+- Update app configuration to include library settings
+- Provide type safety for configuration options
+
+#### Migration Schematics
+Handle breaking changes between library versions:
+
+**Essential Resources:**
+- [Migration Schematics Guide](https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support)
+- [Angular Update Migrations](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations)
+- [TypeScript AST Manipulation](https://ts-morph.com/)
+- [Migration Collection Example](https://github.com/angular/components/tree/main/src/material/schematics/ng-update)
+
+```bash
+# Create migration for major version
+mkdir -p projects/my-lib/schematics/migration-v3
+touch projects/my-lib/schematics/migration-v3/{index.ts,schema.json}
+```
+
+**Migration best practices:**
+- Use AST transformations for code modifications
+- Update import statements and module references
+- Rename deprecated APIs to new equivalents
+- Update configuration file structures
+- Add TODO comments for manual updates needed
+- Include rollback instructions in migration logs
+- Test migrations against various project structures
+
+#### Schema Registration
+Update `collection.json` to register new schematics:
+
+**References:**
+- [Collection Schema Reference](https://angular.dev/tools/cli/schematics-authoring#collection-schema)
+- [Schema.json Format](https://json.schemastore.org/schematics)
+- [Factory Function Guide](https://angular.dev/tools/cli/schematics-authoring#factory-functions)
+
+```json
+{
+  "schematics": {
+    "component": {
+      "description": "Generate a my-lib component",
+      "factory": "./component/index#componentSchematic",
+      "schema": "./component/schema.json"
+    },
+    "service": {
+      "description": "Generate a my-lib service", 
+      "factory": "./service/index#serviceSchematic",
+      "schema": "./service/schema.json"
+    },
+    "ng-add": {
+      "description": "Add my-lib to an Angular project",
+      "factory": "./ng-add/index#ngAdd",
+      "schema": "./ng-add/schema.json"
+    }
+  }
+}
+```
+
+#### Testing Schematics
+Create comprehensive tests for each schematic:
+
+**References:**
+- [Schematic Testing Guide](https://angular.dev/tools/cli/schematics-authoring#testing)
+- [Testing Utilities API](https://www.npmjs.com/package/@angular-devkit/schematics/v/0.1102.0#testing)
+- [Angular CLI Test Examples](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular)
+- [Tree Testing Documentation](https://angular.dev/tools/cli/schematics-authoring#testing-a-schematic)
+
+```bash
+# Test file structure
+touch projects/my-lib/schematics/component/index.spec.ts
+touch projects/my-lib/schematics/service/index.spec.ts
+```
+
+**Implementation guidance:**
+- Use `@angular-devkit/schematics/testing` for unit tests
+- Test file generation, content, and placement
+- Verify schema validation and error handling
+- Test integration with existing project structures
+- Include tests for edge cases and error scenarios
+
+## Docker & Tile Server
+
+- See the main README for instructions on running the OSM tile server and frontend with Docker Compose.
+- Place your `.osm.pbf` file in the `data/` directory.
+- Use the provided `docker-compose.yml` for orchestration.
+
+## Pull Requests
+
+- Fork the repository and create a feature branch.
+- Write clear, concise commit messages.
+- Ensure all tests and linters pass before submitting a PR.
+- Reference related issues in your PR description.
+
+## Code Style
+
+- Use the existing ESLint configuration.
+- Follow Angular and TypeScript best practices.
+- Keep code modular and well-documented.
+
+## Further Resources
+
+- [Angular CLI Documentation](https://angular.dev/tools/cli)
+- [Angular Schematics Authoring](https://angular.dev/tools/cli/schematics-authoring)
+- [Cypress Documentation](https://docs.cypress.io/)
+- [PostGIS Documentation](https://postgis.net/)
+
+---
+
+If you have questions, open an issue or start a discussion!

@@ -92,13 +92,13 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
    git config --global alias.dc 'diff --cached'
 
    # Stash shortcuts
-   git config --global aalias.drop 'stash drop'
-   git config --global aalias.pop 'stash pop'
-   git config --global aalias.apply 'stash apply'
+   git config --global alias.drop 'stash drop'
+   git config --global alias.pop 'stash pop'
+   git config --global alias.apply 'stash apply'
 
    # Remote shortcuts
    git config --global alias.rem 'remote update --prune'
-   git config --glibal alias.rename 'remote rename'
+   git config --global alias.rename 'remote rename'
    git config --global alias.update 'remote update'
    ```
 

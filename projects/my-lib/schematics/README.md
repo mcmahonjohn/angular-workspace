@@ -2,6 +2,30 @@
 
 This directory contains Angular Schematics for `my-lib` library, providing automated code generation and migration capabilities.
 
+## Structure
+
+```
+schematics/
+├── build.sh              # Build script for schematics
+├── test.sh               # Test script for schematics  
+├── collection.json       # Schematic collection definition
+├── tsconfig.schematics.json  # TypeScript config for schematics
+├── dist/                 # Built schematics (generated)
+├── ng-new/               # ng-new schematic
+│   ├── index.ts
+│   ├── schema.json
+│   ├── schema.ts
+│   ├── templates/        # Template files
+│   │   ├── karma.conf.js.template
+│   │   └── karma.conf.ci.js.template
+│   ├── ng-new-schematic.md
+│   └── test-ng-new-schematic.js
+└── update-X-X-X/         # Migration schematics for each version
+    ├── index.ts
+    ├── schema.json
+    └── *.spec.ts
+```
+
 ## Migration Schematics
 
 The following migration schematics are available to handle breaking changes between major versions:
@@ -75,28 +99,65 @@ When implementing migration logic for a specific version:
 - [Angular Migrations][angular-migrations] - Reference implementations from Angular CLI
 - [Material Migrations][material-migrations] - Production examples from Angular Material
 
-### Building
+## Available Scripts
 
-Compile schematics for distribution:
-
+### Building Schematics
 ```bash
 npm run build:schematics
+# or directly:
+./projects/my-lib/schematics/build.sh
 ```
 
-### Testing
+This script:
+- Compiles TypeScript files
+- Copies collection.json and schema.json files
+- Creates necessary directory structure
+- Copies template files to the dist directory
 
-Run schematic tests:
-
+### Testing Schematics
 ```bash
 npm run test:schematics
+# or directly:
+./projects/my-lib/schematics/test.sh
 ```
 
-Test individual migrations:
+This script:
+- Runs all schematic unit tests with coverage
+- Uses nyc for coverage reporting
+- Excludes spec files from coverage
 
+### Integration Testing
 ```bash
-# Test specific migration
-npm run test:schematics -- --grep "Update to v3.0.0"
+npm run test:ng-new
 ```
+
+Runs comprehensive integration tests for the ng-new schematic.
+
+## Template System
+
+Template files use Angular Schematics conventions:
+- Files end with `.template` suffix
+- Use `<%= variable %>` syntax for template variables
+- Processed by Angular Schematics template engine during execution
+
+## Adding New Schematics
+
+When adding new schematics:
+
+1. Create a new directory under `schematics/`
+2. Add the schematic to `collection.json`
+3. Update `build.sh` to copy any schema files or templates
+4. Template files should use the `.template` suffix (Angular convention)
+5. Run `npm run build:schematics` to build
+6. Run `npm run test:schematics` to test
+
+## Maintenance
+
+The build and test scripts are designed to scale as new schematics are added:
+
+- **build.sh**: Automatically handles new update schematics following the `update-X-X-X` pattern
+- **test.sh**: Runs all tests in the dist directory
+- Template copying is handled generically for any schematic with a `templates/` directory
 
 ---
 

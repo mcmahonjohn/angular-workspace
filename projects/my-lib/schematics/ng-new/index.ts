@@ -2,8 +2,14 @@ import {
   Rule,
   SchematicContext,
   Tree,
+  apply,
   chain,
   externalSchematic,
+  filter,
+  mergeWith,
+  move,
+  template,
+  url,
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
 import { JsonObject, JsonValue } from '@angular-devkit/core';
@@ -62,9 +68,13 @@ export default function (options: NgNewSchema): Rule {
       // Update tsconfig.json
       updateTsConfig(tree, options);
 
-      // Create karma config files
-      createKarmaConfigs(tree, options);
+      return tree;
+    },
 
+    // Create karma config files from templates
+    createKarmaConfigs(options),
+
+    (tree: Tree, context: SchematicContext) => {
       // Schedule Cypress installation
       const installCypressTask = context.addTask(new NodePackageInstallTask({
         packageName: '@cypress/schematic',
@@ -186,108 +196,18 @@ function updateTsConfig(tree: Tree, options: NgNewSchema): void {
   tree.overwrite(tsconfigPath, JSON.stringify(tsconfig, null, 2));
 }
 
-function createKarmaConfigs(tree: Tree, options: NgNewSchema): void {
-  const basePath = options.directory || '.';
+function createKarmaConfigs(options: NgNewSchema): Rule {
+  const targetPath = options.directory || '.';
   
-  // Create karma.conf.js (non-headless)
-  const karmaConfig = `// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
-module.exports = function (config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
-    client: {
-      jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution order
-        // random: false
-      },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
-    jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
-    },
-    coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/${options.name}'),
-      subdir: '.',
-      reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
-      ]
-    },
-    reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
-    restartOnFileChange: true
-  });
-};`;
-
-  // Create karma.conf.ci.js (headless)
-  const karmaConfigCi = `// Karma configuration file for CI/headless testing
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
-module.exports = function (config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
-    client: {
-      jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution order
-        // random: false
-      },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
-    jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
-    },
-    coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/${options.name}'),
-      subdir: '.',
-      reporters: [
-        { type: 'html' },
-        { type: 'text-summary' },
-        { type: 'lcov' }
-      ]
-    },
-    reporters: ['progress', 'kjhtml'],
-    browsers: ['ChromeHeadless'],
-    customLaunchers: {
-      ChromeHeadless: {
-        base: 'Chrome',
-        flags: [
-          '--no-sandbox',
-          '--disable-web-security',
-          '--disable-gpu',
-          '--disable-dev-shm-usage',
-          '--headless',
-          '--remote-debugging-port=9222'
-        ]
-      }
-    },
-    singleRun: true,
-    restartOnFileChange: false
-  });
-};`;
-
-  tree.create(`${basePath}/karma.conf.js`, karmaConfig);
-  tree.create(`${basePath}/karma.conf.ci.js`, karmaConfigCi);
+  return mergeWith(
+    apply(url('./templates'), [
+      filter((path) => !!path.match(/karma\.conf.*\.js\.template$/)),
+      template({
+        name: options.name,
+      }),
+      move(targetPath),
+    ])
+  );
 }
 
 function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {

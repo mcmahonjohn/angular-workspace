@@ -137,6 +137,20 @@
               "devServerTarget": "my-app:serve:production"
             }
           }
+        },
+        "e2e-ci": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "my-app:serve",
+            "watch": false,
+            "headless": true,
+            "configFile": "projects/my-app/cypress.config.ts"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "my-app:serve:production"
+            }
+          }
         }
       }
     },

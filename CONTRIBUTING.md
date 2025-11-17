@@ -165,42 +165,42 @@ Here's guidance on implementing the key schematic types for this library:
 **Essential Resources:**
 
 **Core Angular Schematics:**
-- [Angular Schematics Official Guide](https://angular.dev/tools/cli/schematics) - Primary documentation
-- [Schematics API Documentation](https://angular.dev/tools/cli/schematics-authoring) - API reference
-- [Angular DevKit Schematics Package](https://www.npmjs.com/package/@angular-devkit/schematics) - NPM package docs
+- [Angular Schematics Official Guide][schematics-guide] - Primary documentation
+- [Schematics API Documentation][schematics-api] - API reference
+- [Angular DevKit Schematics Package][schematics-package] - NPM package docs
 
 **Cross-Platform Schematics (Mental Model):**
-- [NestJS Schematics](https://docs.nestjs.com/cli/overview#nest-generate) - Server-side framework using Angular Schematics
-- [Nx Schematics](https://nx.dev/packages/devkit) - Monorepo tooling built on Angular Schematics
-- [Nrwl DevKit](https://nx.dev/packages/devkit/documents/nx_devkit) - Advanced schematic patterns and utilities
+- [NestJS Schematics][nestjs-schematics] - Server-side framework using Angular Schematics
+- [Nx Schematics][nx-schematics] - Monorepo tooling built on Angular Schematics
+- [Nrwl DevKit][nx-devkit] - Advanced schematic patterns and utilities
 
 **Learning the Mental Model:**
-- [Schematics Concepts Deep Dive](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2) - Fundamental concepts
-- [Tree Data Structure](https://angular.dev/tools/cli/schematics-authoring#tree) - Core abstraction for file operations
-- [Rules and Actions Pattern](https://angular.dev/tools/cli/schematics-authoring#rules) - Functional programming approach
-- [Virtual File System](https://medium.com/@tomastrajan/total-guide-to-angular-6-dependency-injection-providedin-vs-providers-85b7a347b59f) - Understanding the staging area
+- [Schematics Concepts Deep Dive][schematics-concepts] - Fundamental concepts
+- [Tree Data Structure][schematics-tree] - Core abstraction for file operations
+- [Rules and Actions Pattern][schematics-rules] - Functional programming approach
+- [Virtual File System][di-guide] - Understanding the staging area
 
 **Advanced Patterns & Examples:**
-- [RxJS Operators for Schematics](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/src/rules/base.ts) - Composing transformations
-- [AST Transformations](https://ts-ast-viewer.com/) - TypeScript AST manipulation tool
-- [Workspace APIs](https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/core) - Project configuration manipulation
-- [Schematics Testing Patterns](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/test.ts) - Testing utilities and patterns
+- [RxJS Operators for Schematics][rxjs-schematics] - Composing transformations
+- [AST Transformations][ast-viewer] - TypeScript AST manipulation tool
+- [Workspace APIs][workspace-apis] - Project configuration manipulation
+- [Schematics Testing Patterns][testing-patterns] - Testing utilities and patterns
 
 **Real-World Implementations:**
-- [Angular Material Schematics](https://github.com/angular/components/tree/main/src/cdk/schematics) - Production examples
-- [NgRx Schematics](https://github.com/ngrx/platform/tree/main/modules/schematics) - State management patterns
-- [Firebase Schematics](https://github.com/angular/angularfire/tree/main/src/schematics) - Third-party integration patterns
+- [Angular Material Schematics][material-schematics] - Production examples
+- [NgRx Schematics][ngrx-schematics] - State management patterns
+- [Firebase Schematics][firebase-schematics] - Third-party integration patterns
 
 **Schematic Generators (Bootstrap Your Schematics):**
-- [Schematics CLI](https://www.npmjs.com/package/@angular-devkit/schematics-cli) - `schematics blank my-schematic` - Generate blank schematic
-- [Angular CLI Collection Generator](https://angular.dev/tools/cli/schematics-authoring#creating-a-schematics-collection) - `ng generate library` includes schematics setup
-- [Nx Schematic Generator](https://nx.dev/packages/plugin) - `nx g @nx/plugin:generator my-generator` - Generate Nx-style schematics
-- [NestJS Schematic CLI](https://docs.nestjs.com/cli/usages#nest-generate) - `nest g schematic my-schematic` - Server-side schematic generation
-- [Yeoman Generator for Schematics](https://github.com/saniyusuf/generator-schematics) - Interactive schematic project setup
+- [Schematics CLI][schematics-cli] - `schematics blank my-schematic` - Generate blank schematic
+- [Angular CLI Collection Generator][collection-generator] - `ng generate library` includes schematics setup
+- [Nx Schematic Generator][nx-generator] - `nx g @nx/plugin:generator my-generator` - Generate Nx-style schematics
+- [NestJS Schematic CLI][nestjs-cli] - `nest g schematic my-schematic` - Server-side schematic generation
+- [Yeoman Generator for Schematics][yeoman-schematics] - Interactive schematic project setup
 
 **Available Schematic Templates:**
-- **ng-add Templates**: [Angular Material ng-add](https://github.com/angular/components/tree/main/src/material/schematics/ng-add) provides excellent starter code
-- **Migration Templates**: [Angular Update Migrations](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations) for reference patterns
+- **ng-add Templates**: [Angular Material ng-add][material-ng-add] provides excellent starter code
+- **Migration Templates**: [Angular Update Migrations][angular-migrations] for reference patterns
 
 #### Component Generator Schematic
 Create a schematic to generate components with library-specific patterns:
@@ -208,9 +208,9 @@ Create a schematic to generate components with library-specific patterns:
 - Use `schematics @schematics/angular:component --name=my-component --dry-run` as template
 
 **References:**
-- [Component Schematic Tutorial](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)
-- [Template Files Guide](https://angular.dev/tools/cli/schematics-authoring#template-files)
-- [Angular Component Schematics Source](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/component)
+- [Component Schematic Tutorial][schematics-concepts]
+- [Template Files Guide][template-files]
+- [Angular Component Schematics Source][angular-component-source]
 
 ```bash
 # Create schematic files
@@ -231,9 +231,9 @@ Generate services with proper dependency injection setup:
 - Use `schematics @schematics/angular:service --name=my-service --dry-run` as template
 
 **References:**
-- [Service Schematic Example](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/service)
-- [Injectable Decorator Guide](https://angular.dev/guide/dependency-injection)
-- [Tree Manipulation API](https://angular.dev/tools/cli/schematics-authoring#tree)
+- [Service Schematic Example][angular-service-source]
+- [Injectable Decorator Guide][injectable-guide]
+- [Tree Manipulation API][schematics-tree]
 
 ```bash
 # Create schematic structure
@@ -251,18 +251,18 @@ touch projects/my-lib/schematics/service/{index.ts,schema.json}
 Handle project setup and library integration scenarios:
 
 **Essential Resources:**
-- [ng-add Schematic Guide](https://angular.dev/tools/cli/schematics-for-libraries#providing-installation-support)
-- [Workspace Manipulation](https://angular.dev/tools/cli/schematics-authoring#workspace)
-- [Package Installation API](https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/tasks/package-manager/install-task.ts)
+- [ng-add Schematic Guide][ng-add-guide]
+- [Workspace Manipulation][workspace-manipulation]
+- [Package Installation API][package-install-api]
 
 ##### New Project Schematic (`ng new` support)
 Create complete project templates that include your library from the start:
 
 **Implementation guidance:**
-- [ng-new Collection Example](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/ng-new)
-- [Workspace Schema](https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/workspace/schema.json)
-- [Application Schematic Reference](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/application)
-- [File Creation API](https://angular.dev/tools/cli/schematics-authoring#creating-files)
+- [ng-new Collection Example][ng-new-example]
+- [Workspace Schema][workspace-schema]
+- [Application Schematic Reference][application-schematic]
+- [File Creation API][file-creation-api]
 
 ```bash
 # Create ng-new schematic for full project setup
@@ -283,9 +283,9 @@ touch projects/my-lib/schematics/ng-new/{index.ts,schema.json,files/**/*}
 Enable `ng add my-lib` functionality for adding the library to existing projects:
 
 **Implementation guidance:**
-- [ng-add Schematic Tutorial](https://angular.dev/tools/cli/schematics-for-libraries#providing-installation-support)
-- [Material ng-add Example](https://github.com/angular/components/tree/main/src/material/schematics/ng-add)
-- [Package.json Manipulation](https://angular.dev/tools/cli/schematics-authoring#packagejson)
+- [ng-add Schematic Tutorial][ng-add-guide]
+- [Material ng-add Example][material-ng-add]
+- [Package.json Manipulation][packagejson-manipulation]
 
 ```bash
 # Create ng-add schematic
@@ -307,9 +307,9 @@ touch projects/my-lib/schematics/ng-add/{index.ts,schema.json}
 Create configuration files and interfaces:
 
 **References:**
-- [File Creation API](https://angular.dev/tools/cli/schematics-authoring#creating-files)
-- [Configuration Pattern Examples](https://github.com/ngrx/platform/tree/main/modules/schematics/src/store)
-- [Schema Validation Guide](https://angular.dev/tools/cli/schematics-authoring#schema-validation)
+- [File Creation API][file-creation-api]
+- [Configuration Pattern Examples][ngrx-config-examples]
+- [Schema Validation Guide][schema-validation]
 
 ```bash
 # Setup config generator
@@ -328,10 +328,10 @@ touch projects/my-lib/schematics/config/{index.ts,schema.json}
 Handle breaking changes between library versions:
 
 **Essential Resources:**
-- [Migration Schematics Guide](https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support)
-- [Angular Update Migrations](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations)
-- [TypeScript AST Manipulation](https://ts-morph.com/)
-- [Migration Collection Example](https://github.com/angular/components/tree/main/src/material/schematics/ng-update)
+- [Migration Schematics Guide][migration-guide]
+- [Angular Update Migrations][angular-migrations]
+- [TypeScript AST Manipulation][ts-morph]
+- [Migration Collection Example][material-migrations]
 
 ```bash
 # Create migration for major version
@@ -352,9 +352,9 @@ touch projects/my-lib/schematics/migration-v3/{index.ts,schema.json}
 Update `collection.json` to register new schematics:
 
 **References:**
-- [Collection Schema Reference](https://angular.dev/tools/cli/schematics-authoring#collection-schema)
-- [Schema.json Format](https://json.schemastore.org/schematics)
-- [Factory Function Guide](https://angular.dev/tools/cli/schematics-authoring#factory-functions)
+- [Collection Schema Reference][collection-schema]
+- [Schema.json Format][schema-format]
+- [Factory Function Guide][factory-functions]
 
 ```json
 {
@@ -382,10 +382,10 @@ Update `collection.json` to register new schematics:
 Create comprehensive tests for each schematic:
 
 **References:**
-- [Schematic Testing Guide](https://angular.dev/tools/cli/schematics-authoring#testing)
-- [Testing Utilities API](https://www.npmjs.com/package/@angular-devkit/schematics/v/0.1102.0#testing)
-- [Angular CLI Test Examples](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular)
-- [Tree Testing Documentation](https://angular.dev/tools/cli/schematics-authoring#testing-a-schematic)
+- [Schematic Testing Guide][testing-guide]
+- [Testing Utilities API][testing-utilities]
+- [Angular CLI Test Examples][angular-test-examples]
+- [Tree Testing Documentation][tree-testing]
 
 ```bash
 # Test file structure
@@ -421,11 +421,64 @@ touch projects/my-lib/schematics/service/index.spec.ts
 
 ## Further Resources
 
-- [Angular CLI Documentation](https://angular.dev/tools/cli)
-- [Angular Schematics Authoring](https://angular.dev/tools/cli/schematics-authoring)
-- [Cypress Documentation](https://docs.cypress.io/)
-- [PostGIS Documentation](https://postgis.net/)
+- [Angular CLI Documentation][angular-cli-docs]
+- [Angular Schematics Authoring][schematics-api]
+- [Cypress Documentation][cypress-docs]
+- [PostGIS Documentation][postgis-docs]
 
 ---
 
 If you have questions, open an issue or start a discussion!
+
+<!-- Reference Links -->
+[angular-cli-docs]: https://angular.dev/tools/cli
+[angular-component-source]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/component
+[angular-migrations]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations
+[angular-service-source]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/service
+[angular-test-examples]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular
+[application-schematic]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/application
+[ast-viewer]: https://ts-ast-viewer.com/
+[collection-generator]: https://angular.dev/tools/cli/schematics-authoring#creating-a-schematics-collection
+[collection-schema]: https://angular.dev/tools/cli/schematics-authoring#collection-schema
+[cypress-docs]: https://docs.cypress.io/
+[di-guide]: https://medium.com/@tomastrajan/total-guide-to-angular-6-dependency-injection-providedin-vs-providers-85b7a347b59f
+[factory-functions]: https://angular.dev/tools/cli/schematics-authoring#factory-functions
+[file-creation-api]: https://angular.dev/tools/cli/schematics-authoring#creating-files
+[firebase-schematics]: https://github.com/angular/angularfire/tree/main/src/schematics
+[injectable-guide]: https://angular.dev/guide/dependency-injection
+[material-migrations]: https://github.com/angular/components/tree/main/src/material/schematics/ng-update
+[material-ng-add]: https://github.com/angular/components/tree/main/src/material/schematics/ng-add
+[material-schematics]: https://github.com/angular/components/tree/main/src/cdk/schematics
+[migration-guide]: https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support
+[nestjs-cli]: https://docs.nestjs.com/cli/usages#nest-generate
+[nestjs-schematics]: https://docs.nestjs.com/cli/overview#nest-generate
+[ng-add-guide]: https://angular.dev/tools/cli/schematics-for-libraries#providing-installation-support
+[ng-new-example]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/ng-new
+[ngrx-config-examples]: https://github.com/ngrx/platform/tree/main/modules/schematics/src/store
+[ngrx-schematics]: https://github.com/ngrx/platform/tree/main/modules/schematics
+[nx-devkit]: https://nx.dev/packages/devkit/documents/nx_devkit
+[nx-generator]: https://nx.dev/packages/plugin
+[nx-schematics]: https://nx.dev/packages/devkit
+[package-install-api]: https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/tasks/package-manager/install-task.ts
+[packagejson-manipulation]: https://angular.dev/tools/cli/schematics-authoring#packagejson
+[postgis-docs]: https://postgis.net/
+[rxjs-schematics]: https://github.com/angular/angular-cli/blob/main/packages/angular_devkit/schematics/src/rules/base.ts
+[schema-format]: https://json.schemastore.org/schematics
+[schema-validation]: https://angular.dev/tools/cli/schematics-authoring#schema-validation
+[schematics-api]: https://angular.dev/tools/cli/schematics-authoring
+[schematics-cli]: https://www.npmjs.com/package/@angular-devkit/schematics-cli
+[schematics-concepts]: https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2
+[schematics-guide]: https://angular.dev/tools/cli/schematics
+[schematics-package]: https://www.npmjs.com/package/@angular-devkit/schematics
+[schematics-rules]: https://angular.dev/tools/cli/schematics-authoring#rules
+[schematics-tree]: https://angular.dev/tools/cli/schematics-authoring#tree
+[template-files]: https://angular.dev/tools/cli/schematics-authoring#template-files
+[testing-guide]: https://angular.dev/tools/cli/schematics-authoring#testing
+[testing-patterns]: https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/utility/test.ts
+[testing-utilities]: https://www.npmjs.com/package/@angular-devkit/schematics/v/0.1102.0#testing
+[tree-testing]: https://angular.dev/tools/cli/schematics-authoring#testing-a-schematic
+[ts-morph]: https://ts-morph.com/
+[workspace-apis]: https://github.com/angular/angular-cli/tree/main/packages/angular_devkit/core
+[workspace-manipulation]: https://angular.dev/tools/cli/schematics-authoring#workspace
+[workspace-schema]: https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/workspace/schema.json
+[yeoman-schematics]: https://github.com/saniyusuf/generator-schematics

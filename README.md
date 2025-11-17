@@ -84,56 +84,12 @@ docker compose down
 
 ## Contributing
 
-For development setup, testing, building, and advanced usage, see the [Contributing Guide](CONTRIBUTING.md).
-
-
-## Running the OSM Tile Server and Frontend with Docker Compose
-
-This project includes a Docker Compose setup for running both an OpenStreetMap tile server (for local map tiles) and the Angular frontend.
-
-### 1. Import OSM Data (One-time Step)
-
-Place your `.osm.pbf` file in a `data/` directory at the root of the project:
-
-```bash
-mkdir -p data
-cp <your-map.osm.pbf> data/map.osm.pbf
-```
-
-Run the import step (this may take a while depending on the file size):
-
-```bash
-docker compose run import
-```
-
-### 2. Start the Tile Server and Frontend
-
-Start the tile server and frontend services:
-
-```bash
-docker compose up tileserver frontend
-```
-
-* The tile server will be available at: http://localhost:8080/tiles/{z}/{x}/{y}.png
-* The Angular frontend will be available at: http://localhost:4200/
-
-### 3. Stopping Services
-
-To stop all services:
-
-```bash
-docker compose down
-```
-
-### 4. Notes
-
-- The PostgreSQL/PostGIS database is persisted in a Docker volume (`osm-db-data`).
-- You only need to run the import step again if you want to update the map data.
-- The frontend is built and served from the `dist/my-app` directory using Nginx.
-
----
-
+For development setup, testing, building, and advanced usage, see the [Contributing Guide][contributing-guide].
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference][angular-cli-reference] page.
+
+<!-- Reference Links -->
+[contributing-guide]: CONTRIBUTING.md
+[angular-cli-reference]: https://angular.dev/tools/cli

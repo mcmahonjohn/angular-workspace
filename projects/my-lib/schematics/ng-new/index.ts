@@ -99,14 +99,20 @@ export default function (options: NgNewSchema): Rule {
   ]);
 }
 
-function updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSchema): void {
+export function updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSchema): void {
   const workspaceContent = tree.read(workspacePath);
 
   if (!workspaceContent) {
     return;
   }
 
-  const workspace = JSON.parse(workspaceContent.toString()) as AngularJson;
+  let workspace: AngularJson;
+  try {
+    workspace = JSON.parse(workspaceContent.toString()) as AngularJson;
+  } catch (error) {
+    // Invalid JSON, skip processing
+    return;
+  }
 
   // Disable CLI analytics
   workspace.cli = {
@@ -167,7 +173,7 @@ function updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSche
   tree.overwrite(workspacePath, JSON.stringify(workspace, null, 2));
 }
 
-function updateTsConfig(tree: Tree, options: NgNewSchema): void {
+export function updateTsConfig(tree: Tree, options: NgNewSchema): void {
   const tsconfigPath = options.directory ? `${options.directory}/tsconfig.json` : 'tsconfig.json';
   
   if (!tree.exists(tsconfigPath)) {
@@ -180,7 +186,13 @@ function updateTsConfig(tree: Tree, options: NgNewSchema): void {
     return;
   }
 
-  const tsconfig = JSON.parse(tsconfigContent.toString()) as JsonObject;
+  let tsconfig: JsonObject;
+  try {
+    tsconfig = JSON.parse(tsconfigContent.toString()) as JsonObject;
+  } catch (error) {
+    // Invalid JSON, skip processing
+    return;
+  }
 
   // Update Angular compiler options
   tsconfig['angularCompilerOptions'] = {
@@ -196,7 +208,7 @@ function updateTsConfig(tree: Tree, options: NgNewSchema): void {
   tree.overwrite(tsconfigPath, JSON.stringify(tsconfig, null, 2));
 }
 
-function createKarmaConfigs(options: NgNewSchema): Rule {
+export function createKarmaConfigs(options: NgNewSchema): Rule {
   const targetPath = options.directory || '.';
   
   return mergeWith(
@@ -210,7 +222,7 @@ function createKarmaConfigs(options: NgNewSchema): Rule {
   );
 }
 
-function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {
+export function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {
   const basePath = options.directory || '.';
   const srcPath = `${basePath}/src`;
 

@@ -2,17 +2,11 @@ import {
   Rule,
   SchematicContext,
   Tree,
-  apply,
   chain,
   externalSchematic,
-  mergeWith,
-  move,
-  template,
-  url,
-  MergeStrategy,
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
-import { JsonObject, JsonValue, workspaces } from '@angular-devkit/core';
+import { JsonObject, JsonValue } from '@angular-devkit/core';
 import { Schema as NgNewSchema } from './schema';
 
 interface AngularJson {

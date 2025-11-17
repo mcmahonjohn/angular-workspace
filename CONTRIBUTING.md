@@ -62,7 +62,7 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
    ```bash
    # Essential git aliases for efficient workflow
 
-   ## Status and branch shortcuts
+   # Status and branch shortcuts
    git config --global alias.st status
    git config --global alias.br branch
 
@@ -107,11 +107,13 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
    # Test Chrome installation (should work without errors)
    npm run test:unit
    
-   # Test git aliases
-   git st    # Should show git status
-   git up    # Updates from remote with interactive rebase
-   git rem   # Updates all remotes
-   git base  # Interactive rebase with autostash
+   # Test key git aliases
+   git st      # Show git status
+   git br      # List branches
+   git last    # Show last commit
+   git d       # Show working directory diff
+   git ds      # Show staged diff
+   git rem     # Update all remotes with prune
    ```
 
 **Note**: The Codespace environment should now be ready for all development tasks including unit testing with Chrome and efficient git operations.

@@ -60,60 +60,46 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
 
 2. **Set up Git aliases for productivity:**
    ```bash
-   # Status and branch shortcuts
-   git config --global alias.s status
-   git config --global alias.b branch
-   git config --global alias.ba 'branch -a'
-   git config --global alias.bd 'branch -d'
-   
+   # Essential git aliases for efficient workflow
+
+   ## Status and branch shortcuts
+   git config --global alias.st status
+   git config --global alias.br branch
+
    # Commit shortcuts
-   git config --global alias.c commit
-   git config --global alias.cm 'commit -m'
-   git config --global alias.ca 'commit -a'
-   git config --global alias.cam 'commit -am'
-   
+   git config --global alias.co 'commit -m'
+   git config --global alias.fix 'commit --fixup'
+
    # Checkout and switching
-   git config --global alias.co checkout
-   git config --global alias.cb 'checkout -b'
-   git config --global alias.sw switch
-   git config --global alias.swc 'switch -c'
-   
+   git config --global alias.out switch
+
    # Push and pull shortcuts
-   git config --global alias.p push
-   git config --global alias.po 'push origin'
-   git config --global alias.pom 'push origin main'
-   git config --global alias.pl pull
-   git config --global alias.plo 'pull origin'
-   git config --global alias.plom 'pull origin main'
-   
+   git config --global alias.up 'pull --rebase=interactive --autostash'
+   git config --global alias.pf 'push -f'
+   git config --global alias.ps push
+   git config --global alias.pu 'push -u'
+
+   # Rebase
+   git config --global alias.base 'rebase -i --autostash'
+   git config --global alias.cont 'rebase --continue'
+
    # Log and history
-   git config --global alias.l 'log --oneline'
-   git config --global alias.lg 'log --graph --oneline --decorate --all'
-   git config --global alias.lgs 'log --graph --oneline --decorate --all --stat'
-   
+   git config --global alias.last 'log -1 HEAD'
+
    # Diff shortcuts
    git config --global alias.d diff
    git config --global alias.ds 'diff --staged'
    git config --global alias.dc 'diff --cached'
-   
-   # Add shortcuts
-   git config --global alias.a add
-   git config --global alias.aa 'add .'
-   git config --global alias.ap 'add -p'
-   
-   # Reset shortcuts
-   git config --global alias.r reset
-   git config --global alias.rh 'reset HEAD'
-   git config --global alias.rhh 'reset HEAD --hard'
-   
+
    # Stash shortcuts
-   git config --global alias.st stash
-   git config --global alias.stp 'stash pop'
-   git config --global alias.stl 'stash list'
-   
+   git config --global aalias.drop 'stash drop'
+   git config --global aalias.pop 'stash pop'
+   git config --global aalias.apply 'stash apply'
+
    # Remote shortcuts
-   git config --global alias.rem remote
-   git config --global alias.remv 'remote -v'
+   git config --global alias.rem 'remote update --prune'
+   git config --glibal alias.rename 'remote rename'
+   git config --global alias.update 'remote update'
    ```
 
 3. **Verify setup:**
@@ -122,8 +108,10 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
    npm run test:unit
    
    # Test git aliases
-   git s  # Should show git status
-   git l  # Should show commit log
+   git st    # Should show git status
+   git up    # Updates from remote with interactive rebase
+   git rem   # Updates all remotes
+   git base  # Interactive rebase with autostash
    ```
 
 **Note**: The Codespace environment should now be ready for all development tasks including unit testing with Chrome and efficient git operations.

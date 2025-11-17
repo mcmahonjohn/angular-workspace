@@ -113,7 +113,7 @@ If you're using GitHub Codespaces, you'll need to install Google Chrome for unit
    git last    # Show last commit
    git d       # Show working directory diff
    git ds      # Show staged diff
-   git rem     # Update all remotes with prune
+   git update  # Update all remotes
    ```
 
 **Note**: The Codespace environment should now be ready for all development tasks including unit testing with Chrome and efficient git operations.

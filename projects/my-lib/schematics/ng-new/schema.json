@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "SchematicsMyLibNgNew",
+  "title": "My Lib Ng New Options Schema",
+  "type": "object",
+  "description": "Creates a new Angular workspace with my-lib specific configurations.",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The name of the workspace and initial project. Convention: start with 'angular-' prefix.",
+      "type": "string",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the workspace? (Convention: start with 'angular-' prefix)"
+    },
+    "directory": {
+      "description": "The directory name to create the workspace in.",
+      "type": "string"
+    },
+    "version": {
+      "description": "The version of the Angular CLI to use.",
+      "type": "string",
+      "visible": false
+    },
+    "minimal": {
+      "description": "Create a workspace without any testing frameworks.",
+      "type": "boolean",
+      "default": false
+    },
+    "routing": {
+      "description": "Generate a routing module for the initial project.",
+      "type": "boolean",
+      "default": true,
+      "x-prompt": "Would you like to add Angular routing?"
+    }
+  },
+  "required": ["name"]
+}

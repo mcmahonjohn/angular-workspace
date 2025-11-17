@@ -36,6 +36,24 @@ This Angular 18 monorepo contains:
   # Visit http://localhost:4200/
   ```
 
+### Creating a New Project with my-lib Optimizations
+
+Use the included `ng-new` schematic to create a new Angular workspace with my-lib's optimizations and best practices built-in:
+
+```bash
+# After publishing my-lib to npm
+ng new my-project --collection=my-lib
+
+# The workspace will be created with:
+# - CLI analytics disabled
+# - Strict Angular compiler options
+# - Dual karma configurations (dev/CI)
+# - Cypress-ready setup
+# - Production build optimizations
+```
+
+See [ng-new schematic documentation](projects/my-lib/schematics/ng-new/ng-new-schematic.md) for complete details and options.
+
 ## Docker & OSM Tile Server
 
 This project includes a Docker Compose setup for running both an OpenStreetMap tile server (for local map tiles) and the Angular frontend. See below for a quick start, or the [Contributing Guide](CONTRIBUTING.md) for full details.

@@ -1,0 +1,319 @@
+import {
+  Rule,
+  SchematicContext,
+  Tree,
+  apply,
+  chain,
+  externalSchematic,
+  mergeWith,
+  move,
+  template,
+  url,
+  MergeStrategy,
+} from '@angular-devkit/schematics';
+import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
+import { JsonObject, JsonValue, workspaces } from '@angular-devkit/core';
+import { Schema as NgNewSchema } from './schema';
+
+interface AngularJson {
+  projects?: Record<string, JsonValue>;
+  cli?: Record<string, JsonValue>;
+  [key: string]: JsonValue | undefined;
+}
+
+interface ProjectConfig {
+  architect?: Record<string, JsonValue>;
+  [key: string]: JsonValue | undefined;
+}
+
+interface ArchitectConfig {
+  [key: string]: JsonValue;
+}
+
+export default function (options: NgNewSchema): Rule {
+  return chain([
+    // Create the workspace with Angular's ng-new schematic
+    externalSchematic('@schematics/angular', 'ng-new', {
+      name: options.name,
+      directory: options.directory,
+      commit: false,
+      createApplication: true,
+      inlineStyle: false,
+      inlineTemplate: false,
+      interactive: true,
+      packageManager: 'npm',
+      prefix: 'app',
+      skipGit: true,
+      ssr: false,
+      standalone: true,
+      strict: true,
+      style: 'scss',
+      viewEncapsulation: 'Emulated',
+      zoneless: false,
+      routing: options.routing ?? true,
+      minimal: options.minimal ?? false,
+    }),
+
+    // Configure the workspace
+    (tree: Tree, context: SchematicContext) => {
+      const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
+      
+      if (!tree.exists(workspacePath)) {
+        throw new Error(`Workspace file not found at ${workspacePath}`);
+      }
+
+      // Update angular.json
+      updateAngularJson(tree, workspacePath, options);
+
+      // Update tsconfig.json
+      updateTsConfig(tree, options);
+
+      // Create karma config files
+      createKarmaConfigs(tree, options);
+
+      // Schedule Cypress installation
+      const installCypressTask = context.addTask(new NodePackageInstallTask({
+        packageName: '@cypress/schematic',
+        workingDirectory: options.directory || '.',
+      }));
+
+      // Schedule Cypress setup
+      context.addTask(new RunSchematicTask('@cypress/schematic', 'cypress', {
+        project: options.name,
+      }), [installCypressTask]);
+
+      return tree;
+    },
+
+    // Post-processing
+    (tree: Tree) => {
+      // Remove empty constructors
+      removeEmptyConstructors(tree, options);
+      
+      return tree;
+    },
+  ]);
+}
+
+function updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSchema): void {
+  const workspaceContent = tree.read(workspacePath);
+
+  if (!workspaceContent) {
+    return;
+  }
+
+  const workspace = JSON.parse(workspaceContent.toString()) as AngularJson;
+
+  // Disable CLI analytics
+  workspace.cli = {
+    ...workspace.cli,
+    analytics: false,
+    packageManager: 'npm',
+    schematicCollections: [
+      '@schematics/angular',
+      '@angular-eslint/schematics',
+      '@cypress/schematic'
+    ]
+  };
+
+  // Update project configuration
+  if (workspace.projects && workspace.projects[options.name]) {
+    const project = workspace.projects[options.name] as ProjectConfig;
+    
+    if (project.architect) {
+      const architect = project.architect as ArchitectConfig;
+      
+      // Update build configuration for production
+      if (architect['build'] && architect['build']) {
+        const buildTarget = architect['build'] as JsonObject;
+
+        if (buildTarget['configurations']) {
+          const buildConfigs = buildTarget['configurations'] as JsonObject;
+
+          if (buildConfigs['production']) {
+            const prodConfig = buildConfigs['production'] as JsonObject;
+            prodConfig['optimization'] = {
+              ...prodConfig['optimization'] as JsonObject,
+              styles: {
+                inlineCritical: false
+              }
+            };
+          }
+        }
+      }
+
+      // Add e2e-ci configuration (will be added after Cypress setup)
+      architect['e2e-ci'] = {
+        builder: '@cypress/schematic:cypress',
+        options: {
+          devServerTarget: `${options.name}:serve`,
+          watch: false,
+          headless: true,
+          configFile: 'cypress.config.ts'
+        },
+        configurations: {
+          production: {
+            devServerTarget: `${options.name}:serve:production`
+          }
+        }
+      };
+    }
+  }
+
+  tree.overwrite(workspacePath, JSON.stringify(workspace, null, 2));
+}
+
+function updateTsConfig(tree: Tree, options: NgNewSchema): void {
+  const tsconfigPath = options.directory ? `${options.directory}/tsconfig.json` : 'tsconfig.json';
+  
+  if (!tree.exists(tsconfigPath)) {
+    return;
+  }
+
+  const tsconfigContent = tree.read(tsconfigPath);
+
+  if (!tsconfigContent) {
+    return;
+  }
+
+  const tsconfig = JSON.parse(tsconfigContent.toString()) as JsonObject;
+
+  // Update Angular compiler options
+  tsconfig['angularCompilerOptions'] = {
+    ...tsconfig['angularCompilerOptions'] as JsonObject,
+    enableI18nLegacyMessageIdFormat: false,
+    fullTemplateTypeCheck: true,
+    strictInjectionParameters: true,
+    strictInputAccessModifiers: true,
+    strictTemplates: true,
+    strictStandalone: true
+  };
+
+  tree.overwrite(tsconfigPath, JSON.stringify(tsconfig, null, 2));
+}
+
+function createKarmaConfigs(tree: Tree, options: NgNewSchema): void {
+  const basePath = options.directory || '.';
+  
+  // Create karma.conf.js (non-headless)
+  const karmaConfig = `// Karma configuration file, see link for more information
+// https://karma-runner.github.io/1.0/config/configuration-file.html
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage'),
+      require('@angular-devkit/build-angular/plugins/karma')
+    ],
+    client: {
+      jasmine: {
+        // you can add configuration options for Jasmine here
+        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
+        // for example, you can disable the random execution order
+        // random: false
+      },
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    jasmineHtmlReporter: {
+      suppressAll: true // removes the duplicated traces
+    },
+    coverageReporter: {
+      dir: require('path').join(__dirname, './coverage/${options.name}'),
+      subdir: '.',
+      reporters: [
+        { type: 'html' },
+        { type: 'text-summary' }
+      ]
+    },
+    reporters: ['progress', 'kjhtml'],
+    browsers: ['Chrome'],
+    restartOnFileChange: true
+  });
+};`;
+
+  // Create karma.conf.ci.js (headless)
+  const karmaConfigCi = `// Karma configuration file for CI/headless testing
+// https://karma-runner.github.io/1.0/config/configuration-file.html
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage'),
+      require('@angular-devkit/build-angular/plugins/karma')
+    ],
+    client: {
+      jasmine: {
+        // you can add configuration options for Jasmine here
+        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
+        // for example, you can disable the random execution order
+        // random: false
+      },
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    jasmineHtmlReporter: {
+      suppressAll: true // removes the duplicated traces
+    },
+    coverageReporter: {
+      dir: require('path').join(__dirname, './coverage/${options.name}'),
+      subdir: '.',
+      reporters: [
+        { type: 'html' },
+        { type: 'text-summary' },
+        { type: 'lcov' }
+      ]
+    },
+    reporters: ['progress', 'kjhtml'],
+    browsers: ['ChromeHeadless'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--disable-web-security',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--headless',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
+    singleRun: true,
+    restartOnFileChange: false
+  });
+};`;
+
+  tree.create(`${basePath}/karma.conf.js`, karmaConfig);
+  tree.create(`${basePath}/karma.conf.ci.js`, karmaConfigCi);
+}
+
+function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {
+  const basePath = options.directory || '.';
+  const srcPath = `${basePath}/src`;
+
+  // Remove empty constructors from generated files
+  tree.getDir(srcPath).visit((filePath) => {
+    if (filePath.endsWith('.ts') && !filePath.includes('.spec.ts')) {
+      const content = tree.read(filePath);
+      if (content) {
+        const updatedContent = content
+          .toString()
+          .replace(/\s*constructor\(\)\s*{\s*}\s*/g, '')
+          .replace(/\n\n\n+/g, '\n\n'); // Clean up extra newlines
+        
+        if (content.toString() !== updatedContent) {
+          tree.overwrite(filePath, updatedContent);
+        }
+      }
+    }
+  });
+}

@@ -28,6 +28,8 @@ Thank you for your interest in contributing to this Angular monorepo! This guide
 
 ## Development Setup
 
+### Local Development
+
 1. **Clone the repository:**
    ```bash
    git clone <repo-url>
@@ -37,6 +39,94 @@ Thank you for your interest in contributing to this Angular monorepo! This guide
    ```bash
    npm ci
    ```
+
+### GitHub Codespaces Setup
+
+If you're using GitHub Codespaces, you'll need to install Google Chrome for unit testing and set up helpful git aliases:
+
+1. **Install Google Chrome:**
+   ```bash
+   # Add Google Chrome repository
+   wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+   echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+   
+   # Update package list and install Chrome
+   sudo apt-get update
+   sudo apt-get install -y google-chrome-stable
+   
+   # Verify installation
+   google-chrome --version
+   ```
+
+2. **Set up Git aliases for productivity:**
+   ```bash
+   # Status and branch shortcuts
+   git config --global alias.s status
+   git config --global alias.b branch
+   git config --global alias.ba 'branch -a'
+   git config --global alias.bd 'branch -d'
+   
+   # Commit shortcuts
+   git config --global alias.c commit
+   git config --global alias.cm 'commit -m'
+   git config --global alias.ca 'commit -a'
+   git config --global alias.cam 'commit -am'
+   
+   # Checkout and switching
+   git config --global alias.co checkout
+   git config --global alias.cb 'checkout -b'
+   git config --global alias.sw switch
+   git config --global alias.swc 'switch -c'
+   
+   # Push and pull shortcuts
+   git config --global alias.p push
+   git config --global alias.po 'push origin'
+   git config --global alias.pom 'push origin main'
+   git config --global alias.pl pull
+   git config --global alias.plo 'pull origin'
+   git config --global alias.plom 'pull origin main'
+   
+   # Log and history
+   git config --global alias.l 'log --oneline'
+   git config --global alias.lg 'log --graph --oneline --decorate --all'
+   git config --global alias.lgs 'log --graph --oneline --decorate --all --stat'
+   
+   # Diff shortcuts
+   git config --global alias.d diff
+   git config --global alias.ds 'diff --staged'
+   git config --global alias.dc 'diff --cached'
+   
+   # Add shortcuts
+   git config --global alias.a add
+   git config --global alias.aa 'add .'
+   git config --global alias.ap 'add -p'
+   
+   # Reset shortcuts
+   git config --global alias.r reset
+   git config --global alias.rh 'reset HEAD'
+   git config --global alias.rhh 'reset HEAD --hard'
+   
+   # Stash shortcuts
+   git config --global alias.st stash
+   git config --global alias.stp 'stash pop'
+   git config --global alias.stl 'stash list'
+   
+   # Remote shortcuts
+   git config --global alias.rem remote
+   git config --global alias.remv 'remote -v'
+   ```
+
+3. **Verify setup:**
+   ```bash
+   # Test Chrome installation (should work without errors)
+   npm run test:unit
+   
+   # Test git aliases
+   git s  # Should show git status
+   git l  # Should show commit log
+   ```
+
+**Note**: The Codespace environment should now be ready for all development tasks including unit testing with Chrome and efficient git operations.
 
 ## NPM Scripts
 

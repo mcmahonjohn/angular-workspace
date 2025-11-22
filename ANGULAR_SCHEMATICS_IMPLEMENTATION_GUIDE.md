@@ -1219,11 +1219,10 @@ npx @angular-devkit/schematics-cli your-collection:schematic-name --dry-run
 
 ## Next Steps
 
-1. **Publish Your Library**: Include the built schematics in your npm package
-2. **Document Usage**: Create user-facing documentation for your schematics
-3. **Continuous Integration**: Add schematic testing to your CI pipeline
-4. **Version Management**: Align schematic versions with library releases
-5. **Community Feedback**: Gather feedback and iterate on schematic functionality
+1. **Document Usage**: Create user-facing documentation for your schematics
+2. **Continuous Integration**: Add schematic testing to your CI pipeline
+3. **Version Management**: Align schematic versions with library releases
+4. **Team Feedback**: Gather feedback and iterate on schematic functionality
 
 ## Additional Resources
 

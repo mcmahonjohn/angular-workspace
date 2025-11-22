@@ -82,19 +82,19 @@ mkdir -p schematics/ng-new/templates
 ```
 
 ### 1.3 Install Schematic Dependencies
-Add to your library's `package.json`, depending on your version of Angular, as an example:
-```json
-{
-  "devDependencies": {
-    "@angular-devkit/schematics": "^17.0.0",
-    "@angular-devkit/schematics-cli": "^17.0.0",
-    "@schematics/angular": "^17.0.0",
-    "@types/jasmine": "^5.0.0",
-    "jasmine": "^5.0.0",
-    "nyc": "^15.1.0"
-  }
-}
+Install the required schematic dependencies using npm. Adjust the version numbers to match your Angular version (replace `17.0.0` with your project's Angular major version if different):
+
+```bash
+npm install --save-dev \
+  @angular-devkit/schematics@^17.0.0 \
+  @angular-devkit/schematics-cli@^17.0.0 \
+  @schematics/angular@^17.0.0 \
+  @types/jasmine@^5.0.0 \
+  jasmine@^5.0.0 \
+  nyc@^15.1.0
 ```
+
+> **Tip:** Check your Angular version with `ng version` and update the above commands accordingly to ensure compatibility.
 
 ### 1.4 Create TypeScript Configuration
 Create `schematics/tsconfig.schematics.json`:

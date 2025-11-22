@@ -477,64 +477,17 @@ export function updateTsConfig(tree: Tree, options: NgNewSchema): void {
 }
 
 export function createKarmaConfigs(options: NgNewSchema): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    const targetPath = options.directory || '.';
-    
-    // Create karma configuration template
-    const karmaConfig = `
-module.exports = function (config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-headless'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
-    client: {
-      jasmine: {
-        random: true,
-        seed: '4321'
-      },
-      clearContext: false
-    },
-    jasmineHtmlReporter: {
-      suppressAll: true
-    },
-    coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/'),
-      subdir: '.',
-      reporters: [
-        { type: 'html' },
-        { type: 'text-summary' },
-        { type: 'lcovonly' }
-      ],
-      check: {
-        global: {
-          statements: 80,
-          branches: 80,
-          functions: 80,
-          lines: 80
-        }
-      }
-    },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
-  });
-};
-`;
-
-    tree.create(`${targetPath}/karma.conf.js`, karmaConfig);
-    return tree;
-  };
+  const targetPath = options.directory || '.';
+  
+  return mergeWith(
+    apply(url('./templates'), [
+      filter((path) => !!path.match(/karma\.conf.*\.js\.template$/)),
+      template({
+        name: options.name,
+      }),
+      move(targetPath),
+    ])
+  );
 }
 
 export function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {

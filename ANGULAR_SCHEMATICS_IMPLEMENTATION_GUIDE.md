@@ -1078,54 +1078,185 @@ Create `schematics/README.md`:
 ```markdown
 # ${LIBRARY_NAME} Schematics
 
-This directory contains Angular Schematics for ${LIBRARY_NAME}.
+This directory contains Angular Schematics for `${LIBRARY_NAME}` library, providing automated code generation and migration capabilities.
 
-## Available Schematics
+## Structure
 
-### ng-new
-Creates a new Angular workspace optimized for ${LIBRARY_NAME} usage.
-
-Usage:
-```bash
-ng new my-workspace --collection=${LIBRARY_NAME}
+```
+schematics/
+├── build.sh              # Build script for schematics
+├── test.sh               # Test script for schematics  
+├── collection.json       # Schematic collection definition
+├── tsconfig.schematics.json  # TypeScript config for schematics
+├── dist/                 # Built schematics (generated)
+├── ng-new/               # ng-new schematic
+│   ├── index.ts
+│   ├── schema.json
+│   ├── schema.ts
+│   ├── templates/        # Template files
+│   │   ├── karma.conf.js.template
+│   │   └── karma.conf.ci.js.template
+│   ├── ng-new-schematic.md
+│   └── test-ng-new-schematic.js
+└── update-X-X-X/         # Migration schematics for each version
+    ├── index.ts
+    ├── schema.json
+    └── *.spec.ts
 ```
 
-### Update Migrations
-Automatic migrations for breaking changes between versions.
+## Migration Schematics
 
-- `update-2-0-0`: Updates import statements
-- `update-3-0-0`: Migrates method signatures
-- `update-4-0-0`: Updates configuration files
-- `update-5-0-0`: Modernizes code patterns
-- `update-6-0-0`: Latest breaking changes
+The following migration schematics are available to handle breaking changes between major versions:
 
-## Development
+### Available Migrations
 
-### Building
+| Version | Status | Description |
+|---------|---------|------------|
+| `update-2-0-0` | ✅ **Implemented** | Updates imports from '${LIBRARY_NAME}' to '${NEW_LIBRARY_NAME}' in TypeScript files |
+| `update-3-0-0` | 📋 **Template Ready** | Migration for v3.0.0 breaking changes* |
+| `update-4-0-0` | 📋 **Template Ready** | Migration for v4.0.0 breaking changes* |
+| `update-5-0-0` | 📋 **Template Ready** | Migration for v5.0.0 breaking changes* |
+| `update-6-0-0` | 📋 **Template Ready** | Migration for v6.0.0 breaking changes* |
+
+**Migration templates are pre-created for versions 3.0.0 through 6.0.0 and ready for implementation when breaking changes are introduced.*
+
+### Usage
+
+Migrations are automatically triggered when updating the library via `ng update`:
+
+```bash
+# Update to specific version (triggers appropriate migration)
+ng update ${LIBRARY_NAME}@3.0.0
+ng update ${LIBRARY_NAME}@4.0.0
+ng update ${LIBRARY_NAME}@5.0.0
+ng update ${LIBRARY_NAME}@6.0.0
+
+# Alternative: Update to latest in major version range
+ng update ${LIBRARY_NAME}@3    # Updates to latest 3.x version (e.g., 3.2.1)
+ng update ${LIBRARY_NAME}@4    # Updates to latest 4.x version (e.g., 4.1.0)
+
+# Dry run to preview changes
+ng update ${LIBRARY_NAME}@3.0.0 --dry-run
+ng update ${LIBRARY_NAME}@3 --dry-run
+```
+
+### Template Structure
+
+Each migration schematic includes:
+
+- **`index.ts`** - Main migration logic with TODO placeholders
+- **`schema.json`** - Configuration schema with standard options:
+  - `skipConfirmation`: Skip migration confirmation prompts
+  - `dryRun`: Show changes without applying them
+- **`index.spec.ts`** - Test suite template with example test cases
+
+### Implementation Guidelines
+
+When implementing migration logic for a specific version:
+
+1. **Update Import Statements**: Use AST transformations to update import paths
+2. **Migrate Configurations**: Update configuration file formats and structures
+3. **Update API Usage**: Replace deprecated API calls with new equivalents
+4. **Handle Type Changes**: Update TypeScript interfaces and type definitions
+5. **Theme/Style Updates**: Migrate styling configurations and theme structures
+6. **Dependency Updates**: Handle peer dependency and build configuration changes
+
+### Development Workflow
+
+1. **Identify Breaking Changes**: Document what needs to be migrated
+2. **Implement Migration Logic**: Replace TODO comments with actual transformation code
+3. **Add Helper Functions**: Create utility functions for common transformations
+4. **Write Comprehensive Tests**: Ensure migration handles edge cases gracefully
+5. **Test Migration**: Validate against real projects before release
+6. **Document Changes**: Update migration logs and user-facing documentation
+
+### Helpful Resources
+
+- [Migration Guide][migration-guide] - Official Angular migration schematic guide
+- [AST Transformations][ts-morph] - TypeScript AST manipulation library
+- [Angular Migrations][angular-migrations] - Reference implementations from Angular CLI
+- [Material Migrations][material-migrations] - Production examples from Angular Material
+
+## Available Scripts
+
+### Building Schematics
 ```bash
 npm run build:schematics
+# or directly:
+./projects/${LIBRARY_NAME}/schematics/build.sh
 ```
 
-### Testing
-```bash
-npm run test:schematics
-```
+This script:
+- Compiles TypeScript files
+- Copies collection.json and schema.json files
+- Creates necessary directory structure
+- Copies template files to the dist directory
 
-### Testing with Watch Mode
-```bash
-npm run test:schematics:watch
-```
+### Testing Schematics
 
-## Testing Philosophy
+#### Testing Philosophy
 
 We use Jasmine (not Jest) for testing schematics because:
 - Better integration with Angular DevKit testing utilities
 - Consistent with Angular CLI's testing approach
 - More mature schematic testing patterns
 - Better error reporting for file tree manipulations
+
+#### Unit Testing Schematics
+
+```bash
+npm run test:schematics
+# or directly:
+./projects/${LIBRARY_NAME}/schematics/test.sh
 ```
 
-### 8.2 💡 Multi-Project Workspace Best Practices
+This script:
+- Runs all schematic unit tests with coverage
+- Uses nyc for coverage reporting
+- Excludes spec files from coverage
+
+#### Integration Testing
+```bash
+npm run test:ng-new
+```
+
+Runs comprehensive integration tests for the ng-new schematic.
+
+## Template System
+
+Template files use Angular Schematics conventions:
+- Files end with `.template` suffix
+- Use `<%= variable %>` syntax for template variables
+- Processed by Angular Schematics template engine during execution
+
+## Adding New Schematics
+
+When adding new schematics:
+
+1. Create a new directory under `schematics/`
+2. Add the schematic to `collection.json`
+3. Update `build.sh` to copy any schema files or templates
+4. Template files should use the `.template` suffix (Angular convention)
+5. Run `npm run build:schematics` to build
+6. Run `npm run test:schematics` to test
+
+## Maintenance
+
+The build and test scripts are designed to scale as new schematics are added:
+
+- **build.sh**: Automatically handles new update schematics following the `update-X-X-X` pattern
+- **test.sh**: Runs all tests in the dist directory
+- Template copying is handled generically for any schematic with a `templates/` directory
+
+---
+
+[migration-guide]: https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support
+[ts-morph]: https://ts-morph.com/
+[angular-migrations]: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations
+[material-migrations]: https://github.com/angular/components/tree/main/src/material/schematics/ng-update
+```
+
+### 8.2 Multi-Project Workspace Best Practices
 
 **Directory Organization**:
 ```
@@ -1148,6 +1279,399 @@ projects/
 3. **Build Scripts**: Keep build and test scripts with each schematics collection
 4. **Version Alignment**: Migration schematics should match library version numbers
 5. **Testing Strategy**: Both unit and integration tests for complex schematics
+
+### 8.3 📋 Create ng-new Schematic Documentation
+Create `schematics/ng-new/README.md`:
+```markdown
+# ng-new Schematic
+
+This schematic extends Angular's built-in `ng new` command to create a workspace with additional optimizations and configurations specifically tailored for projects using `${LIBRARY_NAME}`.
+
+## Features
+
+The ng-new schematic creates a new Angular workspace with the following enhancements:
+
+### 🚀 Performance Optimizations
+- **Analytics disabled** - CLI analytics are disabled by default for privacy
+- **Production build optimization** - Inline critical CSS is disabled for better performance
+- **Strict TypeScript configuration** - Enhanced type checking and compiler options
+
+### 🧪 Testing Infrastructure
+- **Cypress E2E testing** - Pre-configured Cypress setup with CI-ready configuration
+- **Dual Karma configurations** - Separate configs for development and CI environments
+- **ChromeHeadless support** - Optimized for Codespaces and CI environments
+
+### 🛠 Development Experience
+- **Enhanced tsconfig** - Strict Angular compiler options for better development experience
+- **ESLint integration** - Pre-configured with Angular ESLint rules
+- **Schematic collections** - Ready to use Angular, ESLint, and Cypress schematics
+- **Empty constructor cleanup** - Automatically removes boilerplate empty constructors
+
+## Usage
+
+### Basic Usage
+```bash
+ng generate ${LIBRARY_NAME}:ng-new my-awesome-app
+```
+
+### With Options
+```bash
+ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --routing=true --minimal=false
+```
+
+### In a Subdirectory
+```bash
+ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --directory=projects/frontend
+```
+
+## Schema Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `name` | `string` | - | The name of the workspace (required) |
+| `routing` | `boolean` | `true` | Whether to include Angular Router |
+| `minimal` | `boolean` | `false` | Create a minimal workspace |
+| `directory` | `string` | - | The directory name to create the workspace in |
+
+## Generated Configuration
+
+### Angular.json Enhancements
+- **CLI configuration**: Analytics disabled, npm package manager, schematic collections
+- **E2E CI target**: `e2e-ci` architect target for headless Cypress testing
+- **Production optimizations**: Inline critical CSS disabled
+
+### TypeScript Configuration
+Enhanced `tsconfig.json` with strict Angular compiler options:
+```json
+{
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "strictStandalone": true
+  }
+}
+```
+
+### Karma Configurations
+Two separate Karma configuration files are created:
+
+1. **karma.conf.js** - Development testing with Chrome browser
+2. **karma.conf.ci.js** - CI testing with ChromeHeadless
+
+### Cypress Integration
+The schematic automatically:
+1. Installs `@cypress/schematic`
+2. Configures Cypress for the project
+3. Sets up E2E testing targets
+
+## Post-Generation Steps
+
+After running the schematic, you'll have:
+
+1. **A complete Angular workspace** with all standard files
+2. **Enhanced configurations** for better development experience
+3. **Testing infrastructure** ready for both unit and E2E tests
+4. **CI-ready setup** with headless browser configurations
+
+To start developing:
+
+```bash
+cd your-workspace-name
+npm install
+npm start
+```
+
+To run tests:
+
+```bash
+# Unit tests (development)
+ng test --karma-config=karma.conf.js
+
+# Unit tests (CI)
+ng test --karma-config=karma.conf.ci.js
+
+# E2E tests
+ng e2e
+
+# E2E tests (CI)
+ng run your-app:e2e-ci
+```
+
+## Technical Implementation
+
+The schematic uses Angular's `externalSchematic` to leverage the official `@schematics/angular:ng-new` schematic, then applies additional customizations:
+
+1. **Workspace Creation**: Uses Angular's standard ng-new schematic
+2. **Configuration Updates**: Modifies `angular.json` and `tsconfig.json`
+3. **File Generation**: Creates Karma configuration files
+4. **Task Scheduling**: Schedules Cypress installation and setup
+5. **Code Cleanup**: Removes empty constructors from generated files
+
+This approach ensures compatibility with Angular's standard workspace structure while adding project-specific optimizations.
+
+## Compatibility
+
+- **Angular**: 18.x
+- **Node.js**: 18.x or higher
+- **Package Manager**: npm (configured by default)
+- **Browsers**: Chrome/Chromium (for testing)
+
+## Related Schematics
+
+This schematic works alongside other migration schematics in this package:
+- `update-2-0-0` through `update-6-0-0` - Version migration schematics
+- Standard Angular schematics - Component, service, etc. generators
+
+## Troubleshooting
+
+### Common Issues
+
+**External schematic not found**: Ensure `@schematics/angular` is installed
+```bash
+npm install @schematics/angular --save-dev
+```
+
+**Cypress installation fails**: The schematic schedules Cypress installation as a task. If it fails, manually install:
+```bash
+ng add @cypress/schematic
+```
+
+**Test configuration issues**: Ensure Chrome/Chromium is available in your environment for testing.
+```
+
+### 8.4 📋 Create ng-new Schematic Technical Documentation
+Create `schematics/ng-new/ng-new-schematic.md`:
+```markdown
+# ng-new Schematic Technical Documentation
+
+## Overview
+
+The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace creation process with library-specific optimizations and configurations. This document provides technical details for developers working on the schematic implementation.
+
+## Architecture
+
+### Schematic Flow
+
+```
+1. externalSchematic('@schematics/angular:ng-new')
+   ↓
+2. updateAngularJson() - Add CLI config, e2e-ci target
+   ↓
+3. updateTsConfig() - Add strict compiler options
+   ↓
+4. createKarmaConfigs() - Generate dual Karma configs
+   ↓
+5. Schedule Tasks:
+   - NodePackageInstallTask (npm install)
+   - RunSchematicTask (@cypress/schematic)
+   ↓
+6. removeEmptyConstructors() - Clean generated code
+```
+
+### Key Functions
+
+#### `updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSchema)`
+
+**Purpose**: Modifies the generated `angular.json` to add ${LIBRARY_NAME}-specific configurations
+
+**Modifications**:
+- Sets CLI analytics to `false`
+- Configures npm as the package manager
+- Adds schematic collections: `@angular-eslint/schematics`, `@cypress/schematic`
+- Adds `e2e-ci` architect target for headless testing
+- Disables `inlineCriticalCss` for production builds
+
+**Implementation Notes**:
+- Uses safe JSON parsing with error handling
+- Preserves existing workspace structure
+- Adds configurations without overwriting user customizations
+
+#### `updateTsConfig(tree: Tree, options: NgNewSchema)`
+
+**Purpose**: Enhances TypeScript configuration with strict Angular compiler options
+
+**Added Options**:
+```typescript
+"angularCompilerOptions": {
+  "enableI18nLegacyMessageIdFormat": false,
+  "fullTemplateTypeCheck": true,
+  "strictInjectionParameters": true,
+  "strictInputAccessModifiers": true,
+  "strictTemplates": true,
+  "strictStandalone": true
+}
+```
+
+**Benefits**:
+- Enhanced type safety
+- Better development experience
+- Early detection of template errors
+- Future-proof configuration
+
+#### `createKarmaConfigs(options: NgNewSchema)`
+
+**Purpose**: Generates dual Karma configuration files for different testing environments
+
+**Files Created**:
+1. `karma.conf.js` - Development testing with Chrome
+2. `karma.conf.ci.js` - CI testing with ChromeHeadless
+
+**Template Variables**:
+- Uses Angular Schematics template engine
+- Processes `.template` files with variable substitution
+- Handles directory-based workspace creation
+
+#### `removeEmptyConstructors(tree: Tree, options: NgNewSchema)`
+
+**Purpose**: Cleans up generated TypeScript files by removing empty constructors
+
+**Processing Logic**:
+- Visits all `.ts` files in the workspace
+- Uses regex pattern matching to identify empty constructors
+- Preserves constructors with parameters or body content
+- Maintains proper code formatting
+
+**Pattern Matching**:
+```typescript
+const emptyConstructorPattern = /constructor\(\)\s*\{\s*\}/g;
+```
+
+## Schema Validation
+
+### Required Properties
+- `name`: Workspace name (string, required)
+
+### Optional Properties
+- `routing`: Enable Angular Router (boolean, default: true)
+- `minimal`: Create minimal workspace (boolean, default: false)
+- `directory`: Subdirectory for workspace (string, optional)
+
+### JSON Schema Features
+- Draft-07 schema specification
+- Comprehensive property descriptions
+- Type validation
+- Default value specification
+
+## Template System
+
+### Template Files
+- `karma.conf.js.template`
+- `karma.conf.ci.js.template`
+
+### Variable Substitution
+Templates use Angular Schematics template engine with:
+- `<%= variable %>` syntax for dynamic content
+- Path resolution based on workspace structure
+- Conditional logic for different configurations
+
+### Template Processing
+- Files are processed during schematic execution
+- Variables are resolved from schema options
+- Output files lose the `.template` suffix
+
+## Task Scheduling
+
+### NodePackageInstallTask
+- Scheduled after file generation
+- Installs npm dependencies
+- Runs automatically after schematic completion
+
+### RunSchematicTask
+- Executes `@cypress/schematic` installation
+- Configures E2E testing setup
+- Scheduled after package installation
+
+## Error Handling
+
+### File System Operations
+- Checks for file existence before reading
+- Handles JSON parsing errors gracefully
+- Provides meaningful error messages
+
+### Schema Validation
+- Validates required properties
+- Type checking for all options
+- Default value assignment
+
+### External Dependencies
+- Graceful handling of missing schematics
+- Fallback behavior for optional features
+- Clear error messages for missing dependencies
+
+## Testing Strategy
+
+### Unit Tests
+- Individual function testing
+- Mock file tree operations
+- Schema validation testing
+- Template processing verification
+
+### Integration Tests
+- End-to-end schematic execution
+- File system validation
+- Configuration verification
+- Task execution testing
+
+## Performance Considerations
+
+### File Tree Operations
+- Minimal file reads/writes
+- Efficient tree traversal
+- Lazy loading of file contents
+
+### Memory Usage
+- Stream-based file processing where possible
+- Cleanup of temporary objects
+- Efficient string operations
+
+## Maintenance Guidelines
+
+### Version Compatibility
+- Keep Angular CLI version alignment
+- Update schema definitions as needed
+- Maintain backward compatibility
+
+### Template Updates
+- Test template changes thoroughly
+- Validate variable substitution
+- Ensure cross-platform compatibility
+
+### Dependency Management
+- Monitor external schematic changes
+- Update task scheduling as needed
+- Maintain compatibility with Angular updates
+
+## Debugging
+
+### Common Issues
+1. **Template processing failures**: Check variable names and syntax
+2. **Task execution errors**: Verify external schematic availability
+3. **File tree corruption**: Ensure proper error handling in file operations
+4. **Schema validation failures**: Validate JSON schema syntax
+
+### Debug Techniques
+- Use `--dry-run` flag for testing
+- Enable debug logging with `DEBUG=*`
+- Check intermediate file states
+- Validate schema definitions
+
+## Future Improvements
+
+### Planned Features
+- Additional template customization options
+- Enhanced error reporting
+- More flexible configuration options
+- Extended testing configurations
+
+### Maintenance Tasks
+- Regular dependency updates
+- Performance optimization
+- Documentation updates
+- Community feedback integration
+```
 
 ## Step 9: Testing and Validation
 

@@ -97,21 +97,19 @@ npm install --save-dev \
 > **Tip:** Check your Angular version with `ng version` and update the above commands accordingly to ensure compatibility.
 
 ### 1.4 Create TypeScript Configuration
-Create `schematics/tsconfig.schematics.json`:
-```json
-{
-  "extends": "../../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist/schematics",
-    "rootDir": ".",
-    "declaration": true,
-    "module": "commonjs",
-    "target": "es2018",
-    "moduleResolution": "node"
-  },
-  "include": ["**/*.ts", "**/*.spec.ts"]
-}
-```
+
+Create a file named `tsconfig.schematics.json` inside your library's schematics directory (`projects/${LIBRARY_NAME}/schematics/tsconfig.schematics.json`). This configuration should:
+
+- Extend your root `tsconfig.json` (typically using a relative path such as `../../tsconfig.json`).
+- Set the output directory (`outDir`) to a dedicated schematics build folder (e.g., `dist/schematics`).
+- Specify the root directory (`rootDir`) as the schematics directory itself.
+- Enable declaration file generation and use CommonJS as the module format.
+- Target a modern ECMAScript version (such as ES2018 or later).
+- Use Node module resolution and enable interoperability with ES modules.
+- Include type definitions for Node.js and Jasmine.
+- Include all TypeScript files in the schematics directory and exclude build output and `node_modules`.
+
+This configuration ensures that your schematics code is compiled separately from your main library and that all relevant source and test files are included in the build process. Adjust the `extends` path and other options as needed to match your workspace structure.
 
 ## Step 2: Create Collection Schema
 

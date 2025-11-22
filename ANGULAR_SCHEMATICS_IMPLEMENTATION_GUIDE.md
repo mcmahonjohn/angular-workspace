@@ -58,7 +58,7 @@ Before implementing schematics, identify which project in your Angular workspace
    find . -path "*/schematics/collection.json" -type f
    ```
 
-**AI Agent Prompt**: If implementing via AI agent, include this question in your prompt:
+**💡 AI Agent Guidance**: If implementing via AI agent, include this question in your prompt:
 > "Which project in this Angular workspace should contain the schematics? Look for projects with `ng-package.json` files under the `projects/` directory, as these are typically publishable libraries that benefit from schematics. Once identified, replace all instances of `${LIBRARY_NAME}` in this guide with the actual library name."
 
 ### Project Structure Validation
@@ -103,7 +103,7 @@ npm install --save-dev \
   nyc@^15.1.0
 ```
 
-> **Tip:** Check your Angular version with `ng version` and update the above commands accordingly to ensure compatibility.
+> **💡 Tip:** Check your Angular version with `ng version` and update the above commands accordingly to ensure compatibility.
 
 ### 1.4 Create TypeScript Configuration
 
@@ -1125,7 +1125,7 @@ We use Jasmine (not Jest) for testing schematics because:
 - Better error reporting for file tree manipulations
 ```
 
-### 8.2 Multi-Project Workspace Best Practices
+### 8.2 💡 Multi-Project Workspace Best Practices
 
 **Directory Organization**:
 ```
@@ -1183,7 +1183,7 @@ ng update ${LIBRARY_NAME} --from=1.0.0 --to=2.0.0
 
 ## Troubleshooting
 
-### Common Issues
+### ⚠️ Common Issues
 
 1. **TypeScript Compilation Errors**:
    - Ensure `tsconfig.schematics.json` extends the correct base configuration

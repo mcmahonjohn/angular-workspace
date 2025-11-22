@@ -25,11 +25,20 @@ Angular Schematics use the Angular DevKit to manipulate file trees, run external
 - Basic shell scripting knowledge
 - Git version control
 
+## Variable Placeholders
+
+Throughout this guide, you'll see placeholder variables that should be replaced with your actual values:
+
+- `${LIBRARY_NAME}` - Replace with your actual library name (e.g., `my-awesome-lib`)
+- `${NEW_LIBRARY_NAME}` - Replace with the new library name for migration scenarios (e.g., `awesome-lib-v2`)
+
+These placeholders will be identified and replaced after completing the "Identifying Target Projects" section below.
+
 ## Identifying Target Projects
 
 ### Determining if a Project Needs Schematics
 
-Before implementing schematics, identify which project in your Angular workspace should contain them:
+Before implementing schematics, identify which project in your Angular workspace should contain them. Once identified, you'll use that library name to replace the `${LIBRARY_NAME}` placeholder throughout this guide:
 
 1. **Check for Angular Library Structure**:
    ```bash
@@ -50,14 +59,14 @@ Before implementing schematics, identify which project in your Angular workspace
    ```
 
 **AI Agent Prompt**: If implementing via AI agent, include this question in your prompt:
-> "Which project in this Angular workspace should contain the schematics? Look for projects with `ng-package.json` files under the `projects/` directory, as these are typically publishable libraries that benefit from schematics."
+> "Which project in this Angular workspace should contain the schematics? Look for projects with `ng-package.json` files under the `projects/` directory, as these are typically publishable libraries that benefit from schematics. Once identified, replace all instances of `${LIBRARY_NAME}` in this guide with the actual library name."
 
 ### Project Structure Validation
 
 Your target library project should have this structure:
 ```
 projects/
-└── your-lib/
+└── ${LIBRARY_NAME}/
     ├── ng-package.json          # ✓ Required - indicates publishable library
     ├── package.json             # ✓ Required - library-specific dependencies
     ├── src/
@@ -72,7 +81,7 @@ projects/
 
 ### 1.1 Navigate to Your Library Project
 ```bash
-cd projects/your-lib
+cd projects/${LIBRARY_NAME}
 ```
 
 ### 1.2 Create Schematics Directory Structure
@@ -120,37 +129,37 @@ Create `schematics/collection.json`:
   "$schema": "http://json.schemastore.org/schematics",
   "schematics": {
     "ng-new": {
-      "description": "Create a new Angular workspace with your-lib optimizations.",
+      "description": "Create a new Angular workspace with ${LIBRARY_NAME} optimizations.",
       "factory": "./ng-new/index#default",
       "schema": "./ng-new/schema.json"
     },
     "update-2-0-0": {
       "version": "2.0.0",
-      "description": "Update imports from 'your-lib' to 'new-name' in TS files.",
+      "description": "Update imports from '${LIBRARY_NAME}' to '${NEW_LIBRARY_NAME}' in TS files.",
       "factory": "./update-2-0-0/index#updateToV2",
       "schema": "./update-2-0-0/schema.json"
     },
     "update-3-0-0": {
       "version": "3.0.0",
-      "description": "Migration for your-lib v3.0.0 breaking changes.",
+      "description": "Migration for ${LIBRARY_NAME} v3.0.0 breaking changes.",
       "factory": "./update-3-0-0/index#updateToV3",
       "schema": "./update-3-0-0/schema.json"
     },
     "update-4-0-0": {
       "version": "4.0.0",
-      "description": "Migration for your-lib v4.0.0 breaking changes.",
+      "description": "Migration for ${LIBRARY_NAME} v4.0.0 breaking changes.",
       "factory": "./update-4-0-0/index#updateToV4",
       "schema": "./update-4-0-0/schema.json"
     },
     "update-5-0-0": {
       "version": "5.0.0",
-      "description": "Migration for your-lib v5.0.0 breaking changes.",
+      "description": "Migration for ${LIBRARY_NAME} v5.0.0 breaking changes.",
       "factory": "./update-5-0-0/index#updateToV5",
       "schema": "./update-5-0-0/schema.json"
     },
     "update-6-0-0": {
       "version": "6.0.0",
-      "description": "Migration for your-lib v6.0.0 breaking changes.",
+      "description": "Migration for ${LIBRARY_NAME} v6.0.0 breaking changes.",
       "factory": "./update-6-0-0/index#updateToV6",
       "schema": "./update-6-0-0/schema.json"
     }
@@ -165,10 +174,10 @@ Create `schematics/ng-new/schema.json`:
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "SchematicsYourLibNgNew",
-  "title": "Your Lib Ng New Options Schema",
+  "$id": "Schematics${LIBRARY_NAME//-/( )=>{return $&.toUpperCase().replace(/-(\w)/g,(_,c)=>c.toUpperCase()).replace(/^(\w)/,(_,c)=>c.toUpperCase())}}NgNew",
+  "title": "${LIBRARY_NAME} Ng New Options Schema",
   "type": "object",
-  "description": "Creates a new Angular workspace with your-lib specific configurations.",
+  "description": "Creates a new Angular workspace with ${LIBRARY_NAME} specific configurations.",
   "additionalProperties": false,
   "properties": {
     "name": {
@@ -519,10 +528,10 @@ Create `schematics/update-2-0-0/schema.json`:
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "SchematicsYourLibUpdate200",
+  "$id": "Schematics${LIBRARY_NAME.replace(/-([a-z])/g, (_, c) => c.toUpperCase()).replace(/^([a-z])/g, (_, c) => c.toUpperCase())}Update200",
   "title": "Update to 2.0.0",
   "type": "object",
-  "description": "Updates imports from 'your-lib' to 'new-lib-name'."
+  "description": "Updates imports from '${LIBRARY_NAME}' to '${NEW_LIBRARY_NAME}'."
 }
 ```
 
@@ -544,8 +553,11 @@ Create `schematics/update-2-0-0/update-imports.ts`:
 import { Tree, SchematicContext } from '@angular-devkit/schematics';
 
 function replaceImportPath(source: string): string {
-  // Replace 'your-lib' with 'new-lib-name' in import statements
-  return source.replace(/(['"])your-lib\1/g, '$1new-lib-name$1');
+  // Replace '${LIBRARY_NAME}' with '${NEW_LIBRARY_NAME}' in import statements
+  return source.replace(/(['"])${LIBRARY_NAME}\1/g, (match, quote) => {
+    // Always use single quotes for the replacement
+    return `'${NEW_LIBRARY_NAME}'`;
+  });
 }
 
 export function updateImports(tree: Tree, context: SchematicContext): void {
@@ -792,10 +804,10 @@ describe('update-2-0-0', () => {
   });
 
   describe('updateImports', () => {
-    it('should update import statements from your-lib to new-lib-name', () => {
+    it('should update import statements from ${LIBRARY_NAME} to ${NEW_LIBRARY_NAME}', () => {
       const sourceContent = `
-import { SomeService } from 'your-lib';
-import { AnotherService } from "your-lib";
+import { SomeService } from '${LIBRARY_NAME}';
+import { AnotherService } from "${LIBRARY_NAME}";
 import { ThirdService } from 'other-lib';
 `;
 
@@ -810,13 +822,13 @@ import { ThirdService } from 'other-lib';
       updateImports(mockTree, mockContext as any);
 
       const updatedContent = mockTree.readContent('test.ts');
-      expect(updatedContent).toContain(`import { SomeService } from 'new-lib-name';`);
-      expect(updatedContent).toContain(`import { AnotherService } from "new-lib-name";`);
+      expect(updatedContent).toContain(`import { SomeService } from '${NEW_LIBRARY_NAME}';`);
+      expect(updatedContent).toContain(`import { AnotherService } from "${NEW_LIBRARY_NAME}";`);
       expect(updatedContent).toContain(`import { ThirdService } from 'other-lib';`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in test.ts');
     });
 
-    it('should not modify files without your-lib imports', () => {
+    it('should not modify files without ${LIBRARY_NAME} imports', () => {
       const sourceContent = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
@@ -838,9 +850,9 @@ import { Component } from '@angular/core';
     });
 
     it('should only process TypeScript files', () => {
-      mockTree.create('test.js', `import { Service } from 'your-lib';`);
-      mockTree.create('test.html', `<div>your-lib content</div>`);
-      mockTree.create('test.ts', `import { Service } from 'your-lib';`);
+      mockTree.create('test.js', `import { Service } from '${LIBRARY_NAME}';`);
+      mockTree.create('test.html', `<div>${LIBRARY_NAME} content</div>`);
+      mockTree.create('test.ts', `import { Service } from '${LIBRARY_NAME}';`);
       
       const mockContext = {
         logger: {
@@ -850,9 +862,9 @@ import { Component } from '@angular/core';
 
       updateImports(mockTree, mockContext as any);
 
-      expect(mockTree.readContent('test.js')).toContain('your-lib');
-      expect(mockTree.readContent('test.html')).toContain('your-lib');
-      expect(mockTree.readContent('test.ts')).toContain('new-lib-name');
+      expect(mockTree.readContent('test.js')).toContain('${LIBRARY_NAME}');
+      expect(mockTree.readContent('test.html')).toContain('${LIBRARY_NAME}');
+      expect(mockTree.readContent('test.ts')).toContain('${NEW_LIBRARY_NAME}');
       expect(mockContext.logger.info).toHaveBeenCalledTimes(1);
     });
   });
@@ -929,12 +941,12 @@ Create `schematics/build.sh`:
 ```bash
 #!/bin/bash
 
-# Build schematics script for your-lib
+# Build schematics script for ${LIBRARY_NAME}
 # This script compiles TypeScript and copies necessary files
 
 set -e  # Exit on any error
 
-SCHEMATICS_DIR="projects/your-lib/schematics"
+SCHEMATICS_DIR="projects/${LIBRARY_NAME}/schematics"
 DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
 
 echo "Building schematics..."
@@ -986,12 +998,12 @@ Create `schematics/test.sh`:
 ```bash
 #!/bin/bash
 
-# Test schematics script for your-lib
+# Test schematics script for ${LIBRARY_NAME}
 # This script runs all schematic tests with coverage
 
 set -e  # Exit on any error
 
-SCHEMATICS_DIR="projects/your-lib/schematics"
+SCHEMATICS_DIR="projects/${LIBRARY_NAME}/schematics"
 DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
 
 echo "Running schematics tests..."
@@ -1031,10 +1043,10 @@ chmod +x schematics/test.sh
 ## Step 7: Package.json Integration
 
 ### 7.1 Add Scripts to Library Package.json
-Update `projects/your-lib/package.json`:
+Update `projects/${LIBRARY_NAME}/package.json`:
 ```json
 {
-  "name": "your-lib",
+  "name": "${LIBRARY_NAME}",
   "version": "1.0.0",
   "scripts": {
     "build:schematics": "bash schematics/build.sh",
@@ -1053,8 +1065,8 @@ Update root `package.json`:
 ```json
 {
   "scripts": {
-    "build:lib:schematics": "npm run build:schematics --prefix projects/your-lib",
-    "test:lib:schematics": "npm run test:schematics --prefix projects/your-lib"
+    "build:lib:schematics": "npm run build:schematics --prefix projects/${LIBRARY_NAME}",
+    "test:lib:schematics": "npm run test:schematics --prefix projects/${LIBRARY_NAME}"
   }
 }
 ```
@@ -1064,18 +1076,18 @@ Update root `package.json`:
 ### 8.1 Create Schematic Documentation
 Create `schematics/README.md`:
 ```markdown
-# Your-Lib Schematics
+# ${LIBRARY_NAME} Schematics
 
-This directory contains Angular Schematics for your-lib.
+This directory contains Angular Schematics for ${LIBRARY_NAME}.
 
 ## Available Schematics
 
 ### ng-new
-Creates a new Angular workspace optimized for your-lib usage.
+Creates a new Angular workspace optimized for ${LIBRARY_NAME} usage.
 
 Usage:
 ```bash
-ng new my-workspace --collection=your-lib
+ng new my-workspace --collection=${LIBRARY_NAME}
 ```
 
 ### Update Migrations
@@ -1118,7 +1130,7 @@ We use Jasmine (not Jest) for testing schematics because:
 **Directory Organization**:
 ```
 projects/
-├── your-lib/
+├── ${LIBRARY_NAME}/
 │   ├── schematics/           # ✓ Keep schematics with the library
 │   │   ├── build.sh         # ✓ Library-specific build script
 │   │   ├── test.sh          # ✓ Library-specific test script
@@ -1141,7 +1153,7 @@ projects/
 
 ### 9.1 Run Build Process
 ```bash
-cd projects/your-lib
+cd projects/${LIBRARY_NAME}
 npm run build:schematics
 ```
 
@@ -1153,20 +1165,20 @@ npm run test:schematics
 ### 9.3 Manual Testing
 ```bash
 # Test ng-new schematic
-npx @angular-devkit/schematics-cli projects/your-lib/schematics/collection.json:ng-new test-workspace
+npx @angular-devkit/schematics-cli projects/${LIBRARY_NAME}/schematics/collection.json:ng-new test-workspace
 
 # Test update schematic
-npx @angular-devkit/schematics-cli projects/your-lib/schematics/collection.json:update-2-0-0 --dry-run
+npx @angular-devkit/schematics-cli projects/${LIBRARY_NAME}/schematics/collection.json:update-2-0-0 --dry-run
 ```
 
 ### 9.4 Integration with Angular CLI
 After publishing your library, users can:
 ```bash
 # Use your ng-new schematic
-ng new my-workspace --collection=your-lib
+ng new my-workspace --collection=${LIBRARY_NAME}
 
 # Run migrations
-ng update your-lib --from=1.0.0 --to=2.0.0
+ng update ${LIBRARY_NAME} --from=1.0.0 --to=2.0.0
 ```
 
 ## Troubleshooting

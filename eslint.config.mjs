@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint';
 import angularEslintPlugin from '@angular-eslint/eslint-plugin';
 import angularEslintTemplatePlugin from '@angular-eslint/eslint-plugin-template';
 import jsonc from 'eslint-plugin-jsonc';
+import globals from 'globals';
 
 /** @type {import('eslint').ESLint.Config[]} */
 export default [
@@ -54,6 +55,57 @@ export default [
         fail: 'readonly',
         console: 'readonly'
       }
+    }
+  },
+  // Schematics-specific configurations
+  {
+    files: ['projects/*/schematics/**/*.spec.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        expect: 'readonly',
+        jasmine: 'readonly',
+        spyOn: 'readonly',
+        fail: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        require: 'readonly'
+      }
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_|^options$|^runner$|^mockContext$|^mockTree$|^taskDeps$|^error$'
+      }],
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_|^options$|^runner$|^mockContext$|^mockTree$|^taskDeps$|^error$'
+      }]
+    }
+  },
+  {
+    files: ['projects/*/schematics/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_|^context$',
+        varsIgnorePattern: '^_|^options$|^runner$|^mockContext$|^mockTree$|^taskDeps$',
+        caughtErrorsIgnorePattern: '^_|^error$'
+      }],
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_|^context$',
+        varsIgnorePattern: '^_|^options$|^runner$|^mockContext$|^mockTree$|^taskDeps$',
+        caughtErrorsIgnorePattern: '^_|^error$'
+      }]
+    }
+  },
+  {
+    files: ['projects/*/schematics/**/*.js'],
+    languageOptions: {
+      globals: globals.node
     }
   },
   {

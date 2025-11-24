@@ -11,6 +11,8 @@
     "cypress:run": "cypress run",
     "e2e": "ng e2e",
     "link:lib": "npm link ./dist/my-lib",
+    "lint:app": "eslint projects/my-app",
+    "lint:app:fix": "eslint projects/my-app --fix",
     "lint:lib": "eslint projects/my-lib",
     "lint:lib:fix": "eslint projects/my-lib --fix",
     "start": "ng serve my-app",

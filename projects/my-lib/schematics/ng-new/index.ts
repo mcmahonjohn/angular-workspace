@@ -57,7 +57,7 @@ export default function (options: NgNewSchema): Rule {
     // Configure the workspace
     (tree: Tree, context: SchematicContext) => {
       const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
-      
+
       if (!tree.exists(workspacePath)) {
         throw new Error(`Workspace file not found at ${workspacePath}`);
       }
@@ -93,7 +93,7 @@ export default function (options: NgNewSchema): Rule {
     (tree: Tree) => {
       // Remove empty constructors
       removeEmptyConstructors(tree, options);
-      
+
       return tree;
     },
   ]);
@@ -129,10 +129,10 @@ export function updateAngularJson(tree: Tree, workspacePath: string, options: Ng
   // Update project configuration
   if (workspace.projects && workspace.projects[options.name]) {
     const project = workspace.projects[options.name] as ProjectConfig;
-    
+
     if (project.architect) {
       const architect = project.architect as ArchitectConfig;
-      
+
       // Update build configuration for production
       if (architect['build'] && architect['build']) {
         const buildTarget = architect['build'] as JsonObject;
@@ -175,7 +175,7 @@ export function updateAngularJson(tree: Tree, workspacePath: string, options: Ng
 
 export function updateTsConfig(tree: Tree, options: NgNewSchema): void {
   const tsconfigPath = options.directory ? `${options.directory}/tsconfig.json` : 'tsconfig.json';
-  
+
   if (!tree.exists(tsconfigPath)) {
     return;
   }
@@ -210,7 +210,7 @@ export function updateTsConfig(tree: Tree, options: NgNewSchema): void {
 
 export function createKarmaConfigs(options: NgNewSchema): Rule {
   const targetPath = options.directory || '.';
-  
+
   return mergeWith(
     apply(url('./templates'), [
       filter((path) => !!path.match(/karma\.conf.*\.js\.template$/)),
@@ -235,7 +235,7 @@ export function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void 
           .toString()
           .replace(/\s*constructor\(\)\s*{\s*}\s*/g, '')
           .replace(/\n\n\n+/g, '\n\n'); // Clean up extra newlines
-        
+
         if (content.toString() !== updatedContent) {
           tree.overwrite(filePath, updatedContent);
         }

@@ -109,7 +109,7 @@ export function updateAngularJson(tree: Tree, workspacePath: string, options: Ng
   let workspace: AngularJson;
   try {
     workspace = JSON.parse(workspaceContent.toString()) as AngularJson;
-  } catch (error) {
+  } catch (_error) {
     // Invalid JSON, skip processing
     return;
   }
@@ -189,7 +189,7 @@ export function updateTsConfig(tree: Tree, options: NgNewSchema): void {
   let tsconfig: JsonObject;
   try {
     tsconfig = JSON.parse(tsconfigContent.toString()) as JsonObject;
-  } catch (error) {
+  } catch (_error) {
     // Invalid JSON, skip processing
     return;
   }

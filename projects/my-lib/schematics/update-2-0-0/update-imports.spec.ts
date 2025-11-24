@@ -1,5 +1,5 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Tree, SchematicContext } from '@angular-devkit/schematics';
+import { Tree } from '@angular-devkit/schematics';
 import { updateImports } from './update-imports';
 import * as path from 'path';
 

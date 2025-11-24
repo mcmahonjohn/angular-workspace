@@ -101,7 +101,7 @@ describe('ng-new', () => {
 
     validNames.forEach(name => {
       const options: NgNewSchema = { name };
-      if (!options.name.match(/^[a-zA-Z][a-zA-Z0-9\-]*$/)) {
+      if (!options.name.match(/^[a-zA-Z][a-zA-Z0-9-]*$/)) {
         fail(`Name '${name}' should match Angular project naming pattern`);
       }
     });

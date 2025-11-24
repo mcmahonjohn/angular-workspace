@@ -24,7 +24,7 @@ import { Tree, SchematicContext } from '@angular-devkit/schematics';
  * - Angular Migrations: https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations
  * - Material Migrations: https://github.com/angular/components/tree/main/src/material/schematics/ng-update
  */
-export function updateToV5(): (tree: Tree, context: SchematicContext) => Tree {
+export function updateToV5(): (_tree: Tree, context: SchematicContext) => Tree {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.info('🚀 Running my-lib migration to v5.0.0...');
     

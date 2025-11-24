@@ -8,6 +8,12 @@ set -e  # Exit on any error
 SCHEMATICS_DIR="projects/my-lib/schematics"
 DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
 
+# Clean previous build
+if [ -d "$DIST_DIR" ]; then
+    echo "Cleaning previous build..."
+    rm -rf "$DIST_DIR"
+fi
+
 echo "Building schematics..."
 
 # Compile TypeScript

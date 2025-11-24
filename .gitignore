@@ -17,6 +17,7 @@ yarn-error.log
 # IDEs and editors
 .github
 .idea/
+.tool-versions
 .project
 .classpath
 .c9/

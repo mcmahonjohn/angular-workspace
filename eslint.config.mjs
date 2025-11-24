@@ -64,6 +64,7 @@ export default [
         '.vscode/**',
         'dist/**',
         'node_modules/**',
+        'projects/my-lib/schematics/dist/**',
         'angular.json',
         'package.json',
         'package-lock.json',

@@ -1,13 +1,12 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Tree } from '@angular-devkit/schematics';
 import { EmptyTree } from '@angular-devkit/schematics';
 import * as path from 'path';
 import { Schema as NgNewSchema } from './schema';
-import { 
-  updateAngularJson, 
-  updateTsConfig, 
-  createKarmaConfigs, 
-  removeEmptyConstructors 
+import {
+  updateAngularJson,
+  updateTsConfig,
+  createKarmaConfigs,
+  removeEmptyConstructors
 } from './index';
 
 const collectionPath = path.join(__dirname, '../collection.json');
@@ -18,7 +17,7 @@ describe('ng-new', () => {
 
   beforeEach(() => {
     runner = new SchematicTestRunner('schematics', collectionPath);
-    
+
     // Create a minimal mock tree for testing
     mockTree = new UnitTestTree(new EmptyTree());
   });
@@ -26,12 +25,12 @@ describe('ng-new', () => {
   it('should have ng-new schematic defined in collection', () => {
     const collection = runner.engine.createCollection(collectionPath);
     const schematic = runner.engine.createSchematic('ng-new', collection);
-    
+
     if (!schematic) {
       fail('ng-new schematic not found in collection');
       return;
     }
-    
+
     if (schematic.description.name !== 'ng-new') {
       fail(`Expected schematic name to be 'ng-new', got '${schematic.description.name}'`);
     }
@@ -48,15 +47,15 @@ describe('ng-new', () => {
     if (typeof validOptions.name !== 'string') {
       fail('name should be a string');
     }
-    
+
     if (typeof validOptions.routing !== 'boolean') {
       fail('routing should be a boolean');
     }
-    
+
     if (typeof validOptions.minimal !== 'boolean') {
       fail('minimal should be a boolean');
     }
-    
+
     if (typeof validOptions.directory !== 'string') {
       fail('directory should be a string when provided');
     }
@@ -70,11 +69,11 @@ describe('ng-new', () => {
     if (!minimalOptions.name) {
       fail('name is required');
     }
-    
+
     if (minimalOptions.routing !== undefined) {
       fail('routing should be undefined when not provided');
     }
-    
+
     if (minimalOptions.minimal !== undefined) {
       fail('minimal should be undefined when not provided');
     }
@@ -113,49 +112,49 @@ describe('ng-new', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
       const indexModule = require('./index');
       const result = indexModule.default(options);
-      
+
       if (typeof result !== 'function') {
         fail('Schematic should return a Rule function');
       }
     });
 
     it('should handle options with directory parameter', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
-        directory: 'my-custom-dir' 
+        directory: 'my-custom-dir'
       };
-      
+
       const indexModule = require('./index');
       const result = indexModule.default(options);
-      
+
       if (typeof result !== 'function') {
         fail('Schematic should return a Rule function with directory option');
       }
     });
 
     it('should handle routing option parameter', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
         routing: false
       };
-      
+
       const indexModule = require('./index');
       const result = indexModule.default(options);
-      
+
       if (typeof result !== 'function') {
         fail('Schematic should return a Rule function with routing option');
       }
     });
 
     it('should handle minimal option parameter', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
         minimal: true
       };
-      
+
       const indexModule = require('./index');
       const result = indexModule.default(options);
-      
+
       if (typeof result !== 'function') {
         fail('Schematic should return a Rule function with minimal option');
       }
@@ -181,22 +180,22 @@ describe('ng-new', () => {
         },
         cli: {}
       };
-      
+
       mockTree.create('angular.json', JSON.stringify(angularJson, null, 2));
     });
 
     it('should process angular.json file when it exists', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Since updateAngularJson is not exported, we test through the main function
       // This tests that the function can read and process angular.json
       if (!mockTree.exists('angular.json')) {
         fail('angular.json should exist for testing');
       }
-      
+
       const content = mockTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       if (!workspace.projects || !workspace.projects['test-workspace']) {
         fail('Workspace should have test-workspace project');
       }
@@ -205,16 +204,16 @@ describe('ng-new', () => {
     it('should handle angular.json with proper structure', () => {
       const content = mockTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       // Verify the mock structure is correct for testing
       if (!workspace.projects) {
         fail('Workspace should have projects property');
       }
-      
+
       if (!workspace.cli) {
         fail('Workspace should have cli property');
       }
-      
+
       if (!workspace.projects['test-workspace']) {
         fail('Workspace should have test-workspace project');
       }
@@ -230,7 +229,7 @@ describe('ng-new', () => {
         },
         angularCompilerOptions: {}
       };
-      
+
       mockTree.create('tsconfig.json', JSON.stringify(tsconfig, null, 2));
     });
 
@@ -238,14 +237,14 @@ describe('ng-new', () => {
       if (!mockTree.exists('tsconfig.json')) {
         fail('tsconfig.json should exist for testing');
       }
-      
+
       const content = mockTree.readContent('tsconfig.json');
       const tsconfig = JSON.parse(content);
-      
+
       if (!tsconfig.compilerOptions) {
         fail('tsconfig should have compilerOptions');
       }
-      
+
       if (!tsconfig.angularCompilerOptions) {
         fail('tsconfig should have angularCompilerOptions');
       }
@@ -254,7 +253,7 @@ describe('ng-new', () => {
     it('should handle tsconfig.json with proper structure', () => {
       const content = mockTree.readContent('tsconfig.json');
       const tsconfig = JSON.parse(content);
-      
+
       if (typeof tsconfig.angularCompilerOptions !== 'object') {
         fail('angularCompilerOptions should be an object');
       }
@@ -265,19 +264,19 @@ describe('ng-new', () => {
     it('should have correct filter regex for karma template files', () => {
       // Test the filter function logic used in createKarmaConfigs
       const filterRegex = /karma\.conf.*\.js\.template$/;
-      
+
       if (!'karma.conf.js.template'.match(filterRegex)) {
         fail('Should match karma.conf.js.template');
       }
-      
+
       if (!'karma.conf.ci.js.template'.match(filterRegex)) {
         fail('Should match karma.conf.ci.js.template');
       }
-      
+
       if ('other-file.js'.match(filterRegex)) {
         fail('Should not match other-file.js');
       }
-      
+
       if ('karma.conf.js'.match(filterRegex)) {
         fail('Should not match karma.conf.js without .template');
       }
@@ -289,9 +288,9 @@ describe('ng-new', () => {
         'karma.conf.ci.js.template',
         'karma.conf.dev.js.template'
       ];
-      
+
       const filterRegex = /karma\.conf.*\.js\.template$/;
-      
+
       templateFiles.forEach(filename => {
         if (!filename.match(filterRegex)) {
           fail(`Template file '${filename}' should match the filter pattern`);
@@ -346,22 +345,22 @@ describe('Test', () => {
     it('should identify TypeScript files correctly', () => {
       const files = [
         'src/app/app.component.ts',
-        'src/app/empty-constructor.component.ts', 
+        'src/app/empty-constructor.component.ts',
         'src/app/test.spec.ts',
         'src/assets/test.txt'
       ];
-      
+
       files.forEach(filePath => {
         if (!mockTree.exists(filePath)) {
           fail(`File ${filePath} should exist in mock tree`);
         }
       });
-      
+
       // Test file extension logic
       if (!'src/app/app.component.ts'.endsWith('.ts')) {
         fail('Should identify .ts files');
       }
-      
+
       if ('src/assets/test.txt'.endsWith('.ts')) {
         fail('Should not identify .txt files as TypeScript');
       }
@@ -371,7 +370,7 @@ describe('Test', () => {
       if (!'src/app/test.spec.ts'.includes('.spec.ts')) {
         fail('Should identify spec files');
       }
-      
+
       if ('src/app/app.component.ts'.includes('.spec.ts')) {
         fail('Should not identify regular files as spec files');
       }
@@ -384,10 +383,10 @@ describe('Test', () => {
   }`,
         '  constructor() {  }  '
       ];
-      
+
       // Test regex pattern that would be used for removal
       const removePattern = /\s*constructor\(\)\s*{\s*}\s*/g;
-      
+
       emptyConstructorPatterns.forEach(pattern => {
         if (!pattern.match(removePattern)) {
           fail(`Pattern '${pattern.replace(/\n/g, '\\n')}' should match empty constructor regex`);
@@ -407,11 +406,11 @@ describe('Test', () => {
           analytics: false
         }
       };
-      
+
       if (!mockAngularJson.projects) {
         fail('AngularJson should have projects property');
       }
-      
+
       if (!mockAngularJson.cli) {
         fail('AngularJson should have cli property');
       }
@@ -425,7 +424,7 @@ describe('Test', () => {
           'e2e-ci': {}
         }
       };
-      
+
       if (!mockProjectConfig.architect) {
         fail('ProjectConfig should have architect property');
       }
@@ -435,14 +434,14 @@ describe('Test', () => {
   describe('error handling scenarios', () => {
     it('should handle missing angular.json gracefully', () => {
       const emptyTree = new UnitTestTree(new EmptyTree());
-      
+
       if (emptyTree.exists('angular.json')) {
         fail('Empty tree should not have angular.json');
       }
-      
+
       // This validates the error handling path in the schematic
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       try {
         // The actual error would occur in schematic execution
         // Here we test the condition that would trigger the error
@@ -460,15 +459,15 @@ describe('Test', () => {
     });
 
     it('should handle directory option with proper path construction', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
         directory: 'custom-dir'
       };
-      
+
       // Test path construction logic
       const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
       const expectedPath = 'custom-dir/angular.json';
-      
+
       if (workspacePath !== expectedPath) {
         fail(`Path construction should create '${expectedPath}', got '${workspacePath}'`);
       }
@@ -481,7 +480,7 @@ describe('Test', () => {
 
     beforeEach(() => {
       testTree = new UnitTestTree(new EmptyTree());
-      
+
       const angularJson = {
         projects: {
           'my-project': {
@@ -502,17 +501,17 @@ describe('Test', () => {
           packageManager: 'yarn'
         }
       };
-      
+
       testTree.create('angular.json', JSON.stringify(angularJson, null, 2));
     });
 
     it('should disable CLI analytics', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateAngularJson(testTree, 'angular.json', options);
-      
+
       const content = testTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       if (workspace.cli.analytics !== false) {
         fail('CLI analytics should be disabled');
       }
@@ -521,10 +520,10 @@ describe('Test', () => {
     it('should set package manager to npm', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateAngularJson(testTree, 'angular.json', options);
-      
+
       const content = testTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       if (workspace.cli.packageManager !== 'npm') {
         fail('Package manager should be set to npm');
       }
@@ -533,17 +532,17 @@ describe('Test', () => {
     it('should add schematic collections', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateAngularJson(testTree, 'angular.json', options);
-      
+
       const content = testTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       const expectedCollections = ['@schematics/angular', '@angular-eslint/schematics', '@cypress/schematic'];
-      
+
       if (!workspace.cli.schematicCollections) {
         fail('Schematic collections should be defined');
         return;
       }
-      
+
       expectedCollections.forEach(collection => {
         if (!workspace.cli.schematicCollections.includes(collection)) {
           fail(`Should include schematic collection: ${collection}`);
@@ -554,14 +553,14 @@ describe('Test', () => {
     it('should update production optimization settings', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateAngularJson(testTree, 'angular.json', options);
-      
+
       const content = testTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       const project = workspace.projects['my-project'];
       const buildConfig = project.architect.build;
       const prodConfig = buildConfig.configurations.production;
-      
+
       if (!prodConfig.optimization.styles || prodConfig.optimization.styles.inlineCritical !== false) {
         fail('Production optimization should disable inline critical styles');
       }
@@ -570,22 +569,22 @@ describe('Test', () => {
     it('should add e2e-ci configuration', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateAngularJson(testTree, 'angular.json', options);
-      
+
       const content = testTree.readContent('angular.json');
       const workspace = JSON.parse(content);
-      
+
       const project = workspace.projects['my-project'];
       const e2eConfig = project.architect['e2e-ci'];
-      
+
       if (!e2eConfig) {
         fail('e2e-ci configuration should be added');
         return;
       }
-      
+
       if (e2eConfig.builder !== '@cypress/schematic:cypress') {
         fail('e2e-ci should use Cypress builder');
       }
-      
+
       if (e2eConfig.options.devServerTarget !== 'my-project:serve') {
         fail('e2e-ci should target correct dev server');
       }
@@ -594,7 +593,7 @@ describe('Test', () => {
     it('should handle missing angular.json gracefully', () => {
       const emptyTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Should not throw when file doesn't exist
       try {
         updateAngularJson(emptyTree, 'angular.json', options);
@@ -607,10 +606,10 @@ describe('Test', () => {
     it('should handle empty angular.json file', () => {
       const testTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Create an empty file
       testTree.create('angular.json', '');
-      
+
       try {
         updateAngularJson(testTree, 'angular.json', options);
         // Should handle empty file gracefully
@@ -622,10 +621,10 @@ describe('Test', () => {
     it('should handle invalid JSON in angular.json', () => {
       const testTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Create a file with invalid JSON
       testTree.create('angular.json', '{ invalid json }');
-      
+
       try {
         updateAngularJson(testTree, 'angular.json', options);
         // Should handle invalid JSON gracefully
@@ -640,7 +639,7 @@ describe('Test', () => {
 
     beforeEach(() => {
       testTree = new UnitTestTree(new EmptyTree());
-      
+
       const tsconfig = {
         compilerOptions: {
           strict: true,
@@ -650,39 +649,39 @@ describe('Test', () => {
           enableI18nLegacyMessageIdFormat: true
         }
       };
-      
+
       testTree.create('tsconfig.json', JSON.stringify(tsconfig, null, 2));
     });
 
     it('should update Angular compiler options', () => {
       const options: NgNewSchema = { name: 'my-project' };
       updateTsConfig(testTree, options);
-      
+
       const content = testTree.readContent('tsconfig.json');
       const tsconfig = JSON.parse(content);
-      
+
       const angularOptions = tsconfig.angularCompilerOptions;
-      
+
       if (angularOptions.enableI18nLegacyMessageIdFormat !== false) {
         fail('Should disable legacy message ID format');
       }
-      
+
       if (angularOptions.fullTemplateTypeCheck !== true) {
         fail('Should enable full template type check');
       }
-      
+
       if (angularOptions.strictInjectionParameters !== true) {
         fail('Should enable strict injection parameters');
       }
-      
+
       if (angularOptions.strictInputAccessModifiers !== true) {
         fail('Should enable strict input access modifiers');
       }
-      
+
       if (angularOptions.strictTemplates !== true) {
         fail('Should enable strict templates');
       }
-      
+
       if (angularOptions.strictStandalone !== true) {
         fail('Should enable strict standalone');
       }
@@ -690,22 +689,22 @@ describe('Test', () => {
 
     it('should handle tsconfig with directory option', () => {
       const options: NgNewSchema = { name: 'my-project', directory: 'custom-dir' };
-      
+
       // Create tsconfig in custom directory
       testTree.create('custom-dir/tsconfig.json', JSON.stringify({
         compilerOptions: {},
         angularCompilerOptions: {}
       }, null, 2));
-      
+
       updateTsConfig(testTree, options);
-      
+
       if (!testTree.exists('custom-dir/tsconfig.json')) {
         fail('Should handle custom directory path');
       }
-      
+
       const content = testTree.readContent('custom-dir/tsconfig.json');
       const tsconfig = JSON.parse(content);
-      
+
       if (!tsconfig.angularCompilerOptions.strictTemplates) {
         fail('Should update tsconfig in custom directory');
       }
@@ -714,7 +713,7 @@ describe('Test', () => {
     it('should handle missing tsconfig.json gracefully', () => {
       const emptyTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       try {
         updateTsConfig(emptyTree, options);
         // Should not throw when file doesn't exist
@@ -726,10 +725,10 @@ describe('Test', () => {
     it('should handle empty tsconfig.json file', () => {
       const testTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Create an empty file (no content)
       testTree.create('tsconfig.json', '');
-      
+
       try {
         updateTsConfig(testTree, options);
         // Should handle empty file gracefully
@@ -741,10 +740,10 @@ describe('Test', () => {
     it('should handle invalid JSON in tsconfig.json', () => {
       const testTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Create a file with invalid JSON
       testTree.create('tsconfig.json', '{ "invalid": json }');
-      
+
       try {
         updateTsConfig(testTree, options);
         // Should handle invalid JSON gracefully
@@ -755,22 +754,22 @@ describe('Test', () => {
 
     it('should handle null content in tsconfig.json', () => {
       const testTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create file but simulate null content scenario
       testTree.create('tsconfig.json', JSON.stringify({
         compilerOptions: {},
         angularCompilerOptions: {}
       }));
-      
+
       const options: NgNewSchema = { name: 'my-project' };
-      
+
       // Test the early return path when content exists
       updateTsConfig(testTree, options);
-      
+
       // Verify file was processed (not early return)
       const content = testTree.readContent('tsconfig.json');
       const tsconfig = JSON.parse(content);
-      
+
       if (!tsconfig.angularCompilerOptions.strictTemplates) {
         fail('Should process valid tsconfig content');
       }
@@ -781,20 +780,20 @@ describe('Test', () => {
     it('should return a Rule function', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
       const rule = createKarmaConfigs(options);
-      
+
       if (typeof rule !== 'function') {
         fail('createKarmaConfigs should return a Rule function');
       }
     });
 
     it('should handle directory option', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
         directory: 'my-custom-dir'
       };
-      
+
       const rule = createKarmaConfigs(options);
-      
+
       if (typeof rule !== 'function') {
         fail('createKarmaConfigs should return a Rule function with directory option');
       }
@@ -802,9 +801,9 @@ describe('Test', () => {
 
     it('should handle undefined directory option', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       const rule = createKarmaConfigs(options);
-      
+
       if (typeof rule !== 'function') {
         fail('createKarmaConfigs should handle undefined directory');
       }
@@ -824,22 +823,22 @@ describe('Test', () => {
 export class Component1 {
   title = 'test';
   constructor() {}
-  
+
   ngOnInit() {
     console.log('init');
   }
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/component1.ts');
-      
+
       if (content.includes('constructor() {}')) {
         fail('Should remove empty constructor with braces on same line');
       }
-      
+
       if (!content.includes('ngOnInit()')) {
         fail('Should preserve other methods');
       }
@@ -852,12 +851,12 @@ export class Component2 {
   }
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/component2.ts');
-      
+
       if (content.includes('constructor()')) {
         fail('Should remove empty constructor with braces on separate lines');
       }
@@ -871,12 +870,12 @@ export class Component3 {
   }
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/component3.ts');
-      
+
       if (!content.includes('constructor(private service: SomeService)')) {
         fail('Should preserve constructors with parameters');
       }
@@ -892,12 +891,12 @@ describe('Component', () => {
   });
 });
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/component.spec.ts');
-      
+
       if (!content.includes('constructor() {}')) {
         fail('Should not modify spec files');
       }
@@ -905,12 +904,12 @@ describe('Component', () => {
 
     it('should not modify non-TypeScript files', () => {
       testTree.create('src/assets/test.txt', 'constructor() {}');
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/assets/test.txt');
-      
+
       if (!content.includes('constructor() {}')) {
         fail('Should not modify non-TypeScript files');
       }
@@ -922,12 +921,12 @@ export class Component {
   constructor() {}
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project', directory: 'custom-dir' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('custom-dir/src/app/component.ts');
-      
+
       if (content.includes('constructor() {}')) {
         fail('Should handle custom directory option');
       }
@@ -949,12 +948,12 @@ export class Component4 {
   }
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'my-project' };
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/component4.ts');
-      
+
       if (content.includes('\n\n\n')) {
         fail('Should clean up excessive newlines');
       }
@@ -965,7 +964,7 @@ export class Component4 {
   describe('main schematic chain integration', () => {
     it('should handle the configuration step when angular.json exists', () => {
       const testTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create a proper angular.json structure
       const angularJson = {
         projects: {
@@ -982,35 +981,35 @@ export class Component4 {
         cli: {}
       };
       testTree.create('angular.json', JSON.stringify(angularJson, null, 2));
-      
+
       // Create tsconfig.json
       const tsconfig = {
         compilerOptions: {},
         angularCompilerOptions: {}
       };
       testTree.create('tsconfig.json', JSON.stringify(tsconfig, null, 2));
-      
+
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Test the configuration step logic
       const workspacePath = 'angular.json';
-      
+
       if (!testTree.exists(workspacePath)) {
         fail('Angular.json should exist for configuration step');
       }
-      
+
       // Test calling updateAngularJson and updateTsConfig directly
       updateAngularJson(testTree, workspacePath, options);
       updateTsConfig(testTree, options);
-      
+
       // Verify both were executed
       const updatedAngular = JSON.parse(testTree.readContent('angular.json'));
       const updatedTsConfig = JSON.parse(testTree.readContent('tsconfig.json'));
-      
+
       if (updatedAngular.cli.analytics !== false) {
         fail('Configuration step should update angular.json');
       }
-      
+
       if (!updatedTsConfig.angularCompilerOptions.strictTemplates) {
         fail('Configuration step should update tsconfig.json');
       }
@@ -1020,11 +1019,11 @@ export class Component4 {
       const emptyTree = new UnitTestTree(new EmptyTree());
       const options: NgNewSchema = { name: 'test-workspace' };
       const workspacePath = 'angular.json';
-      
+
       if (emptyTree.exists(workspacePath)) {
         fail('Tree should be empty for this test');
       }
-      
+
       // Test the error condition
       let errorThrown = false;
       try {
@@ -1038,22 +1037,22 @@ export class Component4 {
           fail('Should throw appropriate error message');
         }
       }
-      
+
       if (!errorThrown) {
         fail('Should throw error when angular.json is missing');
       }
     });
 
     it('should handle directory option in workspace path calculation', () => {
-      const options: NgNewSchema = { 
+      const options: NgNewSchema = {
         name: 'test-workspace',
         directory: 'my-custom-directory'
       };
-      
+
       // Test the path calculation logic
       const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
       const expectedPath = 'my-custom-directory/angular.json';
-      
+
       if (workspacePath !== expectedPath) {
         fail(`Workspace path should be '${expectedPath}', got '${workspacePath}'`);
       }
@@ -1061,11 +1060,11 @@ export class Component4 {
 
     it('should handle options without directory in workspace path calculation', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Test the path calculation logic
       const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
       const expectedPath = 'angular.json';
-      
+
       if (workspacePath !== expectedPath) {
         fail(`Workspace path should be '${expectedPath}', got '${workspacePath}'`);
       }
@@ -1075,19 +1074,19 @@ export class Component4 {
   describe('post-processing step', () => {
     it('should call removeEmptyConstructors in post-processing', () => {
       const testTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create a file with empty constructor
       testTree.create('src/app/test.ts', `
 export class TestComponent {
   constructor() {}
 }
       `);
-      
+
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Simulate the post-processing step
       removeEmptyConstructors(testTree, options);
-      
+
       const content = testTree.readContent('src/app/test.ts');
       if (content.includes('constructor() {}')) {
         fail('Post-processing should remove empty constructors');
@@ -1097,23 +1096,23 @@ export class TestComponent {
 
   describe('Cypress task configuration', () => {
     it('should calculate correct working directory for Cypress task', () => {
-      const optionsWithDir: NgNewSchema = { 
+      const optionsWithDir: NgNewSchema = {
         name: 'test-workspace',
         directory: 'custom-dir'
       };
-      
-      const optionsWithoutDir: NgNewSchema = { 
+
+      const optionsWithoutDir: NgNewSchema = {
         name: 'test-workspace'
       };
-      
+
       // Test the working directory calculation logic
       const workingDirWithCustom = optionsWithDir.directory || '.';
       const workingDirDefault = optionsWithoutDir.directory || '.';
-      
+
       if (workingDirWithCustom !== 'custom-dir') {
         fail('Should use custom directory when provided');
       }
-      
+
       if (workingDirDefault !== '.') {
         fail('Should use current directory as default');
       }
@@ -1121,7 +1120,7 @@ export class TestComponent {
 
     it('should use correct project name for Cypress schematic', () => {
       const options: NgNewSchema = { name: 'my-awesome-project' };
-      
+
       // Test that the project name is used correctly
       if (options.name !== 'my-awesome-project') {
         fail('Should use correct project name for Cypress setup');

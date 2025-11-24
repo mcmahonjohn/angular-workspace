@@ -1280,7 +1280,71 @@ projects/
 4. **Version Alignment**: Migration schematics should match library version numbers
 5. **Testing Strategy**: Both unit and integration tests for complex schematics
 
-### 8.3 📋 Create ng-new Schematic Documentation
+### 8.3 🔧 ESLint Configuration for Schematics
+
+When working with schematics in your workspace, you need to configure ESLint to properly handle the generated build files and maintain code quality.
+
+#### Update ESLint Configuration
+
+Add the schematics dist directory to your ESLint ignore patterns. In your `eslint.ignore.js` or `eslint.config.*` file:
+
+```javascript
+export default [
+  // ... other configurations
+  {
+    ignores: [
+      '.angular/**',
+      '.github/**',
+      '.git/**',
+      '.vscode/**',
+      'dist/**',
+      'node_modules/**',
+      'projects/${LIBRARY_NAME}/schematics/dist/**', // ← Add this line
+      'angular.json',
+      'package.json',
+      'package-lock.json',
+      'tsconfig.json'
+    ],
+  },
+];
+```
+
+#### Package.json Scripts
+
+Add targeted linting scripts for your schematics development:
+
+```json
+{
+  "scripts": {
+    "lint:lib": "eslint projects/${LIBRARY_NAME}",
+    "lint:lib:fix": "eslint projects/${LIBRARY_NAME} --fix"
+  }
+}
+```
+
+#### Why Ignore schematics/dist?
+
+- **Generated Code**: The `dist/schematics` directory contains compiled JavaScript from TypeScript sources
+- **Build Artifacts**: These files are automatically generated and shouldn't be linted
+- **Performance**: Excluding build directories improves ESLint performance
+- **Source of Truth**: Lint the TypeScript source files, not the compiled output
+
+#### ESLint Best Practices for Schematics
+
+1. **Lint Source Files**: Always lint the TypeScript source files in `schematics/`
+2. **Ignore Build Output**: Exclude `schematics/dist/` and other build artifacts
+3. **Separate Scripts**: Use `lint:lib` for library-specific linting
+4. **Pre-commit Hooks**: Consider adding ESLint to your pre-commit workflow
+5. **IDE Integration**: Configure your IDE to use the workspace ESLint configuration
+
+#### Common ESLint Issues in Schematics
+
+- **Unused Imports**: TypeScript compilation may leave unused imports
+- **Any Types**: Schematic APIs often use `any` types - consider disabling specific rules
+- **File Patterns**: Ensure your ESLint config recognizes `.spec.ts` files in schematics
+- **JSON Schema Files**: Add appropriate rules for `.json` schema files
+
+### 8.4 📋 Create ng-new Schematic Documentation
 Create `schematics/ng-new/README.md`:
 ```markdown
 # ng-new Schematic
@@ -1442,7 +1506,7 @@ ng add @cypress/schematic
 **Test configuration issues**: Ensure Chrome/Chromium is available in your environment for testing.
 ```
 
-### 8.4 📋 Create ng-new Schematic Technical Documentation
+### 8.5 📋 Create ng-new Schematic Technical Documentation
 Create `schematics/ng-new/ng-new-schematic.md`:
 ```markdown
 # ng-new Schematic Technical Documentation

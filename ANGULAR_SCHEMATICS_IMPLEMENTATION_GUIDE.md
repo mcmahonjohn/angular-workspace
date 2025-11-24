@@ -1329,20 +1329,122 @@ Add targeted linting scripts for your schematics development:
 - **Performance**: Excluding build directories improves ESLint performance
 - **Source of Truth**: Lint the TypeScript source files, not the compiled output
 
+#### Advanced ESLint Configuration for Schematics
+
+Schematics require special ESLint handling due to their unique patterns and testing requirements. Add these configurations to your `eslint.config.mjs`:
+
+```javascript
+import globals from 'globals';
+
+export default [
+  // ... other configurations
+  
+  // Schematics test files need Node.js globals and dynamic imports
+  {
+    files: ['projects/*/schematics/**/*.spec.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        expect: 'readonly',
+        jasmine: 'readonly',
+        spyOn: 'readonly',
+        fail: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        require: 'readonly'
+      }
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }],
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }]
+    }
+  },
+  
+  // Schematic implementation files often have required but unused parameters
+  {
+    files: ['projects/*/schematics/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_|^context$|^error$',
+        varsIgnorePattern: '^_'
+      }],
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_|^context$|^error$',
+        varsIgnorePattern: '^_'
+      }]
+    }
+  },
+  
+  // Integration test scripts are Node.js files
+  {
+    files: ['projects/*/schematics/**/*.js'],
+    languageOptions: {
+      globals: globals.node
+    }
+  }
+];
+```
+
 #### ESLint Best Practices for Schematics
 
-1. **Lint Source Files**: Always lint the TypeScript source files in `schematics/`
-2. **Ignore Build Output**: Exclude `schematics/dist/` and other build artifacts
-3. **Separate Scripts**: Use `lint:lib` for library-specific linting
-4. **Pre-commit Hooks**: Consider adding ESLint to your pre-commit workflow
-5. **IDE Integration**: Configure your IDE to use the workspace ESLint configuration
+1. **Environment-Specific Rules**: Configure different rules for test files vs implementation files
+2. **Node.js Globals**: Schematics tests need `require`, `__dirname`, and other Node.js globals
+3. **Parameter Patterns**: Use `argsIgnorePattern` for required but unused Angular Schematics API parameters
+4. **Lint Source Files**: Always lint the TypeScript source files in `schematics/`
+5. **Ignore Build Output**: Exclude `schematics/dist/` and other build artifacts
+6. **Separate Scripts**: Use `lint:lib` for library-specific linting
+7. **Pre-commit Hooks**: Consider adding ESLint to your pre-commit workflow
+8. **IDE Integration**: Configure your IDE to use the workspace ESLint configuration
 
-#### Common ESLint Issues in Schematics
+#### Common ESLint Issues in Schematics and Solutions
 
-- **Unused Imports**: TypeScript compilation may leave unused imports
-- **Any Types**: Schematic APIs often use `any` types - consider disabling specific rules
-- **File Patterns**: Ensure your ESLint config recognizes `.spec.ts` files in schematics
-- **JSON Schema Files**: Add appropriate rules for `.json` schema files
+**Issue**: `__dirname is not defined`, `require is not defined` in test files
+- **Cause**: Test files use Node.js CommonJS patterns for dynamic imports
+- **Solution**: Add Node.js globals to schematics test file configuration
+
+**Issue**: `'context' is defined but never used`, `'error' is defined but never used`
+- **Cause**: Angular Schematics API requires these parameters but they're often unused
+- **Solution**: Use `argsIgnorePattern: '^_|^context$|^error$'` to allow these patterns
+
+**Issue**: Unused variables in test scenarios
+- **Cause**: Test setup often creates variables for completeness but doesn't use them
+- **Solution**: Use underscore prefix (`_options`) or `varsIgnorePattern: '^_'`
+
+**Issue**: Integration test scripts failing ESLint
+- **Cause**: Node.js scripts treated as browser/ES module code
+- **Solution**: Add separate configuration for `**/*.js` files with Node.js globals
+
+**Issue**: Dynamic `require()` calls in TypeScript
+- **Cause**: Schematics testing requires loading compiled modules dynamically
+- **Solution**: Add `require: 'readonly'` to test file globals
+
+#### Advanced Patterns
+
+**Prefix Unused Variables**: For variables that must exist but aren't used:
+```typescript
+// Instead of: const options: NgNewSchema = { name: 'test' };
+const _options: NgNewSchema = { name: 'test' }; // ✓ ESLint ignores
+```
+
+**Handle Required API Parameters**: For Angular Schematics API compliance:
+```typescript
+export default function(options: Schema): Rule {
+  return (tree: Tree, _context: SchematicContext) => { // ✓ _context ignored
+    // Implementation doesn't need context
+    return tree;
+  };
+}
+```
 
 ### 8.4 📋 Create ng-new Schematic Documentation
 Create `schematics/ng-new/README.md`:

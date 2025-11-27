@@ -12,6 +12,6 @@ import { Component, input, InputSignal } from '@angular/core';
 })
 export class SignalInputDemoComponent {
 
-  inputSignal: InputSignal<string | null> = input<string|null>(null);
+  inputSignal = input<string|null>(null);
 
 }

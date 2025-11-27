@@ -3,12 +3,7 @@ import { Component, input, InputSignal } from '@angular/core';
 @Component({
   selector: 'app-signal-input-demo',
   standalone: true,
-  template: `
-    <div>
-      <h3>Signal-based Input Demo 233</h3>
-      <p>Current value: {{ inputSignal() === null ? 'null' : inputSignal() }}</p>
-    </div>
-  `
+  templateUrl: './signal-input-demo.component.html'
 })
 export class SignalInputDemoComponent {
 

@@ -334,4 +334,16 @@
 
 
 <lib-my-lib></lib-my-lib>
+
+<!-- Signal-based Input Example -->
+<section style="margin:2rem 0;">
+
+  <form [formGroup]="formGroup">
+    <label>Example Form Field</label>
+    <br/>
+    <input type="text" formControlName="myField" class="example-input">
+  </form>
+
+</section>
+
 <router-outlet />

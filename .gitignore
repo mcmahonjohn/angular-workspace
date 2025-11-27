@@ -8,6 +8,7 @@
 /bazel-out
 /projects/**/dist/
 /projects/**/**/dist/
+*.bak
 
 # Node
 /node_modules

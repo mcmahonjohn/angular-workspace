@@ -20,4 +20,8 @@ export class AppComponent {
   }>({
     myField: new FormControl<string | null>(null)
   });
+
+  get myFieldValue(): string | null {
+    return this.formGroup.controls.myField.value;
+  }
 }

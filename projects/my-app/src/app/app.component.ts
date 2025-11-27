@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { MyLibComponent } from 'my-lib';
 
-import { SignalInputDemoComponent } from './signal-input-demo.component';
+import { SignalInputDemoComponent } from './components/signal-input-demo/signal-input-demo.component';
 
 @Component({
   selector: 'app-root',

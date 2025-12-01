@@ -4,6 +4,7 @@ import angularEslintPlugin from '@angular-eslint/eslint-plugin';
 import angularEslintTemplatePlugin from '@angular-eslint/eslint-plugin-template';
 import jsonc from 'eslint-plugin-jsonc';
 import globals from 'globals';
+
 import angularSignalPlugin from './eslint-plugin-angular-signal/index.js';
 
 /** @type {import('eslint').ESLint.Config[]} */
@@ -14,7 +15,7 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       '@angular-eslint': angularEslintPlugin,
-      'angular-signal': angularSignalPlugin,
+      'angular-signal': angularSignalPlugin.plugin,
     },
     languageOptions: {
       parser: (await import('@typescript-eslint/parser')).default,
@@ -27,7 +28,7 @@ export default [
     rules: {
       ...tseslint.configs.recommended[0].rules,
       ...angularEslintPlugin.configs.recommended.rules,
-      'angular-signal/require-inputsignal-type': 'error',
+      ...angularSignalPlugin.configs.recommended.rules,
     },
   },
   {

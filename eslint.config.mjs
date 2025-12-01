@@ -11,7 +11,7 @@ import angularSignalPlugin from './eslint-plugin-angular-signal/index.js';
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.mjs'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       '@angular-eslint': angularEslintPlugin,
@@ -117,6 +117,7 @@ export default [
         '.github/**',
         '.git/**',
         '.vscode/**',
+        'coverage/**',
         'dist/**',
         'node_modules/**',
         'projects/my-lib/schematics/dist/**',

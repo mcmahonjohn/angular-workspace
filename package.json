@@ -10,6 +10,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "e2e": "ng e2e",
+    "lint": "eslint .",
     "link:lib": "npm link ./dist/my-lib",
     "lint:app": "eslint projects/my-app",
     "lint:app:fix": "eslint projects/my-app --fix",

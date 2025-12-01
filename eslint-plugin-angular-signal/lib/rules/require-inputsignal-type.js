@@ -1,7 +1,8 @@
 /**
  * @fileoverview Require InputSignal type annotation for input() from @angular/core
  */
-module.exports = {
+
+export const requireInputSignalType = {
   meta: {
     type: "problem",
     docs: {

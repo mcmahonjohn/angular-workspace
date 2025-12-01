@@ -1,5 +1,7 @@
-module.exports = {
+import { requireInputSignalType } from './lib/rules/require-inputsignal-type.js';
+
+export default {
   rules: {
-    'require-inputsignal-type': require('./lib/rules/require-inputsignal-type'),
+    'require-inputsignal-type': requireInputSignalType,
   },
 };

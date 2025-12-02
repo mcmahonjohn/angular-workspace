@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { HorizontalNavBarComponent, MyLibComponent, NavRoute } from 'my-lib';
+import { MyLibComponent, NavRoute, VerticalNavBarComponent } from 'my-lib';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, HorizontalNavBarComponent, MyLibComponent, ReactiveFormsModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [RouterOutlet, VerticalNavBarComponent, MyLibComponent, ReactiveFormsModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'my-app';

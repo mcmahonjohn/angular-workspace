@@ -9,11 +9,10 @@ export interface NavRoute {
 }
 
 @Component({
-  selector: 'my-lib-horizontal-nav-bar',
-  standalone: true,
-  templateUrl: './horizontal-nav-bar.component.html',
-  styleUrls: ['./horizontal-nav-bar.component.scss'],
-  imports: [CommonModule, RouterModule]
+    selector: 'my-lib-horizontal-nav-bar',
+    templateUrl: './horizontal-nav-bar.component.html',
+    styleUrls: ['./horizontal-nav-bar.component.scss'],
+    imports: [CommonModule, RouterModule]
 })
 export class HorizontalNavBarComponent {
   /**

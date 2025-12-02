@@ -5,11 +5,10 @@ import { RouterOutlet } from '@angular/router';
 import { HorizontalNavBarComponent, MyLibComponent, NavRoute } from 'my-lib';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, HorizontalNavBarComponent, MyLibComponent, ReactiveFormsModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet, HorizontalNavBarComponent, MyLibComponent, ReactiveFormsModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'my-app';

@@ -1,15 +1,16 @@
 <nav [ngClass]="['horizontal-nav-bar', position(), customClass()]" [ngStyle]="customStyle()">
   <div class="nav-logo">
-    <ng-container *ngIf="logoTemplate; else defaultLogo">
+    @if (logoTemplate) {
       <ng-container *ngTemplateOutlet="logoTemplate"></ng-container>
-    </ng-container>
-    <ng-template #defaultLogo>
+    } @else {
       <span class="default-logo">Logo</span>
-    </ng-template>
+    }
   </div>
   <ul class="nav-items">
-    <li *ngFor="let route of routes()">
-      <a [routerLink]="route.path" routerLinkActive="active">{{ route.label }}</a>
-    </li>
+    @for (route of routes(); track route) {
+      <li>
+        <a [routerLink]="route.path" routerLinkActive="active">{{ route.label }}</a>
+      </li>
+    }
   </ul>
 </nav>

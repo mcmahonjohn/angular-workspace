@@ -3,10 +3,7 @@ import { Component, Input, TemplateRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-export interface NavRoute {
-  path: string;
-  label: string;
-}
+import { NavRoute } from './models/nav-route';
 
 @Component({
     selector: 'my-lib-horizontal-nav-bar',

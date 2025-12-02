@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, signal } from '@angular/core';
+import { Component, Input, TemplateRef, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -15,11 +15,16 @@ export interface NavRoute {
   imports: [CommonModule, RouterModule]
 })
 export class VerticalNavBarComponent {
-  @Input({ required: false }) position: 'left' | 'right' = 'left';
-  @Input({ required: false }) customClass = '';
-  @Input({ required: false }) customStyle: { [key: string]: string } = {};
+  readonly position = input<'left' | 'right'>('left');
+  readonly customClass = input('');
+  readonly customStyle = input<{
+    [key: string]: string;
+}>({});
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input({ required: false }) logoTemplate?: TemplateRef<any>;
-  @Input({ required: true }) routes: NavRoute[] = [];
+  readonly routes = input.required<NavRoute[]>();
 
   activeRoute = signal('');
 }

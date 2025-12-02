@@ -119,8 +119,10 @@
   }
 </style>
 
-<my-lib-vertical-nav-bar position="left" [routes]="navRoutes" />
-
-<lib-my-lib />
-
-<router-outlet />
+<div class="app-layout">
+  <my-lib-vertical-nav-bar position="left" [routes]="navRoutes" />
+  <main>
+    <lib-my-lib />
+    <router-outlet />
+  </main>
+</div>

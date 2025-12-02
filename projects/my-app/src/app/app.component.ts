@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { MyLibComponent } from 'my-lib';
+import { HorizontalNavBarComponent, MyLibComponent, NavRoute } from 'my-lib';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MyLibComponent, ReactiveFormsModule],
+  imports: [RouterOutlet, HorizontalNavBarComponent, MyLibComponent, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -18,6 +18,13 @@ export class AppComponent {
   }>({
     myField: new FormControl<string | null>(null)
   });
+
+  navRoutes: NavRoute[] = [
+    { path: '', label: 'Home' },
+    { path: 'about', label: 'About' },
+    { path: 'contact', label: 'Contact' },
+    { path: 'help', label: 'Help' }
+  ];
 
   get myFieldValue(): string | null {
     return this.formGroup.controls.myField.value;

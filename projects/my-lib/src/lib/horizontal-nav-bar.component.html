@@ -1,0 +1,15 @@
+<nav [ngClass]="['horizontal-nav-bar', position, customClass]" [ngStyle]="customStyle">
+  <div class="nav-logo">
+    <ng-container *ngIf="logoTemplate; else defaultLogo">
+      <ng-container *ngTemplateOutlet="logoTemplate"></ng-container>
+    </ng-container>
+    <ng-template #defaultLogo>
+      <span class="default-logo">Logo</span>
+    </ng-template>
+  </div>
+  <ul class="nav-items">
+    <li *ngFor="let route of routes">
+      <a [routerLink]="route.path" routerLinkActive="active">{{ route.label }}</a>
+    </li>
+  </ul>
+</nav>

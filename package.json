@@ -37,9 +37,14 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@ng-bootstrap/ng-bootstrap": "^16.0.0",
+    "@fortawesome/angular-fontawesome": "^0.14.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "ngx-owl-carousel-o": "^17.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.0"
+    "zone.js": "~0.14.0",
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.0",
@@ -54,6 +59,7 @@
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
+    "angular-in-memory-web-api": "^0.17.0",
     "cypress": "15.6.0",
     "eslint": "^8.54.0",
     "eslint-plugin-jsonc": "^2.21.0",

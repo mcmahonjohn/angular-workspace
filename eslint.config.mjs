@@ -20,7 +20,6 @@ export default [
     languageOptions: {
       parser: (await import('@typescript-eslint/parser')).default,
       parserOptions: {
-        project: ['./tsconfig.json'],
         sourceType: 'module',
         ecmaVersion: 'latest',
       },

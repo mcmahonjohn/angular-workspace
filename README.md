@@ -1,4 +1,3 @@
-
 # AngularWorkspace
 
 
@@ -107,6 +106,18 @@ For development setup, testing, building, and advanced usage, see the [Contribut
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference][angular-cli-reference] page.
+
+## Angular-Dependent Dependencies (excluding @angular scope)
+
+### Dependencies
+- @ng-bootstrap/ng-bootstrap
+- @fortawesome/angular-fontawesome
+- @fortawesome/fontawesome-svg-core
+- @fortawesome/free-solid-svg-icons
+- ngx-owl-carousel-o
+
+### Dev Dependencies
+- angular-in-memory-web-api
 
 <!-- Reference Links -->
 [contributing-guide]: CONTRIBUTING.md

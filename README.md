@@ -110,14 +110,37 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Angular-Dependent Dependencies (excluding @angular scope)
 
 ### Dependencies
-- @ng-bootstrap/ng-bootstrap
 - @fortawesome/angular-fontawesome
 - @fortawesome/fontawesome-svg-core
+- @fortawesome/free-brands-svg-icons
+- @fortawesome/free-regular-svg-icons
 - @fortawesome/free-solid-svg-icons
+- @ng-bootstrap/ng-bootstrap
+- @ng-select/ng-select
+- @ngneat/until-destroy
+- @ngxs/devtools-plugin
+- @ngxs/logger-plugin
+- @ngxs/router-plugin
+- @ngxs/store
+- @swimlane/ngx-charts
+- ag-grid-angular
+- ag-grid-community
+- ng-multiselect-dropdown
+- ng2-charts
 - ngx-owl-carousel-o
+- ngx-quill
+- quill
+- ngxs-reset-plugin
+
+Questions?
+    "@placemarkio/tokml": "^0.3.4",
+    "@tmcw/togeojson": "^5.8.1",
+
 
 ### Dev Dependencies
+- angular-eslint (should be compatible with typescript-eslint)
 - angular-in-memory-web-api
+- typescript-eslint
 
 <!-- Reference Links -->
 [contributing-guide]: CONTRIBUTING.md

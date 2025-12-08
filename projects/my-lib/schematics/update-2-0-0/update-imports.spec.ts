@@ -125,9 +125,9 @@ describe('update-imports schematic', () => {
       expect(content).toContain(`import { Service } from '@door/core';`);
       expect(content).toContain(`import { Component } from '@angular/core';`);
       // Only imports should be changed, not other occurrences
-      expect(content).toContain(`const myLibString = 'this contains @car but should not be changed';`);
-      expect(content).toContain(`// Comment about @car`);
-      expect(content).toContain(`// @car reference in comment`);
+      expect(content).toContain(`const myLibString = 'this contains @car/core but should not be changed';`);
+      expect(content).toContain(`// Comment about @car/core`);
+      expect(content).toContain(`// @car/core reference in comment`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /mixed.ts');
     });
 

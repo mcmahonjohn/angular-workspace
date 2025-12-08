@@ -43,8 +43,14 @@ if [ -d "$SCHEMATICS_DIR/ng-new/templates" ] && [ "$(ls -A $SCHEMATICS_DIR/ng-ne
 fi
 
 # Update schematics
+
 for version in 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
     cp "$SCHEMATICS_DIR/update-$version/schema.json" "$DIST_DIR/update-$version/schema.json"
+    # Copy static directory if it exists
+    if [ -d "$SCHEMATICS_DIR/update-$version/static" ]; then
+        mkdir -p "$DIST_DIR/update-$version/static"
+        cp -r "$SCHEMATICS_DIR/update-$version/static/"* "$DIST_DIR/update-$version/static/"
+    fi
 done
 
 echo "Schematics build completed successfully!"

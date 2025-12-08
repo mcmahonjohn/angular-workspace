@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "ng-add-schema",
+  "title": "ng-add for eslint-plugin-angular-signal",
+  "type": "object",
+  "properties": {}
+}

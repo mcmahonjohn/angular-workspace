@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
-  "keywords": ["eslint", "eslintplugin", "angular", "signal"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "angular",
+    "signal"
+  ],
   "peerDependencies": {
     "eslint": ">=9.0.0"
-  }
+  },
+  "schematics": "./schematics/collection.json"
 }

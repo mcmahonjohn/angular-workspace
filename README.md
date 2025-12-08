@@ -115,9 +115,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - @fortawesome/free-brands-svg-icons
 - @fortawesome/free-regular-svg-icons
 - @fortawesome/free-solid-svg-icons
+- @fullcalendar/angular
+- @fullcalendar/core
+- @fullcalendar/daygrid
+- @fullcalendar/interaction
+- @gsa-sam/ngx-uswds
 - @ng-bootstrap/ng-bootstrap
 - @ng-select/ng-select
 - @ngneat/until-destroy
+- @ngrx/signals
 - @ngxs/devtools-plugin
 - @ngxs/logger-plugin
 - @ngxs/router-plugin
@@ -125,26 +131,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - @swimlane/ngx-charts
 - ag-grid-angular
 - ag-grid-community
+- keycloak-angular
+  - keycloak-js
 - ng-multiselect-dropdown
 - ng2-charts
+- ngx-cookie-service
+- ngx-editor
 - ngx-owl-carousel-o
 - ngx-quill
   - quill
+- ngx-skeleton-loader
 - ngxs-reset-plugin
 - primeng
  - primeicons
  - primeflex
  - @primeng/themes
-- ngx-cookie-service
-- ngx-skeleton-loader
-- @ngrx/signals
-- ngx-editor
-- keycloak-angular
-  - keycloak-js
-- @fullcalendar/angular
-- @fullcalendar/core
-- @fullcalendar/daygrid
-- @fullcalendar/interaction
 
 
 

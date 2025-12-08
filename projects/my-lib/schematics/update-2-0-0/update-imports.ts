@@ -6,8 +6,7 @@ function replaceImportPath(source: string): string {
 
 export function updateImports(tree: Tree, context: SchematicContext): void {
   tree.visit(filePath => {
-
-    if (filePath.endsWith('.ts')) {
+    if (filePath.endsWith('.ts') || filePath.endsWith('.scss')) {
       const buffer = tree.read(filePath);
 
       if (!buffer) {

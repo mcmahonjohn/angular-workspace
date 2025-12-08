@@ -82,10 +82,11 @@ describe('update-imports schematic', () => {
       expect(mockContext.logger.info).not.toHaveBeenCalled();
     });
 
-    it('should only process .ts files', () => {
+    it('should only process .ts and .scss files', () => {
       testTree.create('/test.js', `import { Service } from 'my-lib';`);
       testTree.create('/test.html', `<div>my-lib</div>`);
       testTree.create('/test.css', `.my-lib { color: red; }`);
+      testTree.create('/test.scss', `@import 'my-lib';`);
       
       updateImports(testTree, mockContext);
       
@@ -93,7 +94,10 @@ describe('update-imports schematic', () => {
       expect(testTree.readContent('/test.js')).toContain('my-lib');
       expect(testTree.readContent('/test.html')).toContain('my-lib');
       expect(testTree.readContent('/test.css')).toContain('my-lib');
-      expect(mockContext.logger.info).not.toHaveBeenCalled();
+      // SCSS file should be modified
+      expect(testTree.readContent('/test.scss')).toContain('library');
+      expect(testTree.readContent('/test.scss')).not.toContain('my-lib');
+      expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.scss');
     });
 
     it('should handle empty TypeScript files', () => {

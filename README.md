@@ -129,8 +129,24 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - ng2-charts
 - ngx-owl-carousel-o
 - ngx-quill
-- quill
+  - quill
 - ngxs-reset-plugin
+- primeng
+ - primeicons
+ - primeflex
+ - @primeng/themes
+- ngx-cookie-service
+- ngx-skeleton-loader
+- @ngrx/signals
+- ngx-editor
+- keycloak-angular
+  - keycloak-js
+- @fullcalendar/angular
+- @fullcalendar/core
+- @fullcalendar/daygrid
+- @fullcalendar/interaction
+
+
 
 Questions?
     "@placemarkio/tokml": "^0.3.4",

@@ -1075,6 +1075,7 @@ Update root `package.json`:
 
 ### 8.1 Create Schematic Documentation
 Create `schematics/README.md`:
+
 ```markdown
 # ${LIBRARY_NAME} Schematics
 
@@ -1082,7 +1083,7 @@ This directory contains Angular Schematics for `${LIBRARY_NAME}` library, provid
 
 ## Structure
 
-```
+
 schematics/
 ├── build.sh              # Build script for schematics
 ├── test.sh               # Test script for schematics  
@@ -1102,7 +1103,6 @@ schematics/
     ├── index.ts
     ├── schema.json
     └── *.spec.ts
-```
 
 ## Migration Schematics
 
@@ -1110,9 +1110,9 @@ The following migration schematics are available to handle breaking changes betw
 
 ### Available Migrations
 
-| Version | Status | Description |
-|---------|---------|------------|
-| `update-2-0-0` | ✅ **Implemented** | Updates imports from '${LIBRARY_NAME}' to '${NEW_LIBRARY_NAME}' in TypeScript files |
+| Version        | Status  | Description |
+|----------------|---------|-------------|
+| `update-2-0-0` | ✅ **Implemented**    | Updates imports from '${LIBRARY_NAME}' to '${NEW_LIBRARY_NAME}' in TypeScript files |
 | `update-3-0-0` | 📋 **Template Ready** | Migration for v3.0.0 breaking changes* |
 | `update-4-0-0` | 📋 **Template Ready** | Migration for v4.0.0 breaking changes* |
 | `update-5-0-0` | 📋 **Template Ready** | Migration for v5.0.0 breaking changes* |
@@ -1124,21 +1124,19 @@ The following migration schematics are available to handle breaking changes betw
 
 Migrations are automatically triggered when updating the library via `ng update`:
 
-```bash
 # Update to specific version (triggers appropriate migration)
-ng update ${LIBRARY_NAME}@3.0.0
-ng update ${LIBRARY_NAME}@4.0.0
-ng update ${LIBRARY_NAME}@5.0.0
-ng update ${LIBRARY_NAME}@6.0.0
+`ng update ${LIBRARY_NAME}@3.0.0`
+`ng update ${LIBRARY_NAME}@4.0.0`
+`ng update ${LIBRARY_NAME}@5.0.0`
+`ng update ${LIBRARY_NAME}@6.0.0`
 
 # Alternative: Update to latest in major version range
-ng update ${LIBRARY_NAME}@3    # Updates to latest 3.x version (e.g., 3.2.1)
-ng update ${LIBRARY_NAME}@4    # Updates to latest 4.x version (e.g., 4.1.0)
+`ng update ${LIBRARY_NAME}@3`    # Updates to latest 3.x version (e.g., 3.2.1)
+`ng update ${LIBRARY_NAME}@4`    # Updates to latest 4.x version (e.g., 4.1.0)
 
 # Dry run to preview changes
-ng update ${LIBRARY_NAME}@3.0.0 --dry-run
-ng update ${LIBRARY_NAME}@3 --dry-run
-```
+`ng update ${LIBRARY_NAME}@3.0.0 --dry-run`
+`ng update ${LIBRARY_NAME}@3 --dry-run`
 
 ### Template Structure
 
@@ -1180,11 +1178,10 @@ When implementing migration logic for a specific version:
 ## Available Scripts
 
 ### Building Schematics
-```bash
-npm run build:schematics
+
+`npm run build:schematics`
 # or directly:
-./projects/${LIBRARY_NAME}/schematics/build.sh
-```
+`./projects/${LIBRARY_NAME}/schematics/build.sh`
 
 This script:
 - Compiles TypeScript files
@@ -1204,11 +1201,9 @@ We use Jasmine (not Jest) for testing schematics because:
 
 #### Unit Testing Schematics
 
-```bash
-npm run test:schematics
+`npm run test:schematics`
 # or directly:
-./projects/${LIBRARY_NAME}/schematics/test.sh
-```
+`./projects/${LIBRARY_NAME}/schematics/test.sh`
 
 This script:
 - Runs all schematic unit tests with coverage
@@ -1216,9 +1211,8 @@ This script:
 - Excludes spec files from coverage
 
 #### Integration Testing
-```bash
-npm run test:ng-new
-```
+
+`npm run test:ng-new`
 
 Runs comprehensive integration tests for the ng-new schematic.
 
@@ -1447,7 +1441,9 @@ export default function(options: Schema): Rule {
 ```
 
 ### 8.4 📋 Create ng-new Schematic Documentation
+
 Create `schematics/ng-new/README.md`:
+
 ```markdown
 # ng-new Schematic
 
@@ -1476,19 +1472,16 @@ The ng-new schematic creates a new Angular workspace with the following enhancem
 ## Usage
 
 ### Basic Usage
-```bash
-ng generate ${LIBRARY_NAME}:ng-new my-awesome-app
-```
+
+ng generate ${LIBRARY_NAME}:ng-new my-awesome-app`
 
 ### With Options
-```bash
-ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --routing=true --minimal=false
-```
+
+`ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --routing=true --minimal=false`
 
 ### In a Subdirectory
-```bash
-ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --directory=projects/frontend
-```
+
+`ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --directory=projects/frontend`
 
 ## Schema Options
 
@@ -1508,7 +1501,7 @@ ng generate ${LIBRARY_NAME}:ng-new my-awesome-app --directory=projects/frontend
 
 ### TypeScript Configuration
 Enhanced `tsconfig.json` with strict Angular compiler options:
-```json
+
 {
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -1519,7 +1512,6 @@ Enhanced `tsconfig.json` with strict Angular compiler options:
     "strictStandalone": true
   }
 }
-```
 
 ### Karma Configurations
 Two separate Karma configuration files are created:
@@ -1544,27 +1536,23 @@ After running the schematic, you'll have:
 
 To start developing:
 
-```bash
-cd your-workspace-name
-npm install
-npm start
-```
+`cd your-workspace-name`
+`npm install`
+`npm start`
 
 To run tests:
 
-```bash
 # Unit tests (development)
-ng test --karma-config=karma.conf.js
+`ng test --karma-config=karma.conf.js`
 
 # Unit tests (CI)
-ng test --karma-config=karma.conf.ci.js
+`ng test --karma-config=karma.conf.ci.js`
 
 # E2E tests
-ng e2e
+`ng e2e`
 
 # E2E tests (CI)
-ng run your-app:e2e-ci
-```
+`ng run your-app:e2e-ci`
 
 ## Technical Implementation
 
@@ -1596,14 +1584,12 @@ This schematic works alongside other migration schematics in this package:
 ### Common Issues
 
 **External schematic not found**: Ensure `@schematics/angular` is installed
-```bash
-npm install @schematics/angular --save-dev
-```
+
+`npm install @schematics/angular --save-dev`
 
 **Cypress installation fails**: The schematic schedules Cypress installation as a task. If it fails, manually install:
-```bash
-ng add @cypress/schematic
-```
+
+`ng add @cypress/schematic`
 
 **Test configuration issues**: Ensure Chrome/Chromium is available in your environment for testing.
 ```
@@ -1621,7 +1607,6 @@ The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace 
 
 ### Schematic Flow
 
-```
 1. externalSchematic('@schematics/angular:ng-new')
    ↓
 2. updateAngularJson() - Add CLI config, e2e-ci target
@@ -1635,7 +1620,6 @@ The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace 
    - RunSchematicTask (@cypress/schematic)
    ↓
 6. removeEmptyConstructors() - Clean generated code
-```
 
 ### Key Functions
 
@@ -1660,7 +1644,7 @@ The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace 
 **Purpose**: Enhances TypeScript configuration with strict Angular compiler options
 
 **Added Options**:
-```typescript
+
 "angularCompilerOptions": {
   "enableI18nLegacyMessageIdFormat": false,
   "fullTemplateTypeCheck": true,
@@ -1669,7 +1653,6 @@ The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace 
   "strictTemplates": true,
   "strictStandalone": true
 }
-```
 
 **Benefits**:
 - Enhanced type safety
@@ -1701,9 +1684,8 @@ The ng-new schematic for `${LIBRARY_NAME}` extends Angular's built-in workspace 
 - Maintains proper code formatting
 
 **Pattern Matching**:
-```typescript
-const emptyConstructorPattern = /constructor\(\)\s*\{\s*\}/g;
-```
+
+`const emptyConstructorPattern = /constructor\(\)\s*\{\s*\}/g;`
 
 ## Schema Validation
 

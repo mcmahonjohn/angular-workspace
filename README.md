@@ -150,13 +150,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
  - primeflex
  - @primeng/themes
 
-
-
-Questions?
-    "@placemarkio/tokml": "^0.3.4",
-    "@tmcw/togeojson": "^5.8.1",
-
-
 ### Dev Dependencies
 - angular-eslint (should be compatible with typescript-eslint)
 - angular-in-memory-web-api

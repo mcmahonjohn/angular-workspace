@@ -124,6 +124,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - @ng-select/ng-select
 - @ngneat/until-destroy
 - @ngrx/signals
+- @ngx-translate/core
+- @ngx-translate/http-loader
 - @ngxs/devtools-plugin
 - @ngxs/logger-plugin
 - @ngxs/router-plugin
@@ -133,6 +135,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - ag-grid-community
 - keycloak-angular
   - keycloak-js
+- ng-mocks
 - ng-multiselect-dropdown
 - ng2-charts
 - ngx-cookie-service

@@ -1,7 +1,19 @@
 import { Tree, SchematicContext } from '@angular-devkit/schematics';
 
 function replaceImportPath(source: string): string {
-  return source.replace(/(['"])my-lib\1/g, '$1library$1');
+  // Replace TypeScript import paths: import ... from 'my-lib';
+  source = source.replace(
+    /import\s+[^'"]+['"]my-lib['"]/g,
+    match => match.replace(/(['"])my-lib\1/, '$1library$1')
+  );
+
+  // Replace SCSS @import paths: @import 'my-lib';
+  source = source.replace(
+    /@import\s+(['"])my-lib\1/g,
+    '@import $1library$1'
+  );
+
+  return source;
 }
 
 export function updateImports(tree: Tree, context: SchematicContext): void {

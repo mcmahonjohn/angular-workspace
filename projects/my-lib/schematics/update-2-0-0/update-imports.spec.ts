@@ -185,3 +185,51 @@ describe('update-imports schematic', () => {
     });
   });
 });
+
+describe('replaceImportPath', () => {
+  const { replaceImportPath } = require('./update-imports');
+
+  it('should replace TypeScript single quote import', () => {
+    const input = "import { Foo } from 'my-lib';";
+    const output = replaceImportPath(input);
+    expect(output).toEqual("import { Foo } from 'library';");
+  });
+
+  it('should replace TypeScript double quote import', () => {
+    const input = 'import { Bar } from "my-lib";';
+    const output = replaceImportPath(input);
+    expect(output).toEqual('import { Bar } from "library";');
+  });
+
+  it('should replace multiple TypeScript imports', () => {
+    const input = `import { Foo } from 'my-lib';\nimport { Bar } from "my-lib";`;
+    const output = replaceImportPath(input);
+    expect(output).toContain("import { Foo } from 'library';");
+    expect(output).toContain('import { Bar } from "library";');
+  });
+
+  it('should replace SCSS @import single quote', () => {
+    const input = "@import 'my-lib';";
+    const output = replaceImportPath(input);
+    expect(output).toEqual("@import 'library';");
+  });
+
+  it('should replace SCSS @import double quote', () => {
+    const input = '@import "my-lib";';
+    const output = replaceImportPath(input);
+    expect(output).toEqual('@import "library";');
+  });
+
+  it('should replace multiple SCSS @import statements', () => {
+    const input = `@import 'my-lib';\n@import "my-lib";`;
+    const output = replaceImportPath(input);
+    expect(output).toContain("@import 'library';");
+    expect(output).toContain('@import "library";');
+  });
+
+  it('should not change unrelated content', () => {
+    const input = "const x = 'my-lib'; // not an import";
+    const output = replaceImportPath(input);
+    expect(output).toEqual(input);
+  });
+});

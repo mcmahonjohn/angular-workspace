@@ -12,13 +12,13 @@ describe('update-imports schematic', () => {
   beforeEach(() => {
       runner = new SchematicTestRunner('my-lib', collectionPath);
       appTree = new UnitTestTree(Tree.empty());
-      appTree.create('src/app/example.ts', `import { Foo } from '@car';\nconst x = 1;`);
+      appTree.create('src/app/example.ts', `import { Foo } from '@car/core';\nconst x = 1;`);
   });
 
   it('should update imports from "@car" to "@door"', async () => {
     const tree = await runner.runSchematic(schematicName, {}, appTree);
     const content = tree.readContent('src/app/example.ts');
-    expect(content).toContain(`import { Foo } from '@door';`);
+    expect(content).toContain(`import { Foo } from '@door/core';`);
     expect(content).not.toContain('@car');
   });
 
@@ -36,38 +36,38 @@ describe('update-imports schematic', () => {
     });
 
     it('should update single quotes import', () => {
-      testTree.create('/test.ts', `import { Service } from '@car';`);
+      testTree.create('/test.ts', `import { Service } from '@car/core';`);
       
       updateImports(testTree, mockContext);
       
       const content = testTree.readContent('/test.ts');
-      expect(content).toContain(`import { Service } from '@door';`);
+      expect(content).toContain(`import { Service } from '@door/core';`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
     });
 
     it('should update double quotes import', () => {
-      testTree.create('/test.ts', `import { Component } from "@car";`);
+      testTree.create('/test.ts', `import { Component } from "@car/core";`);
       
       updateImports(testTree, mockContext);
       
       const content = testTree.readContent('/test.ts');
-      expect(content).toContain(`import { Component } from "@door";`);
+      expect(content).toContain(`import { Component } from "@door/core";`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
     });
 
     it('should update multiple imports in same file', () => {
       testTree.create('/test.ts', `
-        import { Service } from '@car';
-        import { Component } from "@car";
-        import { Utils } from '@car';
+        import { Service } from '@car/core';
+        import { Component } from "@car/core";
+        import { Utils } from '@car/core';
       `);
       
       updateImports(testTree, mockContext);
       
       const content = testTree.readContent('/test.ts');
-      expect(content).toContain(`import { Service } from '@door';`);
-      expect(content).toContain(`import { Component } from "@door";`);
-      expect(content).toContain(`import { Utils } from '@door';`);
+      expect(content).toContain(`import { Service } from '@door/core';`);
+      expect(content).toContain(`import { Component } from "@door/core";`);
+      expect(content).toContain(`import { Utils } from '@door/core';`);
       expect(content).not.toContain('@car');
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
     });
@@ -83,20 +83,18 @@ describe('update-imports schematic', () => {
     });
 
     it('should only process .ts and .scss files', () => {
-      testTree.create('/test.js', `import { Service } from '@car';`);
-      testTree.create('/test.html', `<div>@car</div>`);
-      testTree.create('/test.css', `.@car { color: red; }`);
-      testTree.create('/test.scss', `@import '@car';`);
+      testTree.create('/test.js', `import { Service } from '@car/core';`);
+      testTree.create('/test.html', `<div>@car/core</div>`);
+      testTree.create('/test.scss', `@import '@car/core';`);
       
       updateImports(testTree, mockContext);
       
       // JS, HTML, and CSS files should not be modified
-      expect(testTree.readContent('/test.js')).toContain('@car');
-      expect(testTree.readContent('/test.html')).toContain('@car');
-      expect(testTree.readContent('/test.css')).toContain('@car');
+      expect(testTree.readContent('/test.js')).toContain('@car/core');
+      expect(testTree.readContent('/test.html')).toContain('@car/core');
       // SCSS file should be modified
-      expect(testTree.readContent('/test.scss')).toContain('@door');
-      expect(testTree.readContent('/test.scss')).not.toContain('@car');
+      expect(testTree.readContent('/test.scss')).toContain('@door/core');
+      expect(testTree.readContent('/test.scss')).not.toContain('@car/core');
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.scss');
     });
 
@@ -111,20 +109,20 @@ describe('update-imports schematic', () => {
 
     it('should handle TypeScript files with mixed content', () => {
       testTree.create('/mixed.ts', `
-        import { Service } from '@car';
+        import { Service } from '@car/core';
         import { Component } from '@angular/core';
         
-        const myLibString = 'this contains @car but should not be changed';
-        // Comment about @car
+        const myLibString = 'this contains @car/core but should not be changed';
+        // Comment about @car/core
         export class TestClass {
-          // @car reference in comment
+          // @car/core reference in comment
         }
       `);
       
       updateImports(testTree, mockContext);
       
       const content = testTree.readContent('/mixed.ts');
-      expect(content).toContain(`import { Service } from '@door';`);
+      expect(content).toContain(`import { Service } from '@door/core';`);
       expect(content).toContain(`import { Component } from '@angular/core';`);
       // Only imports should be changed, not other occurrences
       expect(content).toContain(`const myLibString = 'this contains @car but should not be changed';`);
@@ -135,29 +133,29 @@ describe('update-imports schematic', () => {
 
     it('should handle complex import patterns', () => {
       testTree.create('/complex.ts', `
-        import * as MyLib from '@car';
-        import { default as DefaultExport } from '@car';
-        import MyLibDefault, { Service, Component } from '@car';
+        import * as MyLib from '@car/core';
+        import { default as DefaultExport } from '@car/core';
+        import MyLibDefault, { Service, Component } from '@car/core';
       `);
       
       updateImports(testTree, mockContext);
       
       const content = testTree.readContent('/complex.ts');
-      expect(content).toContain(`import * as MyLib from '@door';`);
-      expect(content).toContain(`import { default as DefaultExport } from '@door';`);
-      expect(content).toContain(`import MyLibDefault, { Service, Component } from '@door';`);
+      expect(content).toContain(`import * as MyLib from '@door/core';`);
+      expect(content).toContain(`import { default as DefaultExport } from '@door/core';`);
+      expect(content).toContain(`import MyLibDefault, { Service, Component } from '@door/core';`);
       expect(content).not.toContain('@car');
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /complex.ts');
     });
 
     it('should handle nested directory structures', () => {
-      testTree.create('/src/app/components/test.ts', `import { Service } from '@car';`);
-      testTree.create('/src/lib/utils/helper.ts', `import { Utils } from '@car';`);
+      testTree.create('/src/app/components/test.ts', `import { Service } from '@car/core';`);
+      testTree.create('/src/lib/utils/helper.ts', `import { Utils } from '@car/core';`);
       
       updateImports(testTree, mockContext);
       
-      expect(testTree.readContent('/src/app/components/test.ts')).toContain(`import { Service } from '@door';`);
-      expect(testTree.readContent('/src/lib/utils/helper.ts')).toContain(`import { Utils } from '@door';`);
+      expect(testTree.readContent('/src/app/components/test.ts')).toContain(`import { Service } from '@door/core';`);
+      expect(testTree.readContent('/src/lib/utils/helper.ts')).toContain(`import { Utils } from '@door/core';`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /src/app/components/test.ts');
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /src/lib/utils/helper.ts');
     });
@@ -190,45 +188,45 @@ describe('replaceImportPath', () => {
   // const { replaceImportPath } = require('./update-imports');
 
   it('should replace TypeScript single quote import', () => {
-    const input = "import { Foo } from '@car';";
+    const input = "import { Foo } from '@car/core';";
     const output = replaceImportPath(input);
-    expect(output).toEqual("import { Foo } from '@door';");
+    expect(output).toEqual("import { Foo } from '@door/core';");
   });
 
   it('should replace TypeScript double quote import', () => {
-    const input = 'import { Bar } from "@car";';
+    const input = 'import { Bar } from "@car/core";';
     const output = replaceImportPath(input);
-    expect(output).toEqual('import { Bar } from "@door";');
+    expect(output).toEqual('import { Bar } from "@door/core";');
   });
 
   it('should replace multiple TypeScript imports', () => {
-    const input = `import { Foo } from '@car';\nimport { Bar } from "@car";`;
+    const input = `import { Foo } from '@car/core';\nimport { Bar } from "@car/core";`;
     const output = replaceImportPath(input);
-    expect(output).toContain("import { Foo } from '@door';");
-    expect(output).toContain('import { Bar } from "@door";');
+    expect(output).toContain("import { Foo } from '@door/core';");
+    expect(output).toContain('import { Bar } from "@door/core";');
   });
 
   it('should replace SCSS @import single quote', () => {
-    const input = "@import '@car';";
+    const input = "@import '@car/core';";
     const output = replaceImportPath(input);
-    expect(output).toEqual("@import '@door';");
+    expect(output).toEqual("@import '@door/core';");
   });
 
   it('should replace SCSS @import double quote', () => {
-    const input = '@import "@car";';
+    const input = '@import "@car/core";';
     const output = replaceImportPath(input);
-    expect(output).toEqual('@import "@door";');
+    expect(output).toEqual('@import "@door/core";');
   });
 
   it('should replace multiple SCSS @import statements', () => {
-    const input = `@import '@car';\n@import "@car";`;
+    const input = `@import '@car/core';\n@import "@car/core";`;
     const output = replaceImportPath(input);
-    expect(output).toContain("@import '@door';");
-    expect(output).toContain('@import "@door";');
+    expect(output).toContain("@import '@door/core';");
+    expect(output).toContain('@import "@door/core";');
   });
 
   it('should not change unrelated content', () => {
-    const input = "const x = '@car'; // not an import";
+    const input = "const x = '@car/core'; // not an import";
     const output = replaceImportPath(input);
     expect(output).toEqual(input);
   });

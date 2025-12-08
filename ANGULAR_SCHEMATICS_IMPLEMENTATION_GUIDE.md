@@ -1096,11 +1096,11 @@ This guide covers best practices for Angular migration schematics used in the `n
 
 ### References & Further Reading
 
-- [Angular CLI: Schematics for Libraries](#migration-guide)
+- [Angular CLI: Schematics for Libraries](https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support)
 - [Angular CLI: Migration Schematics](https://angular.dev/tools/cli/schematics-for-libraries#migration-schematics)
-- [Angular CLI Source: Migration Schematics](#angular-migrations)
-- [Angular Material Migrations](#material-migrations)
-- [TypeScript AST Manipulation (ts-morph)](#ts-morph)
+- [Angular CLI Source: Migration Schematics](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations)
+- [Angular Material Migrations](https://github.com/angular/components/tree/main/src/material/schematics/ng-update)
+- [TypeScript AST Manipulation (ts-morph)](https://ts-morph.com/)
 - [Angular Schematics Official Docs](https://angular.dev/tools/cli/schematics)
 
 ---

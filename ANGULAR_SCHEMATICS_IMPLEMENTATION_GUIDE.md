@@ -1073,6 +1073,38 @@ Update root `package.json`:
 
 ## Step 8: Documentation and Best Practices
 
+This guide covers best practices for Angular migration schematics used in the `ng update` process, including:
+- Version bumping (handled by Angular CLI, not by your schematic)
+- Idempotency (safe to run multiple times)
+- Logging (use `context.logger.info/warn/error` for user visibility)
+- Migration of APIs/config (update code, config, dependencies)
+- Testing (unit and integration tests)
+- Documentation (manual steps, migration guides)
+- Error handling (log warnings, handle missing files)
+- Use of Angular Devkit utilities
+
+### Best Practices for ng update Schematics
+
+1. **Version Bumping**: The CLI updates the package version in `package.json` automatically. Your schematic should not manually change the version.
+2. **Idempotency**: Schematics should be safe to run multiple times.
+3. **Logging**: Use `context.logger` to inform users of changes.
+4. **Migration of APIs/Config**: Update code/config as needed for the new version.
+5. **Testing**: Provide unit and integration tests for migration logic.
+6. **Documentation**: Document manual steps users may need to take after migration.
+7. **Error Handling**: Handle missing files and unexpected formats gracefully.
+8. **Use Angular Devkit Utilities**: Use helpers from `@angular-devkit/schematics` and `@schematics/angular/utility`.
+
+### References & Further Reading
+
+- [Angular CLI: Schematics for Libraries](https://angular.dev/tools/cli/schematics-for-libraries#providing-generation-support)
+- [Angular CLI: Migration Schematics](https://angular.dev/tools/cli/schematics-for-libraries#migration-schematics)
+- [Angular CLI Source: Migration Schematics](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular/migrations)
+- [Angular Material Migrations](https://github.com/angular/components/tree/main/src/material/schematics/ng-update)
+- [TypeScript AST Manipulation (ts-morph)](https://ts-morph.com/)
+- [Angular Schematics Official Docs](https://angular.dev/tools/cli/schematics)
+
+---
+
 ### 8.1 Create Schematic Documentation
 Create `schematics/README.md`:
 

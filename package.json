@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build my-lib && npm run link:lib",
+    "build": "ng build my-lib && npm run build:schematics && npm run link:lib",
     "build:app": "ng build my-app --configuration production --base-href index.html",
     "build:app:dev": "ng build my-app --configuration development --base-href index.html",
     "build:schematics": "./projects/my-lib/schematics/build.sh",

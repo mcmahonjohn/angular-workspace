@@ -25,7 +25,8 @@
     "test:unit:clean": "npm run test:unit 2>&1 | grep -v 'Could not resolve keysym\\|Errors from xkbcomp'",
     "watch:app": "ng serve my-app --watch",
     "watch:lib": "ng build my-lib --watch --configuration development",
-    "test:typecheck:signal-input-demo": "tsc --noEmit tsd/signal-input-demo.typecheck.ts"
+    "test:typecheck:signal-input-demo": "tsc --noEmit tsd/signal-input-demo.typecheck.ts",
+    "prepublishOnly": "find dist/my-lib/schematics -type f \\( -name '*.spec.d.ts' -o -name '*.spec.js' -o -name '*.spec.js.map' \\) -exec rm -f {} +"
   },
   "private": true,
   "dependencies": {

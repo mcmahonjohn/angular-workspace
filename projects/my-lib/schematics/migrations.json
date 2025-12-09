@@ -1,0 +1,29 @@
+{
+  "migrations": [
+    {
+      "version": "2.0.0",
+      "factory": "./update-2-0-0/index#default",
+      "description": "Update to v2.0.0"
+    },
+    {
+      "version": "3.0.0",
+      "factory": "./update-3-0-0/index#default",
+      "description": "Update to v3.0.0"
+    },
+    {
+      "version": "4.0.0",
+      "factory": "./update-4-0-0/index#default",
+      "description": "Update to v4.0.0"
+    },
+    {
+      "version": "5.0.0",
+      "factory": "./update-5-0-0/index#default",
+      "description": "Update to v5.0.0"
+    },
+    {
+      "version": "6.0.0",
+      "factory": "./update-6-0-0/index#default",
+      "description": "Update to v6.0.0"
+    }
+  ]
+}

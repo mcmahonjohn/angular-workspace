@@ -5,8 +5,9 @@
 
 set -e  # Exit on any error
 
-SCHEMATICS_DIR="projects/my-lib/schematics"
-DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
+LIB_DIR="projects/my-lib"
+SCHEMATICS_DIR="$LIB_DIR/schematics"
+DIST_DIR="$LIB_DIR/dist/schematics"
 
 # Clean previous build
 if [ -d "$DIST_DIR" ]; then
@@ -18,7 +19,7 @@ echo "Building schematics..."
 
 # Compile TypeScript
 echo "Compiling TypeScript..."
-tsc -p "$SCHEMATICS_DIR/tsconfig.schematics.json"
+tsc -p "$LIB_DIR/tsconfig.schematics.json"
 
 # Copy collection.json
 echo "Copying collection.json..."

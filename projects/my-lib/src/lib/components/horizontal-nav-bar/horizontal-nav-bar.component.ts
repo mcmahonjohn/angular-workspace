@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 import { NavRoute } from '../../models/nav-route';
 
 @Component({
-    selector: 'my-lib-horizontal-nav-bar',
-    templateUrl: './horizontal-nav-bar.component.html',
-    styleUrls: ['./horizontal-nav-bar.component.scss'],
-    imports: [CommonModule, RouterModule]
+  selector: 'my-lib-horizontal-nav-bar',
+  templateUrl: './horizontal-nav-bar.component.html',
+  styleUrls: ['./horizontal-nav-bar.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
 export class HorizontalNavBarComponent {
   /**

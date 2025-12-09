@@ -21,6 +21,11 @@ echo "Building schematics..."
 echo "Compiling TypeScript..."
 tsc -p "$LIB_DIR/tsconfig.schematics.json"
 
+# Ensure DIST_DIR exists before copying collection.json
+if [ ! -d "$DIST_DIR" ]; then
+    mkdir -p "$DIST_DIR"
+fi
+
 # Copy collection.json
 echo "Copying collection.json..."
 cp "$SCHEMATICS_DIR/collection.json" "$DIST_DIR/collection.json"

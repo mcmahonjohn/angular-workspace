@@ -1,3 +1,30 @@
+## The Problem
+
+I need your help as an expert DevOps practitioner and as a experienced software organization planner.
+
+I have two groups of product teams. Each group has three or four development teams of about 5 to 8 people.
+
+We have one group called Spirit that consist of senior developers across both groups. They meet to discuss the priorities a high level for both groups, but they don't do any sprint planning because each of those individuals already belong to scrum teams in the product groups. So it's more for coordination and sharing of ideas and thoughts on what to do for these internal libraries and tools.
+
+We have about 10 internal libraries and tools that we have created and barely maintain. New features and improvements are deprioritized in favor of updating dependencies and keeping the code API up to date. 
+
+New features and improvements to these products happen maybe once or twice a year.
+
+Even the maintenance can lag behind for over a year before we rush through several maintenance tickets. A big reason for this is because we have to Wait for the product teams to have availability / bandwidth to do work on the internal libraries and tools.
+
+I am trying to think of different ways to structure the organization so that we can better say up to date on the maintenance needs and provide continuous improvements based off our internal developer needs. 
+
+I could think of two options, but I need your help and figure out a third option. 
+
+The two options I have, so far, is
+
+1) Keep things as they are structurally, with maybe a few adjustments.
+
+2) change the Spirit group, into an actual scrum dev team. Take the spirit group outside of the product groups so it is parallel to them in the org chart. That way the spirit group has its own developer resources independent of the product teams, in order to do the work on the internal libraries and tools.
+
+Please ask me any questions that would help you and give me a few options for what the third choice could be.
+
+
 ## Suggestions for Structuring Your Organization's Product Teams
 
 To improve the efficiency and responsiveness of your internal libraries and tools maintenance, here are three options.

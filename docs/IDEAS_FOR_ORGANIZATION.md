@@ -124,6 +124,10 @@ Establish a developer advocacy program that focuses on promoting best practices 
 
 ## References
 
+- [Create the ideal DevOps team structure](https://about.gitlab.com/topics/devops/build-a-devops-team/)
+- https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/devops-culture
+- https://humanitec.com/blog/how-to-scale-devops-with-an-internal-platform-team
+- https://www.atlassian.com/devops/frameworks/team-structure
 - [Spotify Engineering: Guilds and Tribes Model](https://engineering.atspotify.com/2014/03/spotify-engineering-culture-part-1/)
 - [ThoughtWorks: Platform Teams](https://www.thoughtworks.com/insights/blog/platform-teams-are-not-just-devops)
 - [Martin Fowler: Center of Excellence](https://martinfowler.com/bliki/CenterOfExcellence.html)

@@ -72,6 +72,8 @@ Establish a guild model that allows product team members to participate in cross
 
 Here are additional alternatives for structuring your organization to enhance maintenance and development of your internal libraries and tools. Each option aims at promoting collaboration and accountability, while addressing your specific needs.
 
+These alternative paths aim to cultivate a more proactive and collaborative culture regarding the maintenance and improvement of internal tools, driving better outcomes across your organization.
+
 ---
 
 ### 1. **Implement a Center of Excellence (CoE)**
@@ -120,4 +122,15 @@ Establish a developer advocacy program that focuses on promoting best practices 
 
 ---
 
-These alternative paths aim to cultivate a more proactive and collaborative culture regarding the maintenance and improvement of internal tools, driving better outcomes across your organization.
+## References
+
+- [Spotify Engineering: Guilds and Tribes Model](https://engineering.atspotify.com/2014/03/spotify-engineering-culture-part-1/)
+- [ThoughtWorks: Platform Teams](https://www.thoughtworks.com/insights/blog/platform-teams-are-not-just-devops)
+- [Martin Fowler: Center of Excellence](https://martinfowler.com/bliki/CenterOfExcellence.html)
+- [Atlassian: Developer Advocacy](https://www.atlassian.com/blog/technology/developer-advocacy)
+- [Scrum.org: Scrum Team Structure](https://www.scrum.org/resources/what-is-a-scrum-team)
+- [Google: SRE Rotation Model](https://sre.google/sre-book/on-call/)
+- [Kanban Board Best Practices](https://kanbanize.com/kanban-resources/getting-started/what-is-kanban-board)
+- [Agile Alliance: Timeboxed Sprints](https://www.agilealliance.org/glossary/timebox/)
+- [Platform Engineering: Internal Developer Platforms](https://platformengineering.org/blog/internal-developer-platforms)
+

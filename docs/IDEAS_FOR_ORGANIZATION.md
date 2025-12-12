@@ -53,22 +53,6 @@ By converting the Spirit group into an independent scrum team focused on the int
 
 ---
 
-### Option 3: Create a Cross-Functional Guild System
-
-Establish a guild model that allows product team members to participate in cross-functional groups focused on specific internal libraries and tools. Here’s how it could work:
-
-#### **Formation of Guilds**
-
-- **Mixed Membership:** Each guild comprises representatives from different product teams, including developers, QA, and Ops. This diversity fosters shared ownership and responsibility.
-- **Expert Leadership:** Lead each guild with subject matter experts from the Spirit group, ensuring technical leadership and alignment with best practices.
-
-#### **Guild Responsibilities**
-
-- **Regular Work Sessions:** Guilds should hold regular meetings to discuss priorities, share knowledge, and work collaboratively on maintenance and feature tasks. This can lead to a culture of continuous improvement across teams.
-- **Maintenance Cycles:** Assign specific maintenance responsibilities to guild members that rotate periodically to ensure a broader understanding of dependencies and codebases.
-- **Feedback Loops:** Foster a culture where guild members can provide continuous feedback on the performance of internal libraries and their impact on product development, facilitating adaptive improvements.
-
----
 
 Here are additional alternatives for structuring your organization to enhance maintenance and development of your internal libraries and tools. Each option aims at promoting collaboration and accountability, while addressing your specific needs.
 
@@ -139,3 +123,21 @@ Establish a developer advocacy program that focuses on promoting best practices 
 - [Agile Alliance: Timeboxed Sprints](https://www.agilealliance.org/glossary/timebox/)
 - [Platform Engineering: Internal Developer Platforms](https://platformengineering.org/blog/internal-developer-platforms)
 
+
+
+### Option 3: Create a Cross-Functional Guild System
+
+Establish a guild model that allows product team members to participate in cross-functional groups focused on specific internal libraries and tools. Here’s how it could work:
+
+#### **Formation of Guilds**
+
+- **Mixed Membership:** Each guild comprises representatives from different product teams, including developers, QA, and Ops. This diversity fosters shared ownership and responsibility.
+- **Expert Leadership:** Lead each guild with subject matter experts from the Spirit group, ensuring technical leadership and alignment with best practices.
+
+#### **Guild Responsibilities**
+
+- **Regular Work Sessions:** Guilds should hold regular meetings to discuss priorities, share knowledge, and work collaboratively on maintenance and feature tasks. This can lead to a culture of continuous improvement across teams.
+- **Maintenance Cycles:** Assign specific maintenance responsibilities to guild members that rotate periodically to ensure a broader understanding of dependencies and codebases.
+- **Feedback Loops:** Foster a culture where guild members can provide continuous feedback on the performance of internal libraries and their impact on product development, facilitating adaptive improvements.
+
+---

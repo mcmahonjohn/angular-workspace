@@ -4,11 +4,9 @@ const SUPPORTED_CONFIGS = [
   'eslint.config.js',
   'eslint.config.mjs',
   'eslint.config.cjs',
-  '.eslintrc.js',
-  '.eslintrc.cjs',
-  '.eslintrc.json',
-  '.eslintrc.yaml',
-  '.eslintrc.yml',
+  'eslint.config.ts',
+  'eslint.config.mts',
+  'eslint.config.cts',
 ];
 
 function findEslintConfig(tree: Tree): string | null {

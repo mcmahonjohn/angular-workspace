@@ -20,7 +20,7 @@ function findEslintConfig(tree: Tree): string | null {
 
 function createBasicEslintConfig(): string {
   return `// Basic ESLint config for Angular
-module.exports = {
+export default {
   root: true,
   plugins: ['angular-signal'],
   extends: [],
@@ -32,16 +32,19 @@ module.exports = {
 export default function ngAdd(): Rule {
   return (tree: Tree, context: SchematicContext) => {
     const configFile = findEslintConfig(tree);
+
     if (configFile) {
       context.logger.info(`ESLint config file found: ${configFile}. No changes made.`);
+
     } else {
       context.logger.info(
         'No ESLint config file found. You can initialize one with "ng generate @angular-eslint/schematics:eslint-config" or let this schematic create a basic config.'
       );
+
       // Optionally, create a basic config file
       const newConfig = createBasicEslintConfig();
-      tree.create('eslint.config.js', newConfig);
-      context.logger.info('Created basic eslint.config.js. Please customize as needed.');
+      tree.create('eslint.config.mjs', newConfig);
+      context.logger.info('Created basic eslint.config.mjs. Please customize as needed.');
     }
     return tree;
   };

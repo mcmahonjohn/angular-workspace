@@ -1,4 +1,6 @@
 import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
+import { addPluginToEslintConfig } from './add-plugin-to-eslint-config.js';
+import { addRecommendedRulesToEslintConfig } from './add-recommended-rules-to-eslint-config.js';
 
 const SUPPORTED_CONFIGS = [
   'eslint.config.js',
@@ -46,6 +48,16 @@ export default function ngAdd(): Rule {
       tree.create('eslint.config.mjs', newConfig);
       context.logger.info('Created basic eslint.config.mjs. Please customize as needed.');
     }
+
+    // Always try to add the plugin and recommended rules if config exists or was just created
+    const configPath = configFile || 'eslint.config.mjs';
+    // Add 'angular-signal' to plugins array
+    addPluginToEslintConfig(configPath)(tree, context);
+    // Add recommended rules to '**/*.ts' section
+    addRecommendedRulesToEslintConfig(configPath, {
+      'angular-signal/some-rule': 'error',
+      // Add more recommended rules here
+    })(tree, context);
     return tree;
   };
 }

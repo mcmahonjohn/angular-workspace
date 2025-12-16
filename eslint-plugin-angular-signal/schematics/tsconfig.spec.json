@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.schematics.json",
+  "compilerOptions": {
+    "outDir": "../dist/schematics",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "include": [
+    "ng-add/**/*.spec.ts",
+    "ng-add/**/*.d.ts"
+  ],
+  "exclude": []
+}

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
+  "scripts": {
+    "build:schematics": "./schematics/build.sh",
+    "test:schematics": "./schematics/test.sh"
+  },
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -12,5 +16,8 @@
   "peerDependencies": {
     "eslint": ">=9.0.0"
   },
-  "schematics": "./schematics/collection.json"
+  "schematics": "./schematics/collection.json",
+  "devDependencies": {
+    "@angular-devkit/schematics": "^21.0.3"
+  }
 }

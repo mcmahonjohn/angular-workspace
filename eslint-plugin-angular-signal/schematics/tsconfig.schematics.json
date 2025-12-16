@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/schematics",
+    "rootDir": "./ng-add",
+    "types": ["node"],
+    "module": "commonjs",
+    "target": "es2018",
+    "lib": ["es2018", "dom"]
+  },
+  "include": [
+    "ng-add/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.e2e-spec.ts"
+  ]
+}

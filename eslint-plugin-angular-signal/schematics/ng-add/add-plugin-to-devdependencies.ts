@@ -1,5 +1,4 @@
-import schematics from '@angular-devkit/schematics';
-const { Tree, SchematicContext, Rule } = schematics;
+import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 
 /**
  * Adds 'eslint-plugin-angular-signal' to devDependencies in package.json if not present.

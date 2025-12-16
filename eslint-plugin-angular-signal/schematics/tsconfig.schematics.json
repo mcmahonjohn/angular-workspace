@@ -1,10 +1,11 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../dist/schematics",
     "rootDir": "./ng-add",
     "types": ["node"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "target": "es2018",
     "lib": ["es2018", "dom"]
   },

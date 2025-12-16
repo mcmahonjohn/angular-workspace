@@ -18,6 +18,7 @@
   },
   "schematics": "./schematics/collection.json",
   "devDependencies": {
-    "@angular-devkit/schematics": "^21.0.3"
+    "@angular-devkit/schematics": "^21.0.3",
+    "typescript": "~5.9.3"
   }
 }

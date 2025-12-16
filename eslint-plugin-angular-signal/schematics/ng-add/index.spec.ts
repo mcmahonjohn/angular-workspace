@@ -1,7 +1,11 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import testing from '@angular-devkit/schematics/testing/index.js';
+const { SchematicTestRunner, UnitTestTree } = testing;
 import { Tree } from '@angular-devkit/schematics';
-import * as path from 'path';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const collectionPath = path.join(__dirname, '../collection.json');
 
 describe('ng-add schematic', () => {

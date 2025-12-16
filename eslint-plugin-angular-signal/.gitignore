@@ -1,1 +1,7 @@
 /dist/
+package-lock.json
+node_modules/
+.vscode/
+.idea/
+.DS_Store
+coverage/

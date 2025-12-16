@@ -17,9 +17,14 @@ fi
 
 echo "Building schematics..."
 
-# Compile TypeScript
-echo "Compiling TypeScript..."
+
+# Compile implementation TypeScript
+echo "Compiling implementation TypeScript..."
 tsc -p "$SCHEMATICS_DIR/tsconfig.schematics.json"
+
+# Compile spec TypeScript
+echo "Compiling spec TypeScript..."
+tsc -p "$SCHEMATICS_DIR/tsconfig.spec.json"
 
 # Ensure DIST_DIR exists before copying collection.json
 if [ ! -d "$DIST_DIR" ]; then

@@ -1,14 +1,15 @@
-const { SchematicTestRunner } = require('@angular-devkit/schematics/testing');
-const { Tree } = require('@angular-devkit/core');
-const { createTreeWithEmptyWorkspace } = require('@angular-devkit/core/testing');
+import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import { Tree } from '@angular-devkit/schematics';
+import path from 'path';
 
-const runner = new SchematicTestRunner('eslint-plugin-angular-signal', require.resolve('../collection.json'));
+const collectionPath = path.resolve(__dirname, '../collection.json');
+const runner = new SchematicTestRunner('eslint-plugin-angular-signal', collectionPath);
 
 describe('hello-world schematic', () => {
-    let appTree;
+    let appTree: Tree;
 
     beforeEach(() => {
-        appTree = createTreeWithEmptyWorkspace();
+        appTree = Tree.empty();
     });
 
     it('should create a file', async () => {

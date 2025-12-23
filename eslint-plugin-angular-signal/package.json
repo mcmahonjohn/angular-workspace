@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:schematics": "./schematics/build.sh",
+    "build:schematics:prod": "./schematics/build.sh --prod",
     "test:schematics": "./schematics/test.sh"
   },
   "keywords": [

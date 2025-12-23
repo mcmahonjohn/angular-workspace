@@ -39,4 +39,12 @@ cp "$SCHEMATICS_DIR/collection.json" "$DIST_DIR/collection.json"
 echo "Creating directories..."
 mkdir -p "$DIST_DIR/ng-add"
 
+# Remove spec files for production build
+if [[ "$1" == "prod" || "$1" == "--prod" || "$1" == "-p" ]]; then
+    echo "Removing spec files for production..."
+    find "$DIST_DIR" -type f \
+        \( -name '*.spec.d.ts' -o -name '*.spec.js' -o -name '*.spec.js.map' -o -name '*.spec.ts' \) \
+        -exec rm -f {} +
+fi
+
 echo "Schematics build completed successfully!"

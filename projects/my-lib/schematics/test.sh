@@ -5,8 +5,9 @@
 
 set -e  # Exit on any error
 
-SCHEMATICS_DIR="projects/my-lib/schematics"
-DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
+LIB_DIR="projects/my-lib"
+SCHEMATICS_DIR="$LIB_DIR/schematics"
+DIST_DIR="$LIB_DIR/dist/my-lib/schematics"
 
 echo "Running schematics tests..."
 

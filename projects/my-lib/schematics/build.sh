@@ -7,17 +7,12 @@ set -e  # Exit on any error
 
 LIB_DIR="projects/my-lib"
 SCHEMATICS_DIR="$LIB_DIR/schematics"
+PROD_DIST_DIR="dist/my-lib/schematics"
+DIST_DIR="$LIB_DIR/$PROD_DIST_DIR"
 
-# Check for 'prod' flag
-if [[ "$1" == "prod" || "$1" == "--prod" || "$1" == "-p" ]]; then
-    DIST_DIR="dist/my-lib/schematics"
-
-else
-    DIST_DIR="$LIB_DIR/dist/schematics"
-fi
 
 # Clean previous build
-if [ -d "$DIST_DIR" ] && [[ "$1" != "prod" && "$1" != "--prod" && "$1" != "-p" ]]; then
+if [ -d "$DIST_DIR" ]; then
     echo "Cleaning previous build..."
     rm -rf "$DIST_DIR"
 fi
@@ -48,6 +43,15 @@ for version in ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
         SUB_DIR="update-$version"
     fi
 
+    mkdir -p "$DIST_DIR/$SUB_DIR"
+
+    # Copy .ts and .js files, excluding spec files in prod
+    if [[ "$1" == "prod" || "$1" == "--prod" || "$1" == "-p" ]]; then
+        find "$SCHEMATICS_DIR/$SUB_DIR" -maxdepth 1 -type f \( -name "*.ts" -o -name "*.js" \) \
+            ! -name "*.spec.ts" ! -name "*.spec.js" ! -name "*.spec.d.ts" ! -name "*.spec.js.map" \
+            -exec cp {} "$PROD_DIST_DIR/$SUB_DIR/" \;
+    fi
+
     cp "$SCHEMATICS_DIR/$SUB_DIR/schema.json" "$DIST_DIR/$SUB_DIR/schema.json"
 
     # Copy static directory if it exists
@@ -68,7 +72,7 @@ done
 # Remove spec files for production build
 if [[ "$1" == "prod" || "$1" == "--prod" || "$1" == "-p" ]]; then
     echo "Removing spec files for production..."
-    find "$DIST_DIR" -type f \
+    find "$PROD_DIST_DIR" -type f \
         \( -name '*.spec.d.ts' -o -name '*.spec.js' -o -name '*.spec.js.map' -o -name '*.spec.ts' \) \
         -exec rm -f {} +
 fi

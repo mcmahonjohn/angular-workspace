@@ -37,32 +37,30 @@ fi
 echo "Copying collection.json..."
 cp "$SCHEMATICS_DIR/collection.json" "$DIST_DIR/collection.json"
 
-# Create necessary directories
-echo "Creating directories..."
-mkdir -p "$DIST_DIR/ng-new/templates" \
-         "$DIST_DIR/update-2-0-0" \
-         "$DIST_DIR/update-3-0-0" \
-         "$DIST_DIR/update-4-0-0" \
-         "$DIST_DIR/update-5-0-0" \
-         "$DIST_DIR/update-6-0-0"
-
 # Copy schema files and templates
 echo "Copying schema files and templates..."
 
-# ng-new schematic
-cp "$SCHEMATICS_DIR/ng-new/schema.json" "$DIST_DIR/ng-new/schema.json"
-if [ -d "$SCHEMATICS_DIR/ng-new/templates" ] && [ "$(ls -A $SCHEMATICS_DIR/ng-new/templates)" ]; then
-    cp -r "$SCHEMATICS_DIR/ng-new/templates/"* "$DIST_DIR/ng-new/templates/"
-fi
+for version in ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
 
-# Update schematics
+    if [ "$version" == "ng-new" ]; then
+        SUB_DIR=$version
+    else
+        SUB_DIR="update-$version"
+    fi
 
-for version in 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
-    cp "$SCHEMATICS_DIR/update-$version/schema.json" "$DIST_DIR/update-$version/schema.json"
+    cp "$SCHEMATICS_DIR/$SUB_DIR/schema.json" "$DIST_DIR/$SUB_DIR/schema.json"
+
     # Copy static directory if it exists
-    if [ -d "$SCHEMATICS_DIR/update-$version/static" ]; then
-        mkdir -p "$DIST_DIR/update-$version/static"
-        cp -r "$SCHEMATICS_DIR/update-$version/static/"* "$DIST_DIR/update-$version/static/"
+    if [ -d "$SCHEMATICS_DIR/$SUB_DIR/static" ]; then
+        mkdir -p "$DIST_DIR/$SUB_DIR/static"
+        cp -r "$SCHEMATICS_DIR/$SUB_DIR/static/"* "$DIST_DIR/$SUB_DIR/static/"
+    fi
+
+    # Copy template directory if it exists
+
+    if [ -d "$SCHEMATICS_DIR/$SUB_DIR/templates" ] && [ "$(ls -A $SCHEMATICS_DIR/$SUB_DIR/templates)" ]; then
+        mkdir -p "$DIST_DIR/$SUB_DIR/templates"
+        cp -r "$SCHEMATICS_DIR/$SUB_DIR/templates/"* "$DIST_DIR/$SUB_DIR/templates/"
     fi
 done
 

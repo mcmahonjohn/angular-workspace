@@ -6,7 +6,7 @@
 set -e  # Exit on any error
 
 SCHEMATICS_DIR="schematics"
-DIST_DIR="$SCHEMATICS_DIR/dist/schematics"
+DIST_DIR="dist/schematics"
 
 echo "Running schematics tests..."
 

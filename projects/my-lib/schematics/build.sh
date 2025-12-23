@@ -7,10 +7,17 @@ set -e  # Exit on any error
 
 LIB_DIR="projects/my-lib"
 SCHEMATICS_DIR="$LIB_DIR/schematics"
-DIST_DIR="$LIB_DIR/dist/schematics"
+
+# Check for 'prod' flag
+if [[ "$1" == "prod" || "$1" == "--prod" || "$1" == "-p" ]]; then
+    DIST_DIR="dist/my-lib/schematics"
+
+else
+    DIST_DIR="$LIB_DIR/dist/schematics"
+fi
 
 # Clean previous build
-if [ -d "$DIST_DIR" ]; then
+if [ -d "$DIST_DIR" ] && [[ "$1" != "prod" && "$1" != "--prod" && "$1" != "-p" ]]; then
     echo "Cleaning previous build..."
     rm -rf "$DIST_DIR"
 fi

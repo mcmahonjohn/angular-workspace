@@ -872,7 +872,7 @@ import { Component } from '@angular/core';
 ```
 
 ### 5.3 Create Integration Tests
-Create `schematics/ng-new/test-ng-new-schematic.js`:
+Create `schematics/ng-new/ng-new-schematic.spec.js`:
 ```javascript
 const fs = require('fs');
 const path = require('path');
@@ -1022,8 +1022,8 @@ npx nyc --reporter=lcov --reporter=text --exclude='**/*.spec.js' \
 
 # Run integration tests
 echo "Running integration tests..."
-if [ -f "$DIST_DIR/ng-new/test-ng-new-schematic.js" ]; then
-    node "$DIST_DIR/ng-new/test-ng-new-schematic.js"
+if [ -f "$DIST_DIR/ng-new/ng-new-schematic.spec.js" ]; then
+    node "$DIST_DIR/ng-new/ng-new-schematic.spec.js"
 fi
 
 echo "Schematics tests completed successfully!"
@@ -1130,7 +1130,7 @@ schematics/
 │   │   ├── karma.conf.js.template
 │   │   └── karma.conf.ci.js.template
 │   ├── ng-new-schematic.md
-│   └── test-ng-new-schematic.js
+│   └── ng-new-schematic.spec.js
 └── update-X-X-X/         # Migration schematics for each version
     ├── index.ts
     ├── schema.json

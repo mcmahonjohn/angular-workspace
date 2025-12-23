@@ -19,7 +19,7 @@ schematics/
 │   │   ├── karma.conf.js.template
 │   │   └── karma.conf.ci.js.template
 │   ├── ng-new-schematic.md
-│   └── test-ng-new-schematic.js
+│   └── ng-new-schematic.spec.js
 └── update-X-X-X/         # Migration schematics for each version
     ├── index.ts
     ├── schema.json

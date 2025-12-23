@@ -20,7 +20,7 @@
     "test:app": "ng test my-app --karma-config=./karma.conf.js --code-coverage=true --watch=false",
     "test:e2e-ci": "ng e2e-ci",
     "test:schematics": "./projects/my-lib/schematics/test.sh",
-    "test:ng-new": "node projects/my-lib/schematics/ng-new/test-ng-new-schematic.js",
+    "test:ng-new": "node projects/my-lib/schematics/ng-new/ng-new-schematic.spec.js",
     "test:typecheck:signal-input-demo": "tsc --noEmit tsd/signal-input-demo.typecheck.ts",
     "test:unit": "ng test my-lib --karma-config=./karma.conf.js --code-coverage=true --watch=false",
     "test:unit:clean": "npm run test:unit 2>&1 | grep -v 'Could not resolve keysym\\|Errors from xkbcomp'",

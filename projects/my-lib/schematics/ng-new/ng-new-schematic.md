@@ -209,4 +209,4 @@ To modify or extend this schematic:
 1. Edit the schematic files in `projects/my-lib/schematics/ng-new/`
 2. Update the schema in `schema.json` for new options
 3. Rebuild with `npm run build:schematics`
-4. Test with the test script: `node test-ng-new-schematic.js`
+4. Test with the test script: `node ng-new-schematic.spec.js`

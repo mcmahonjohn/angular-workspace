@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../dist/schematics",
-    "rootDir": "./ng-add",
+    "rootDir": "./",
     "types": ["node"],
     "module": "commonjs",
     "moduleResolution": "node",

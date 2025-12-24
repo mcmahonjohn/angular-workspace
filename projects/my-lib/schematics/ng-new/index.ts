@@ -31,7 +31,22 @@ interface ArchitectConfig {
 }
 
 export default function (options: NgNewSchema): Rule {
-  return chain([
+  return async (tree: Tree, context: SchematicContext) => {
+    // Prompt user for Dockerfile creation consent
+    let createDockerfiles = false;
+    if (typeof context.interactive === 'function' && context.interactive()) {
+      // @ts-ignore: SchematicContext.prompt is not standard, but supported in some environments
+      if (typeof context.prompt === 'function') {
+        createDockerfiles = await context.prompt({
+          type: 'confirm',
+          name: 'docker',
+          message: 'Would you like to create Dockerfile and dev.Dockerfile for Iron Bank node.js/nginx?',
+          default: false,
+        });
+      }
+    }
+
+    return chain([
     // Create the workspace with Angular's ng-new schematic
     externalSchematic('@schematics/angular', 'ng-new', {
       name: options.name,
@@ -89,6 +104,31 @@ export default function (options: NgNewSchema): Rule {
       return tree;
     },
 
+    // Dockerfile creation if user consents
+    (tree: Tree) => {
+      if (createDockerfiles) {
+        const targetPath = options.directory || '.';
+
+        const dockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/Dockerfile.template';
+        const devDockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/dev.Dockerfile.template';
+
+        // Read and apply Dockerfile template
+        const dockerfileContent = tree.read(dockerfileTemplatePath);
+
+        if (dockerfileContent) {
+          tree.create(`${targetPath}/Dockerfile`, dockerfileContent.toString());
+        }
+
+        // Read and apply dev.Dockerfile template
+        const devDockerfileContent = tree.read(devDockerfileTemplatePath);
+
+        if (devDockerfileContent) {
+          tree.create(`${targetPath}/dev.Dockerfile`, devDockerfileContent.toString());
+        }
+      }
+
+      return tree;
+    },
     // Post-processing
     (tree: Tree) => {
       // Remove empty constructors
@@ -107,8 +147,10 @@ export function updateAngularJson(tree: Tree, workspacePath: string, options: Ng
   }
 
   let workspace: AngularJson;
+
   try {
     workspace = JSON.parse(workspaceContent.toString()) as AngularJson;
+
   } catch (_error) {
     // Invalid JSON, skip processing
     return;

@@ -1,0 +1,10 @@
+# syntax=docker/dockerfile:1
+FROM registry1.dso.mil/ironbank/opensource/node:20 AS builder
+WORKDIR /app
+COPY . .
+RUN npm ci --only=production && npm run build --if-present
+
+FROM registry1.dso.mil/ironbank/opensource/nginx:1.27
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]

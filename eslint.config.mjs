@@ -9,9 +9,20 @@ import angularSignalPlugin from './eslint-plugin-angular-signal/index.js';
 
 /** @type {import('eslint').ESLint.Config[]} */
 export default [
+    {
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.browser,
+        ...globals.cypress,
+        ...globals.jasmine,
+        ...globals.node,
+      },
+    },
+  },
   js.configs.recommended,
   {
-    files: ['**/*.ts', '**/*.mjs'],
+    files: ['**/*.ts', '**/*.mjs', '**/*.spec.ts'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       '@angular-eslint': angularEslintPlugin,
@@ -43,41 +54,9 @@ export default [
     },
   },
   ...jsonc.configs['flat/recommended-with-jsonc'],
-  {
-    files: ['**/*.spec.ts'],
-    languageOptions: {
-      globals: {
-        describe: 'readonly',
-        it: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        expect: 'readonly',
-        jasmine: 'readonly',
-        spyOn: 'readonly',
-        fail: 'readonly',
-        console: 'readonly'
-      }
-    }
-  },
   // Schematics-specific configurations
   {
     files: ['projects/*/schematics/**/*.spec.ts'],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        describe: 'readonly',
-        it: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        expect: 'readonly',
-        jasmine: 'readonly',
-        spyOn: 'readonly',
-        fail: 'readonly',
-        console: 'readonly',
-        __dirname: 'readonly',
-        require: 'readonly'
-      }
-    },
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { 
         argsIgnorePattern: '^_',
@@ -106,9 +85,6 @@ export default [
   },
   {
     files: ['projects/*/schematics/**/*.js'],
-    languageOptions: {
-      globals: globals.node
-    }
   },
   {
     ignores: [

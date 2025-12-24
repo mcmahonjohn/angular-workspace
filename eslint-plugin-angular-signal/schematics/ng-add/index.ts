@@ -3,6 +3,7 @@ import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 import { addPluginToEslintConfig } from './add-plugin-to-eslint-config.js';
 import { addRecommendedRulesToEslintConfig } from './add-recommended-rules-to-eslint-config.js';
 import { updateLintScriptsInPackageJson } from './update-lint-scripts-in-package-json.js';
+import { logSchematicSummary } from './log-schematic.js';
 
 const SUPPORTED_CONFIGS = [
   'eslint.config.js',
@@ -13,8 +14,26 @@ const SUPPORTED_CONFIGS = [
   'eslint.config.cts',
 ];
 
-function findEslintConfig(tree: Tree): string | null {
+const LEGACY_CONFIGS = [
+  '.eslintrc.json',
+  '.eslintrc.js',
+  '.eslintrc.cjs',
+  '.eslintrc.yaml',
+  '.eslintrc.yml',
+  '.eslintrc',
+];
+
+function findFlatConfig(tree: Tree): string | null {
   for (const config of SUPPORTED_CONFIGS) {
+    if (tree.exists(config)) {
+      return config;
+    }
+  }
+  return null;
+}
+
+function findLegacyEslintConfig(tree: Tree): string | null {
+  for (const config of LEGACY_CONFIGS) {
     if (tree.exists(config)) {
       return config;
     }
@@ -33,16 +52,30 @@ export default {
 `;
 }
 
+
 export default function ngAdd(): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const configFile = findEslintConfig(tree);
+
+    const legacyConfig = findLegacyEslintConfig(tree);
+    const configFile = findFlatConfig(tree);
+
+    if (legacyConfig) {
+
+      context.logger.error(
+        `Legacy ESLint config file found: ${legacyConfig}. This schematic only supports flat config files.\n` +
+        `Please migrate to a flat config before proceeding. See: https://eslint.org/docs/latest/extend/plugin-migration-flat-config\n` +
+        `Once migrated, re-run this schematic.`
+      );
+
+      return tree;
+    }
 
     if (configFile) {
       context.logger.info(`ESLint config file found: ${configFile}. No changes made.`);
 
     } else {
       context.logger.info(
-        'No ESLint config file found. You can initialize one with "ng generate @angular-eslint/schematics:eslint-config" or let this schematic create a basic config.'
+        'No ESLint flat config file found. This schematic will create a basic config.'
       );
 
       // Optionally, create a basic config file
@@ -53,8 +86,10 @@ export default function ngAdd(): Rule {
 
     // Always try to add the plugin and recommended rules if config exists or was just created
     const configPath = configFile || 'eslint.config.mjs';
+
     // Add 'angular-signal' to plugins array
     addPluginToEslintConfig(configPath)(tree, context);
+
     // Add recommended rules to '**/*.ts' section
     addRecommendedRulesToEslintConfig(configPath, {
       'angular-signal/some-rule': 'error',

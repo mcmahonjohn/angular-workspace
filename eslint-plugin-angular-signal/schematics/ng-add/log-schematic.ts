@@ -1,4 +1,4 @@
-import { SchematicContext, Tree } from "@angular-devkit/schematics";
+import { SchematicContext } from "@angular-devkit/schematics";
 
 export function logSchematicSummary(
   context: SchematicContext,

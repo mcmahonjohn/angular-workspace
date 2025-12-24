@@ -21,7 +21,7 @@ export function addRecommendedRulesToEslintConfig(eslintConfigPath: string, reco
     let content = buffer.toString('utf-8');
 
     // Naive approach: look for files: ['**/*.ts'] and insert rules
-    const filesSectionRegex = /(files\s*:\s*\[\s*['\"]\*\*\/*.ts['\"]\s*\][^}]*rules\s*:\s*{)([^}]*)}/m;
+    const filesSectionRegex = /(files\s*:\s*\[\s*['"]\*\*\/*.ts['"]\s*\][^}]*rules\s*:\s*{)([^}]*)}/m;
 
     if (filesSectionRegex.test(content)) {
       content = content.replace(filesSectionRegex, (match, start, rulesBlock) => {

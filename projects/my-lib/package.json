@@ -10,5 +10,8 @@
   },
   "sideEffects": false,
   "migrations": "./schematics/migrations.json",
-  "schematics": "./schematics/collection.json"
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "devDependencies"
+  }
 }

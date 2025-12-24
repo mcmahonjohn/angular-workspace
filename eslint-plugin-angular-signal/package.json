@@ -18,6 +18,9 @@
     "eslint": ">=9.0.0"
   },
   "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "devDependencies"
+  },
   "devDependencies": {
     "@angular-devkit/schematics": "^21.0.3",
     "typescript": "~5.9.3"

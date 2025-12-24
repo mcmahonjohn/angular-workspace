@@ -56,13 +56,14 @@ export default {
 export default function ngAdd(): Rule {
   return (tree: Tree, context: SchematicContext) => {
 
-    const legacyConfig = findLegacyEslintConfig(tree);
-    const configFile = findFlatConfig(tree);
+    const legacyConfigFile = findLegacyEslintConfig(tree);
+    const existingFlatConfigFile = findFlatConfig(tree);
+    const newFlatConfigFile = 'eslint.config.mjs';
 
-    if (legacyConfig) {
+    if (legacyConfigFile) {
 
       context.logger.error(
-        `Legacy ESLint config file found: ${legacyConfig}. This schematic only supports flat config files.\n` +
+        `Legacy ESLint config file found: ${legacyConfigFile}. This schematic only supports flat config files.\n` +
         `Please migrate to a flat config before proceeding. See: https://eslint.org/docs/latest/extend/plugin-migration-flat-config\n` +
         `Once migrated, re-run this schematic.`
       );
@@ -73,7 +74,7 @@ export default function ngAdd(): Rule {
     if (configFile) {
       context.logger.info(`ESLint config file found: ${configFile}. No changes made.`);
 
-    } else {
+    if (!existingFlatConfigFile && !legacyConfigFile) {
       context.logger.info(
         'No ESLint flat config file found. This schematic will create a basic config.'
       );
@@ -99,7 +100,7 @@ export default function ngAdd(): Rule {
     // Update lint scripts in package.json
     updateLintScriptsInPackageJson()(tree, context);
 
-    logSchematicSummary(context, legacyConfig);
+    logSchematicSummary(context, legacyConfigFile, existingFlatConfigFile,  newFlatConfigFile);
 
     return tree;
   };

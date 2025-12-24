@@ -1,6 +1,11 @@
 import { SchematicContext, Tree } from "@angular-devkit/schematics";
 
-export function logSchematicSummary(context: SchematicContext, legacyConfig: string | null): void {
+export function logSchematicSummary(
+  context: SchematicContext,
+  legacyConfig: string | null,
+  configFile: string | null,
+  newFlatConfigFile: string | null,
+): void {
 
     // Log actionable feedback
     context.logger.info('--- ESLint Angular Signal Plugin Schematic Summary ---');
@@ -8,11 +13,14 @@ export function logSchematicSummary(context: SchematicContext, legacyConfig: str
     if (legacyConfig) {
       context.logger.info(`Legacy config detected: ${legacyConfig}. Migration required.`);
 
-    // } else if (updatedConfigs.length > 0) {
-    //   context.logger.info(`Updated configs: ${updatedConfigs.join(', ')}`);
+    } else if (configFile) {
+      context.logger.info(`Updated config: ${configFile}`);
+      context.logger.info('Updated package.json');
 
     } else {
-      context.logger.info('No changes made to ESLint config files.');
+      context.logger.info('No ESLint config files found.');
+      context.logger.info(`Created new flat config file: ${newFlatConfigFile}`);
+      context.logger.info('Updated package.json');
     }
 
     context.logger.info('Next steps:');

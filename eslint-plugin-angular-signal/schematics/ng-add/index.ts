@@ -98,6 +98,9 @@ export default function ngAdd(): Rule {
 
     // Update lint scripts in package.json
     updateLintScriptsInPackageJson()(tree, context);
+
+    logSchematicSummary(context, legacyConfig);
+
     return tree;
   };
 }

@@ -23,4 +23,9 @@ export interface Schema {
    * Generate a routing module for the initial project.
    */
   routing?: boolean;
+
+  /**
+   * Create Dockerfile and dev.Dockerfile for the Angular app?
+   */
+  docker?: boolean;
 }

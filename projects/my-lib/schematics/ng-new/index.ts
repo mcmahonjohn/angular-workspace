@@ -32,19 +32,7 @@ interface ArchitectConfig {
 
 export default function (options: NgNewSchema): Rule {
   return async (tree: Tree, context: SchematicContext) => {
-    // Prompt user for Dockerfile creation consent
-    let createDockerfiles = false;
-    if (typeof context.interactive === 'function' && context.interactive()) {
-      // @ts-ignore: SchematicContext.prompt is not standard, but supported in some environments
-      if (typeof context.prompt === 'function') {
-        createDockerfiles = await context.prompt({
-          type: 'confirm',
-          name: 'docker',
-          message: 'Would you like to create Dockerfile and dev.Dockerfile for Iron Bank node.js/nginx?',
-          default: false,
-        });
-      }
-    }
+    const createDockerfiles = !!options.docker;
 
     return chain([
       // Create the workspace with Angular's ng-new schematic

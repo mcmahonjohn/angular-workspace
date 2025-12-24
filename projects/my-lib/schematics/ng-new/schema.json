@@ -34,6 +34,12 @@
       "type": "boolean",
       "default": true,
       "x-prompt": "Would you like to add Angular routing?"
+    },
+    "docker": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create Dockerfile and dev.Dockerfile for the Angular app?",
+      "x-prompt": "Will this application need to be containerized? If so, this schematic can create the Dockerfile."
     }
   },
   "required": ["name"]

@@ -47,96 +47,98 @@ export default function (options: NgNewSchema): Rule {
     }
 
     return chain([
-    // Create the workspace with Angular's ng-new schematic
-    externalSchematic('@schematics/angular', 'ng-new', {
-      name: options.name,
-      directory: options.directory,
-      commit: false,
-      createApplication: true,
-      inlineStyle: false,
-      inlineTemplate: false,
-      interactive: true,
-      packageManager: 'npm',
-      prefix: 'app',
-      skipGit: true,
-      ssr: false,
-      standalone: true,
-      strict: true,
-      style: 'scss',
-      viewEncapsulation: 'Emulated',
-      zoneless: false,
-      routing: options.routing ?? true,
-      minimal: options.minimal ?? false,
-    }),
+      // Create the workspace with Angular's ng-new schematic
+      externalSchematic('@schematics/angular', 'ng-new', {
+        name: options.name,
+        directory: options.directory,
+        commit: false,
+        createApplication: true,
+        inlineStyle: false,
+        inlineTemplate: false,
+        interactive: true,
+        packageManager: 'npm',
+        prefix: 'app',
+        skipGit: true,
+        ssr: false,
+        standalone: true,
+        strict: true,
+        style: 'scss',
+        viewEncapsulation: 'Emulated',
+        zoneless: false,
+        routing: options.routing ?? true,
+        minimal: options.minimal ?? false,
+      }),
 
-    // Configure the workspace
-    (tree: Tree, context: SchematicContext) => {
-      const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
+      // Configure the workspace
+      (tree: Tree, context: SchematicContext) => {
+        const workspacePath = options.directory ? `${options.directory}/angular.json` : 'angular.json';
 
-      if (!tree.exists(workspacePath)) {
-        throw new Error(`Workspace file not found at ${workspacePath}`);
-      }
-
-      // Update angular.json
-      updateAngularJson(tree, workspacePath, options);
-
-      // Update tsconfig.json
-      updateTsConfig(tree, options);
-
-      return tree;
-    },
-
-    // Create karma config files from templates
-    createKarmaConfigs(options),
-
-    (tree: Tree, context: SchematicContext) => {
-      // Schedule Cypress installation
-      const installCypressTask = context.addTask(new NodePackageInstallTask({
-        packageName: '@cypress/schematic',
-        workingDirectory: options.directory || '.',
-      }));
-
-      // Schedule Cypress setup
-      context.addTask(new RunSchematicTask('@cypress/schematic', 'cypress', {
-        project: options.name,
-      }), [installCypressTask]);
-
-      return tree;
-    },
-
-    // Dockerfile creation if user consents
-    (tree: Tree) => {
-      if (createDockerfiles) {
-        const targetPath = options.directory || '.';
-
-        const dockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/Dockerfile.template';
-        const devDockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/dev.Dockerfile.template';
-
-        // Read and apply Dockerfile template
-        const dockerfileContent = tree.read(dockerfileTemplatePath);
-
-        if (dockerfileContent) {
-          tree.create(`${targetPath}/Dockerfile`, dockerfileContent.toString());
+        if (!tree.exists(workspacePath)) {
+          throw new Error(`Workspace file not found at ${workspacePath}`);
         }
 
-        // Read and apply dev.Dockerfile template
-        const devDockerfileContent = tree.read(devDockerfileTemplatePath);
+        // Update angular.json
+        updateAngularJson(tree, workspacePath, options);
 
-        if (devDockerfileContent) {
-          tree.create(`${targetPath}/dev.Dockerfile`, devDockerfileContent.toString());
+        // Update tsconfig.json
+        updateTsConfig(tree, options);
+
+        return tree;
+      },
+
+      // Create karma config files from templates
+      createKarmaConfigs(options),
+
+      (tree: Tree, context: SchematicContext) => {
+        // Schedule Cypress installation
+        const installCypressTask = context.addTask(new NodePackageInstallTask({
+          packageName: '@cypress/schematic',
+          workingDirectory: options.directory || '.',
+        }));
+
+        // Schedule Cypress setup
+        context.addTask(new RunSchematicTask('@cypress/schematic', 'cypress', {
+          project: options.name,
+        }), [installCypressTask]);
+
+        return tree;
+      },
+
+      // Dockerfile creation if user consents
+      (tree: Tree) => {
+        if (createDockerfiles) {
+          const targetPath = options.directory || '.';
+
+          const dockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/Dockerfile.template';
+          const devDockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/dev.Dockerfile.template';
+
+          // Read and apply Dockerfile template
+          const dockerfileContent = tree.read(dockerfileTemplatePath);
+
+          if (dockerfileContent) {
+            tree.create(`${targetPath}/Dockerfile`, dockerfileContent.toString());
+          }
+
+          // Read and apply dev.Dockerfile template
+          const devDockerfileContent = tree.read(devDockerfileTemplatePath);
+
+          if (devDockerfileContent) {
+            tree.create(`${targetPath}/dev.Dockerfile`, devDockerfileContent.toString());
+          }
         }
-      }
 
-      return tree;
-    },
-    // Post-processing
-    (tree: Tree) => {
-      // Remove empty constructors
-      removeEmptyConstructors(tree, options);
+        return tree;
+      },
 
-      return tree;
-    },
-  ]);
+      // Post-processing
+      (tree: Tree) => {
+        // Remove empty constructors
+        removeEmptyConstructors(tree, options);
+
+        return tree;
+      },
+    ]);
+  }
 }
 
 export function updateAngularJson(tree: Tree, workspacePath: string, options: NgNewSchema): void {

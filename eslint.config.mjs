@@ -9,7 +9,7 @@ import angularSignalPlugin from './eslint-plugin-angular-signal/index.js';
 
 /** @type {import('eslint').ESLint.Config[]} */
 export default [
-    {
+  {
     languageOptions: {
       ecmaVersion: 2022,
       globals: {
@@ -17,6 +17,7 @@ export default [
         ...globals.cypress,
         ...globals.jasmine,
         ...globals.node,
+        cy: true,
       },
     },
   },

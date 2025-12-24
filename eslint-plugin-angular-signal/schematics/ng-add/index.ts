@@ -2,8 +2,8 @@ import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 
 import { addPluginToEslintConfig } from './add-plugin-to-eslint-config.js';
 import { addRecommendedRulesToEslintConfig } from './add-recommended-rules-to-eslint-config.js';
-import { updateLintScriptsInPackageJson } from './update-lint-scripts-in-package-json.js';
 import { logSchematicSummary } from './log-schematic.js';
+import { updateLintScriptsInPackageJson } from './update-lint-scripts-in-package-json.js';
 
 const SUPPORTED_CONFIGS = [
   'eslint.config.js',

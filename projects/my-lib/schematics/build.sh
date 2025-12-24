@@ -35,12 +35,12 @@ cp "$SCHEMATICS_DIR/collection.json" "$DIST_DIR/collection.json"
 # Copy schema files and templates
 echo "Copying schema files and templates..."
 
-for version in ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
+for folder in ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
 
-    if [ "$version" == "ng-new" ]; then
-        SUB_DIR=$version
+    if [ "$folder" == "ng-new" ]; then
+        SUB_DIR=$folder
     else
-        SUB_DIR="update-$version"
+        SUB_DIR="update-$folder"
     fi
 
     mkdir -p "$DIST_DIR/$SUB_DIR"

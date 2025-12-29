@@ -1,6 +1,6 @@
 // @ts-check
 import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import stylistic from '@stylistic/eslint-plugin';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -10,7 +10,17 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  eslintPluginPrettierRecommended,
+  stylistic.configs.customize({
+    rules: {
+      'stylistic/quotes': ['error', 'single'],
+      'stylistic/semi': ['error', 'always'],
+      'stylistic/trailing-comma': ['error', 'all'],
+      'stylistic/indent': ['error', 2],
+      'stylistic/object-curly-spacing': ['error', 'always'],
+      'stylistic/array-bracket-spacing': ['error', 'never'],
+      'stylistic/comma-dangle': ['error', 'always-multiline'],
+    },
+  }),
   {
     languageOptions: {
       globals: {
@@ -29,7 +39,6 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
     },
   },
 );

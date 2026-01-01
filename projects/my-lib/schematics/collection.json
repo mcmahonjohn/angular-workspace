@@ -6,6 +6,11 @@
       "factory": "./ng-new/index#default",
       "schema": "./ng-new/schema.json"
     },
+    "nest-ng-new": {
+      "description": "Create a new NestJS project with my-lib optimizations.",
+      "factory": "./nest-ng-new/index#nestNgNew",
+      "schema": "./nest-ng-new/schema.json"
+    },
     "update-2-0-0": {
       "version": "2.0.0",
       "description": "Update imports from 'my-lib' to 'library' in TS files.",

@@ -42,9 +42,13 @@ export default function (options: NgNewSchema): Rule {
     return chain([
       // Create the workspace with Angular's ng-new schematic
       externalSchematic('@schematics/angular', 'ng-new', {
-        dryRun: options.dryRun,
         name: options.name,
+        collection: options.schematicCollections,
         directory: options.directory,
+        dryRun: options.dryRun,
+        minimal: options.minimal ?? false,
+        routing: options.routing ?? true,
+        skipGit: options.skipGit,
         commit: false,
         createApplication: true,
         inlineStyle: false,
@@ -52,15 +56,12 @@ export default function (options: NgNewSchema): Rule {
         interactive: true,
         packageManager: 'npm',
         prefix: 'app',
-        skipGit: true,
         ssr: false,
         standalone: true,
         strict: true,
         style: 'scss',
         viewEncapsulation: 'Emulated',
         zoneless: false,
-        routing: options.routing ?? true,
-        minimal: options.minimal ?? false,
       }),
 
       // Configure the workspace

@@ -31,21 +31,10 @@
       "description": "Nest CLI version to use",
       "default": "latest"
     },
-    "strict": {
-      "type": "boolean",
-      "description": "Enable strict mode",
-      "default": true
-    },
     "skipGit": {
       "type": "boolean",
       "description": "Skip git repository initialization",
       "default": true
-    },
-    "packageManager": {
-      "type": "string",
-      "description": "Package manager to use",
-      "enum": ["npm"],
-      "default": "npm"
     },
     "language": {
       "type": "string",

@@ -25,14 +25,14 @@ export default function (options: NestNgNewOptions): Rule {
       '@nestjs/schematics',
       'ng-new',
       {
-        name: options.name,
-        version: options.version,
-        strict: options.strict,
-        skipGit: options.skipGit,
-        packageManager: options.packageManager,
-        language: options.language,
         dryRun: options.dryRun,
+        language: options.language,
+        name: options.name,
+        packageManager: 'npm',
         schematicCollections: options.schematicCollections,
+        skipGit: options.skipGit,
+        strict: true,
+        version: options.version,
       }
     ),
     addDockerfilesIfRequested(

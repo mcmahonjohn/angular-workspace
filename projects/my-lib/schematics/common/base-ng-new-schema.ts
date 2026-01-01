@@ -1,4 +1,15 @@
 export interface BaseNgNewSchema {
+
+  /**
+   * The directory name to create the workspace in.
+   */
+  directory?: string;
+
+  /**
+   * Create Dockerfile and dev.Dockerfile for the Angular app?
+   */
+  docker?: boolean;
+
   /**
    * Run schematic in dry-run mode (no files written to disk).
    */
@@ -10,17 +21,18 @@ export interface BaseNgNewSchema {
   name: string;
 
   /**
-   * The directory name to create the workspace in.
+   * Additional schematic collections to register with the Nest CLI.
    */
-  directory?: string;
+  schematicCollections?: string[];
+
+  /**
+   * Skip git repository initialization.
+   */
+  skipGit?: boolean;
 
   /**
    * The version of the CLI to use.
    */
   version?: string;
 
-  /**
-   * Create Dockerfile and dev.Dockerfile for the Angular app?
-   */
-  docker?: boolean;
 }

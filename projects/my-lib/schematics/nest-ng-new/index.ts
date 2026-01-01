@@ -1,47 +1,37 @@
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
-import { Schema as NestNgNewOptions } from './schema';
-import { execSync } from 'child_process';
+import {
+  Rule,
+  chain,
+  externalSchematic,
+} from '@angular-devkit/schematics';
 
-export function nestNgNew(options: NestNgNewOptions): Rule {
+import { Schema as NestNgNewOptions } from './schema';
+
+export default function (options: NestNgNewOptions): Rule {
   if (options.dryRun === undefined) {
     options.dryRun = true;
   }
-  return (tree: Tree, _context: SchematicContext) => {
-    const {
-      name,
-      version = 'latest',
-      strict = true,
-      skipGit = true,
-      packageManager = 'npm',
-      language = 'typescript',
-      schematicCollections = [
-        '@nestjs/swagger',
-        '@nestjs/terminus',
-        '@nestjsx/crud',
-        '@nestjs/schematics',
-      ],
-    } = options;
-
-    // Build the nest CLI command
-    let cmd = `npx -p @nestjs/cli@${version} nest new ${name}`;
-    cmd += ` --strict${strict ? '' : '=false'}`;
-    cmd += ` --skip-git=${skipGit}`;
-    cmd += ` --package-manager=${packageManager}`;
-    cmd += ` --language=${language}`;
-    if (options.dryRun) {
-      cmd += ' --dry-run';
-    }
-    if (schematicCollections && schematicCollections.length > 0) {
-      cmd += ' --collection ' + schematicCollections.join(' --collection ');
-    }
-
-    _context.logger.info(`Running: ${cmd}`);
-    try {
-      execSync(cmd, { stdio: 'inherit' });
-    } catch (err) {
-      _context.logger.error(`Nest CLI failed: ${err}`);
-      throw err;
-    }
-    return tree;
-  };
+  if (!options.schematicCollections) {
+    options.schematicCollections = [
+      '@nestjs/swagger',
+      '@nestjs/terminus',
+      '@nestjsx/crud',
+      '@nestjs/schematics',
+    ];
+  }
+  return chain([
+    externalSchematic(
+      '@nestjs/schematics',
+      'ng-new',
+      {
+        name: options.name,
+        version: options.version,
+        strict: options.strict,
+        skipGit: options.skipGit,
+        packageManager: options.packageManager,
+        language: options.language,
+        dryRun: options.dryRun,
+        schematicCollections: options.schematicCollections,
+      }
+    ),
+  ]);
 }

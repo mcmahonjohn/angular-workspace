@@ -8,7 +8,7 @@
     },
     "nest-ng-new": {
       "description": "Create a new NestJS project with my-lib optimizations.",
-      "factory": "./nest-ng-new/index#nestNgNew",
+      "factory": "./nest-ng-new/index",
       "schema": "./nest-ng-new/schema.json"
     },
     "update-2-0-0": {

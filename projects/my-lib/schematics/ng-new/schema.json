@@ -11,6 +11,14 @@
       "description": "Run schematic in dry-run mode (no files written to disk)",
       "default": true
     },
+    "schematicCollections": {
+      "type": "array",
+      "description": "Additional schematic collections to register with the Angular CLI.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "name": {
       "description": "The name of the workspace and initial project. Convention: start with 'angular-' prefix.",
       "type": "string",

@@ -31,12 +31,17 @@ interface ArchitectConfig {
 }
 
 export default function (options: NgNewSchema): Rule {
+  if (options.dryRun === undefined) {
+    options.dryRun = true;
+  }
+
   return async (tree: Tree, context: SchematicContext) => {
     const createDockerfiles = !!options.docker;
 
     return chain([
       // Create the workspace with Angular's ng-new schematic
       externalSchematic('@schematics/angular', 'ng-new', {
+        dryRun: options.dryRun,
         name: options.name,
         directory: options.directory,
         commit: false,

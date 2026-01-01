@@ -3,6 +3,9 @@ import { Schema as NestNgNewOptions } from './schema';
 import { execSync } from 'child_process';
 
 export function nestNgNew(options: NestNgNewOptions): Rule {
+  if (options.dryRun === undefined) {
+    options.dryRun = true;
+  }
   return (tree: Tree, _context: SchematicContext) => {
     const {
       name,
@@ -19,6 +22,9 @@ export function nestNgNew(options: NestNgNewOptions): Rule {
     cmd += ` --skip-git=${skipGit}`;
     cmd += ` --package-manager=${packageManager}`;
     cmd += ` --language=${language}`;
+    if (options.dryRun) {
+      cmd += ' --dry-run';
+    }
 
     _context.logger.info(`Running: ${cmd}`);
     try {

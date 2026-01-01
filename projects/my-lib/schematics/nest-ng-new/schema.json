@@ -4,6 +4,11 @@
   "title": "NestJS New Project Options",
   "type": "object",
   "properties": {
+    "dryRun": {
+      "type": "boolean",
+      "description": "Run schematic in dry-run mode (no files written to disk)",
+      "default": true
+    },
     "name": {
       "type": "string",
       "description": "The name of the new NestJS project"

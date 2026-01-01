@@ -6,6 +6,11 @@
   "description": "Creates a new Angular workspace with my-lib specific configurations.",
   "additionalProperties": false,
   "properties": {
+    "dryRun": {
+      "type": "boolean",
+      "description": "Run schematic in dry-run mode (no files written to disk)",
+      "default": true
+    },
     "name": {
       "description": "The name of the workspace and initial project. Convention: start with 'angular-' prefix.",
       "type": "string",

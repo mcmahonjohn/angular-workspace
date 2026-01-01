@@ -1,5 +1,9 @@
 export interface Schema {
   /**
+   * Run schematic in dry-run mode (no files written to disk).
+   */
+  dryRun?: boolean;
+  /**
    * The name of the workspace and initial project.
    */
   name: string;

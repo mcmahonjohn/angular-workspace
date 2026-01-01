@@ -48,6 +48,12 @@
       "description": "Programming language",
       "enum": ["typescript"],
       "default": "typescript"
+    },
+    "docker": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create Dockerfile and dev.Dockerfile for the NestJS app?",
+      "x-prompt": "Will this application need to be containerized? If so, this schematic can create the Dockerfile."
     }
   },
   "required": ["name"]

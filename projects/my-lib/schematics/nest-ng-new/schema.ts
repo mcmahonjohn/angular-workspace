@@ -40,4 +40,9 @@ export interface Schema {
    * Additional schematic collections to register with the Nest CLI.
    */
   schematicCollections?: string[];
+
+  /**
+   * Create Dockerfile and dev.Dockerfile for the NestJS app?
+   */
+  docker?: boolean;
 }

@@ -75,6 +75,21 @@ projects/
     └── schematics/              # ← This is what we'll create
 ```
 
+
+## Listing Schematics from a Local Collection
+
+To list all schematics from a local collection, use the following command (note the `./` to flag the collection name as a local path):
+
+```bash
+npx @angular-devkit/schematics-cli ./projects/${LIBRARY_NAME}/dist/${LIBRARY_NAME}/schematics/collection.json: --list-schematics
+```
+
+Or, to run a schematic from your local collection:
+
+```bash
+npx @angular-devkit/schematics-cli ./projects/${LIBRARY_NAME}/dist/${LIBRARY_NAME}/schematics/collection.json:nest-ng-new --name=my-nest-app
+```
+
 # Step-by-Step Implementation Guide
 
 ## Step 1: Environment Setup and Project Structure

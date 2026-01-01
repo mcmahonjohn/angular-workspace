@@ -1,7 +1,7 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { EmptyTree } from '@angular-devkit/schematics';
 import * as path from 'path';
-import { Schema as NgNewSchema } from './schema';
+import { NgNewSchema } from './schema';
 import {
   updateAngularJson,
   updateTsConfig,

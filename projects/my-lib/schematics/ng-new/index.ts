@@ -15,7 +15,7 @@ import { addDockerfilesIfRequested } from '../common/dockerfiles';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
 import { JsonObject, JsonValue } from '@angular-devkit/core';
 
-import { Schema as NgNewSchema } from './schema';
+import { NgNewSchema } from './schema';
 
 interface AngularJson {
   projects?: Record<string, JsonValue>;

@@ -1,24 +1,6 @@
-export interface Schema {
+import { BaseNgNewSchema } from "../common/base-ng-new-schema";
 
-  /**
-   * Run schematic in dry-run mode (no files written to disk).
-   */
-  dryRun?: boolean;
-
-  /**
-   * The name of the new NestJS project.
-   */
-  name: string;
-
-  /**
-   * The directory name to create the workspace in.
-   */
-  directory?: string;
-
-  /**
-   * The version of the Nest CLI to use.
-   */
-  version?: string;
+export interface NestNgNewOptions extends BaseNgNewSchema {
 
   /**
    * Enable strict mode for the new project.
@@ -46,8 +28,4 @@ export interface Schema {
    */
   schematicCollections?: string[];
 
-  /**
-   * Create Dockerfile and dev.Dockerfile for the NestJS app?
-   */
-  docker?: boolean;
 }

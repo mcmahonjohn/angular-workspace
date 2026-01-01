@@ -1,22 +1,6 @@
-export interface Schema {
-  /**
-   * Run schematic in dry-run mode (no files written to disk).
-   */
-  dryRun?: boolean;
-  /**
-   * The name of the workspace and initial project.
-   */
-  name: string;
+import { BaseNgNewSchema } from "../common/base-ng-new-schema";
 
-  /**
-   * The directory name to create the workspace in.
-   */
-  directory?: string;
-
-  /**
-   * The version of the Angular CLI to use.
-   */
-  version?: string;
+export interface NgNewSchema extends BaseNgNewSchema{
 
   /**
    * Create a workspace without any testing frameworks.
@@ -28,8 +12,4 @@ export interface Schema {
    */
   routing?: boolean;
 
-  /**
-   * Create Dockerfile and dev.Dockerfile for the Angular app?
-   */
-  docker?: boolean;
 }

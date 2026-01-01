@@ -6,7 +6,7 @@ import {
 
 import { addDockerfilesIfRequested } from '../common/dockerfiles';
 
-import { Schema as NestNgNewOptions } from './schema';
+import { NestNgNewOptions } from './schema';
 
 export default function (options: NestNgNewOptions): Rule {
   if (options.dryRun === undefined) {

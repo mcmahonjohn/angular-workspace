@@ -9,6 +9,15 @@
       "description": "Run schematic in dry-run mode (no files written to disk)",
       "default": true
     },
+    "schematicCollections": {
+      "type": "array",
+      "description": "Additional schematic collections to register with the Nest CLI.",
+      "items": {
+        "type": "string",
+        "enum": ["@nestjs/swagger", "@nestjs/terminus", "@nestjsx/crud", "@nestjs/schematics"]
+      },
+      "default": ["@nestjs/swagger", "@nestjs/terminus", "@nestjsx/crud", "@nestjs/schematics"]
+    },
     "name": {
       "type": "string",
       "description": "The name of the new NestJS project"

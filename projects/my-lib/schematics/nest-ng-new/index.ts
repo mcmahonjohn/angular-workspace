@@ -14,6 +14,12 @@ export function nestNgNew(options: NestNgNewOptions): Rule {
       skipGit = true,
       packageManager = 'npm',
       language = 'typescript',
+      schematicCollections = [
+        '@nestjs/swagger',
+        '@nestjs/terminus',
+        '@nestjsx/crud',
+        '@nestjs/schematics',
+      ],
     } = options;
 
     // Build the nest CLI command
@@ -24,6 +30,9 @@ export function nestNgNew(options: NestNgNewOptions): Rule {
     cmd += ` --language=${language}`;
     if (options.dryRun) {
       cmd += ' --dry-run';
+    }
+    if (schematicCollections && schematicCollections.length > 0) {
+      cmd += ' --collection ' + schematicCollections.join(' --collection ');
     }
 
     _context.logger.info(`Running: ${cmd}`);

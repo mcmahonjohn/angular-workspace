@@ -35,4 +35,9 @@ export interface Schema {
    * Programming language for the new project. Always 'typescript'.
    */
   language?: 'typescript';
+
+  /**
+   * Additional schematic collections to register with the Nest CLI.
+   */
+  schematicCollections?: string[];
 }

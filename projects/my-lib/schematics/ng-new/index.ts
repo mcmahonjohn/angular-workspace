@@ -37,7 +37,7 @@ export default function (options: NgNewSchema): Rule {
     options.dryRun = true;
   }
 
-  return async (tree: Tree, context: SchematicContext) => {
+  return async () => {
 
     return chain([
       // Create the workspace with Angular's ng-new schematic

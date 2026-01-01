@@ -98,6 +98,7 @@ export default [
         'eslint-plugin-angular-signal/dist/**',
         'nestjs-backend/**',
         'node_modules/**',
+        'projects/my-lib/dist/**',
         'projects/my-lib/schematics/dist/**',
         'angular.json',
         'package.json',

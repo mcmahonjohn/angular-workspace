@@ -11,6 +11,11 @@ export interface Schema {
   name: string;
 
   /**
+   * The directory name to create the workspace in.
+   */
+  directory?: string;
+
+  /**
    * The version of the Nest CLI to use.
    */
   version?: string;

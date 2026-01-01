@@ -2,12 +2,9 @@ import {
   Rule,
   chain,
   externalSchematic,
-  apply,
-  url,
-  template,
-  move,
-  mergeWith,
 } from '@angular-devkit/schematics';
+
+import { addDockerfilesIfRequested } from '../common/dockerfiles';
 
 import { Schema as NestNgNewOptions } from './schema';
 
@@ -38,18 +35,10 @@ export default function (options: NestNgNewOptions): Rule {
         schematicCollections: options.schematicCollections,
       }
     ),
-    // Add Dockerfile and dev.Dockerfile if docker option is true
-    (tree, context) => {
-      if (options.docker) {
-        const targetPath = options.name || '.';
-        return mergeWith(
-          apply(url('./templates'), [
-            template({}),
-            move(targetPath),
-          ])
-        )(tree, context);
-      }
-      return tree;
-    },
+    addDockerfilesIfRequested(
+      options.docker,
+      options.directory || '.',
+      './templates'
+    ),
   ]);
 }

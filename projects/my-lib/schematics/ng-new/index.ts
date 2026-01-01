@@ -11,6 +11,7 @@ import {
   template,
   url,
 } from '@angular-devkit/schematics';
+import { addDockerfilesIfRequested } from '../common/dockerfiles';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
 import { JsonObject, JsonValue } from '@angular-devkit/core';
 
@@ -37,7 +38,6 @@ export default function (options: NgNewSchema): Rule {
   }
 
   return async (tree: Tree, context: SchematicContext) => {
-    const createDockerfiles = !!options.docker;
 
     return chain([
       // Create the workspace with Angular's ng-new schematic
@@ -99,30 +99,11 @@ export default function (options: NgNewSchema): Rule {
       },
 
       // Dockerfile creation if user consents
-      (tree: Tree) => {
-        if (createDockerfiles) {
-          const targetPath = options.directory || '.';
-
-          const dockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/Dockerfile.template';
-          const devDockerfileTemplatePath = 'projects/my-lib/schematics/ng-new/templates/dev.Dockerfile.template';
-
-          // Read and apply Dockerfile template
-          const dockerfileContent = tree.read(dockerfileTemplatePath);
-
-          if (dockerfileContent) {
-            tree.create(`${targetPath}/Dockerfile`, dockerfileContent.toString());
-          }
-
-          // Read and apply dev.Dockerfile template
-          const devDockerfileContent = tree.read(devDockerfileTemplatePath);
-
-          if (devDockerfileContent) {
-            tree.create(`${targetPath}/dev.Dockerfile`, devDockerfileContent.toString());
-          }
-        }
-
-        return tree;
-      },
+      addDockerfilesIfRequested(
+        options.docker,
+        options.directory || '.',
+        './templates'
+      ),
 
       // Post-processing
       (tree: Tree) => {

@@ -87,7 +87,7 @@ npx @angular-devkit/schematics-cli ./projects/${LIBRARY_NAME}/dist/${LIBRARY_NAM
 Or, to run a schematic from your local collection:
 
 ```bash
-npx @angular-devkit/schematics-cli ./projects/${LIBRARY_NAME}/dist/${LIBRARY_NAME}/schematics/collection.json:nest-ng-new --name=my-nest-app
+npx @angular-devkit/schematics-cli ./projects/${LIBRARY_NAME}/dist/${LIBRARY_NAME}/schematics/collection.json:${SCHEMATIC_NAME}--name=${APP_NAME}
 ```
 
 # Step-by-Step Implementation Guide

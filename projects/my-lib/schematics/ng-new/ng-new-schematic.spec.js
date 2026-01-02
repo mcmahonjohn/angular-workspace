@@ -18,6 +18,7 @@ function cleanup(tempDir) {
 
 function runCommand(command, cwd = process.cwd(), options = {}) {
   console.log(`🔧 Running: ${command}`);
+
   try {
     const result = execSync(command, { 
       cwd, 
@@ -25,12 +26,21 @@ function runCommand(command, cwd = process.cwd(), options = {}) {
       encoding: 'utf8',
       ...options
     });
+
     return result;
+
   } catch (error) {
     console.error(`❌ Command failed: ${command}`);
     console.error(`Exit code: ${error.status}`);
-    if (error.stdout) console.error('STDOUT:', error.stdout);
-    if (error.stderr) console.error('STDERR:', error.stderr);
+
+    if (error.stdout) {
+      console.error('STDOUT:', error.stdout);
+    }
+
+    if (error.stderr) {
+      console.error('STDERR:', error.stderr);
+    }
+
     throw error;
   }
 }
@@ -71,11 +81,13 @@ function testNgNewSchematic() {
     
     // Check collection.json exists and is valid
     const collectionPath = path.join(schematicsPath, 'collection.json');
+
     if (!fs.existsSync(collectionPath)) {
       throw new Error(`Collection file not found: ${collectionPath}`);
     }
     
     const collection = JSON.parse(fs.readFileSync(collectionPath, 'utf8'));
+
     if (!collection.schematics || !collection.schematics['ng-new']) {
       throw new Error('ng-new schematic not found in collection');
     }
@@ -85,11 +97,13 @@ function testNgNewSchematic() {
     
     // Check schema.json exists
     const schemaPath = path.join(schematicsPath, 'ng-new', 'schema.json');
+
     if (!fs.existsSync(schemaPath)) {
       throw new Error(`Schema file not found: ${schemaPath}`);
     }
     
     const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+
     if (!schema.properties || !schema.properties.name) {
       throw new Error('Schema is missing required properties');
     }
@@ -98,6 +112,7 @@ function testNgNewSchematic() {
     
     // Check compiled JavaScript exists
     const compiledSchematicPath = path.join(schematicsPath, 'ng-new', 'index.js');
+
     if (!fs.existsSync(compiledSchematicPath)) {
       throw new Error(`Compiled schematic not found: ${compiledSchematicPath}`);
     }
@@ -113,6 +128,7 @@ function testNgNewSchematic() {
       
       if (typeof schematicModule.default === 'function') {
         console.log('  ✅ Schematic exports a valid default function');
+
       } else {
         throw new Error('Schematic does not export a default function');
       }
@@ -134,23 +150,24 @@ function testNgNewSchematic() {
             build: {
               configurations: {
                 production: {
-                  optimization: {}
-                }
-              }
-            }
-          }
-        }
+                  optimization: {},
+                },
+              },
+            },
+          },
+        },
       },
-      cli: {}
+      cli: {},
     };
     
     const mockTsConfig = {
       compilerOptions: {},
-      angularCompilerOptions: {}
+      angularCompilerOptions: {},
     };
     
     // Test angular.json updates
     const updatedAngularJson = { ...mockAngularJson };
+
     updatedAngularJson.cli = {
       analytics: false,
       packageManager: 'npm',
@@ -211,6 +228,7 @@ function testNgNewSchematic() {
   } catch (error) {
     console.error('\n💥 Test failed:', error.message);
     process.exit(1);
+
   } finally {
     // Always cleanup, even if test fails
     if (tempDir) {

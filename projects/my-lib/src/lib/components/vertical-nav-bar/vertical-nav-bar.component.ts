@@ -5,11 +5,10 @@ import { RouterModule } from '@angular/router';
 import { NavRoute } from '../../models/nav-route';
 
 @Component({
-  selector: 'my-lib-vertical-nav-bar',
-  templateUrl: './vertical-nav-bar.component.html',
-  styleUrls: ['./vertical-nav-bar.component.scss'],
-  standalone: true,
-  imports: [CommonModule, RouterModule]
+    selector: 'my-lib-vertical-nav-bar',
+    templateUrl: './vertical-nav-bar.component.html',
+    styleUrls: ['./vertical-nav-bar.component.scss'],
+    imports: [CommonModule, RouterModule]
 })
 export class VerticalNavBarComponent {
   readonly position = input<'left' | 'right'>('left');

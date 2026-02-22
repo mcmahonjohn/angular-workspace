@@ -2,10 +2,10 @@ import { Tree, SchematicContext } from '@angular-devkit/schematics';
 
 export function replaceImportPath(source: string): string {
   // Replace TypeScript import paths: import ... from '@car/core' or "@car/core"
-    source = source.replace(/(import\s+[^;]*from\s+)(['"])@car\/core\2/g, '$1$2@door/core$2');
+  source = source.replace(/(import\s+[^;]*from\s+)(['"])@car\/core\2/g, '$1$2@door/core$2');
 
   // Replace SCSS @import paths: @import '@car/core' or "@car/core"
-    source = source.replace(/(@import\s+)(['"])@car\/core\2/g, '$1$2@door/core$2');
+  source = source.replace(/(@import\s+)(['"])@car\/core\2/g, '$1$2@door/core$2');
 
   return source;
 }

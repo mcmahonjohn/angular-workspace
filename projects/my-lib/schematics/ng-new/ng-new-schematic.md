@@ -6,24 +6,24 @@ The `ng-new` schematic creates a new Angular workspace with optimized configurat
 
 This schematic extends the standard Angular `ng new` command with the following enhancements:
 
-### 🔧 Configuration Optimizations
+### Configuration Optimizations
 - **CLI Analytics Disabled** - Respects developer privacy
 - **Strict Angular Compiler Options** - Enhanced type checking and template validation
 - **Custom Karma Configurations** - Separate configs for development and CI environments
 - **Package Manager Lock** - Configured to use npm consistently
 
-### 🧪 Testing Setup
+### Testing Setup
 - **Dual Karma Configs**: 
   - `karma.conf.js` - Chrome browser for development
   - `karma.conf.ci.js` - ChromeHeadless for CI/CD pipelines
 - **Cypress Integration Ready** - Pre-configured for e2e testing installation
 - **Coverage Reporting** - HTML and LCOV formats for comprehensive coverage analysis
 
-### 🏗️ Build Optimizations  
+### Build Optimizations  
 - **Production Build Tweaks** - Disabled critical CSS inlining for better control
 - **CI/CD Ready** - E2E test configuration for automated testing pipelines
 
-### 🎯 Code Quality
+### Code Quality
 - **Empty Constructor Removal** - Automatic cleanup of unnecessary constructors
 - **Strict TypeScript** - Enhanced compiler strictness for better code quality
 - **ESLint Integration** - Ready for Angular ESLint setup
@@ -92,12 +92,12 @@ ng new my-angular-app --collection=my-lib --routing=false
 
 After running the schematic, you'll have a new Angular workspace with:
 
-### 📁 Standard Angular Files
+### Standard Angular Files
 - Complete Angular application structure
 - TypeScript configuration files
 - Package.json with dependencies
 
-### ⚙️ Enhanced Configuration Files
+###️ Enhanced Configuration Files
 ```
 my-project/
 ├── angular.json          # Enhanced with CI configs and analytics disabled
@@ -111,7 +111,7 @@ my-project/
     └── ...
 ```
 
-### 🔄 Ready for Next Steps
+### Ready for Next Steps
 
 After creation, you can immediately:
 

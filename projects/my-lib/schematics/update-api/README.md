@@ -1,0 +1,115 @@
+# update-api schematic — developer guide
+
+This folder contains the `update-api` schematic which applies JSON-driven, text-based replacements across your codebase to help migrate APIs (components, directives, services, pipes, modules, interceptors, resolvers, etc.). Use this README to add or update change sets.
+
+DO NOT expect the schematic to rename or move files; it only performs content replacements. The schematic supports both the old Angular filename style (`*.component.ts`, `*.component.html`) and the newer dash-separated style (`*-component.ts`, `*-component.html`) when matching `filePatterns`.
+
+File: `api-changes.json`
+- Top-level keys are categories (for example: `components`, `directives`, `services`, `pipes`, `modules`, `other`).
+- Each category is an array of ChangeSet objects.
+
+ChangeSet shape
+- `description` (optional): human-friendly description of the change set.
+- `filePatterns`: array of glob patterns (minimatch-compatible) describing files to visit. Example: `**/*.component.ts`, `**/*.component.html`.
+- `replacements`: array of replacement objects:
+  - `from`: string (literal or regex pattern)
+  - `to`: string (replacement text)
+  - `regex` (optional, boolean): when `true` the `from` field is treated as a JavaScript regular expression (it will be used as `new RegExp(from, 'g')`). When `false` a simple literal string replacement is performed.
+
+Notes on filename styles
+- The schematic expands common filePattern variants so you can author patterns using the familiar `.component.` (dot) style and the schematic will also match `-component.` (dash) variants. You do not need to duplicate both styles in `filePatterns` (but you may if you prefer explicitness).
+
+Examples
+
+- Components
+
+```json
+{
+  "description": "Rename input 'oldInput' to 'newInput' and selector 'app-old' to 'app-new'",
+  "filePatterns": ["**/*.component.ts", "**/*.component.html"],
+  "replacements": [
+    { "from": "oldInput", "to": "newInput", "regex": false },
+    { "from": "app-old", "to": "app-new", "regex": false }
+  ]
+}
+```
+
+- Directives
+
+```json
+{
+  "description": "Update directive occurrences",
+  "filePatterns": ["**/*.directive.ts", "**/*.component.html"],
+  "replacements": [
+    { "from": "oldDirective", "to": "newDirective", "regex": false }
+  ]
+}
+```
+
+- Services (example using regex to include the call parentheses)
+
+```json
+{
+  "description": "Rename service method 'oldMethod' to 'newMethod'",
+  "filePatterns": ["**/*.service.ts"],
+  "replacements": [
+    { "from": "oldMethod\\(", "to": "newMethod(", "regex": true }
+  ]
+}
+```
+
+- Pipes (template usage)
+
+```json
+{
+  "description": "Update pipe usage in templates",
+  "filePatterns": ["**/*.pipe.ts", "**/*.component.html"],
+  "replacements": [
+    { "from": "| oldPipe", "to": "| newPipe", "regex": false }
+  ]
+}
+```
+
+- Modules (rename imported module class)
+
+```json
+{
+  "description": "Replace OldSharedModule with NewSharedModule",
+  "filePatterns": ["**/*.module.ts"],
+  "replacements": [
+    { "from": "OldSharedModule", "to": "NewSharedModule", "regex": false }
+  ]
+}
+```
+
+- Other (resolvers / interceptors)
+
+```json
+{
+  "description": "Resolvers and interceptors example",
+  "filePatterns": ["**/*resolver*.ts", "**/*interceptor*.ts"],
+  "replacements": [
+    { "from": "resolveOld(\\", "to": "resolveNew(", "regex": true }
+  ]
+}
+```
+
+Authoring tips
+- Prefer targeted `filePatterns` to reduce false positives (e.g., `src/app/**\/grid.component.ts` instead of `**/*.ts`).
+- Use `regex: true` for replacements that require pattern matching (e.g., capturing parentheses or optional whitespace). Remember the schematic uses the `g` flag for global replacement.
+- For safe TypeScript refactors involving identifier renames (types, class members, imports that require updating references across files), consider using an AST-based transform (ts-morph or TypeScript AST) instead of blind text replacement. This schematic is intentionally text-based for simple mass replacements.
+
+Testing
+- Unit tests for the schematic live in `index.spec.ts`. Add tests that create `UnitTestTree` files using both filename styles (`sample.component.ts` and `sample-component.ts`) to validate matching.
+- Run the schematics tests locally:
+
+```bash
+npm run test:schematics
+```
+
+Workflow example
+- Add or update the relevant ChangeSet in `api-changes.json`.
+- Run `npm run build:schematics` to ensure the compiled schematic includes your changes (build script copies `api-changes.json` into `dist`).
+- Run `npm run test:schematics` and add or update unit tests as needed.
+
+If you want help converting a specific replacement to an AST-aware transform, open an issue or ask here and include a code sample so I can propose an AST-based implementation and tests.

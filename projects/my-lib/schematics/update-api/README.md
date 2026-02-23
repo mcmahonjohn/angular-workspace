@@ -20,6 +20,14 @@ Notes on filename styles
 - The schematic expands common `filePatterns` so you can author patterns using the familiar `.component.` (dot) style and the schematic will also match `-component.` (dash) variants. You do not need to duplicate both styles in `filePatterns` (but you may if you prefer explicitness).
 - Important: for `component`, `service`, `directive`, and `models` (model/interface) files the newer filename styles may omit the type segment entirely (for example `car.ts` instead of `car.model.ts` or `sample.ts` instead of `sample.component.ts`). The schematic generates matching variants that remove the segment so a pattern like `**/*.component.ts` will also match `**/*.ts` where appropriate. Prefer targeted patterns (e.g., `src/app/**/` prefixes) to avoid overly-broad matches.
 
+Scope and safety
+- By default the schematic only applies replacements within `src/app/**` and `src/lib/**` to reduce accidental global matches. This is enforced automatically.
+- For TypeScript identifier renames the schematic uses AST-aware matching to safely rename identifier tokens (declarations and usages). It also updates occurrences found inside comments (`//` and `/* */`).
+- Matching is case-sensitive and treated as whole-word for non-regex replacements.
+
+HTML-specific replacements
+- Components often require HTML-only changes (selectors, input/output attribute names). Use `htmlReplacements` in a ChangeSet to list replacements that should be applied only to HTML files. These run as literal or whole-word replacements unless `regex: true`.
+
 Examples
 
 - Components

@@ -4,7 +4,9 @@
       "description": "Rename input property 'oldInput' to 'newInput' and selector 'app-old' to 'app-new'",
       "filePatterns": ["**/*.component.ts", "**/*.component.html", "**/*.module.ts"],
       "replacements": [
-        { "from": "oldInput", "to": "newInput", "regex": false },
+        { "from": "oldInput", "to": "newInput", "regex": false }
+      ],
+      "htmlReplacements": [
         { "from": "app-old", "to": "app-new", "regex": false }
       ]
     }

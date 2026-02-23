@@ -4,7 +4,7 @@ import { replaceImportPath, updateImports } from './update-imports';
 import * as path from 'path';
 
 describe('update-imports schematic', () => {
-  const collectionPath = path.join(__dirname, '../collection.json');
+  const collectionPath = path.join(__dirname, '../test-collection.json');
   const schematicName = 'update-2-0-0';
   let runner: SchematicTestRunner;
   let appTree: UnitTestTree;

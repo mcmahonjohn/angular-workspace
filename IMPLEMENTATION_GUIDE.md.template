@@ -29,6 +29,8 @@ When working with any codebase, it's essential to understand the project structu
 3. Implement the core functionality with proper error handling
 4. Add comprehensive comments and documentation
 
+Note: If your project includes Angular migration schematics (versioned `update-*` scripts used by `ng update`), place those entries in a separate `migrations.json` and reference it from `package.json` via the `migrations` field. Do not duplicate those versioned migrations in your public `collection.json` unless you intentionally want them runnable via `ng generate`. For testing, consider using a `test-collection.json` that includes migrations only for the test runner.
+
 ## Step 3: Testing
 
 1. Write unit tests for your implementation

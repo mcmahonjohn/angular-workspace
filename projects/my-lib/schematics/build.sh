@@ -32,6 +32,12 @@ fi
 echo "Copying collection.json..."
 cp "$SCHEMATICS_DIR/collection.json" "$DIST_DIR/collection.json"
 
+# Copy test-only collection for running update specs in CI/local tests
+if [ -f "$SCHEMATICS_DIR/test-collection.json" ]; then
+    echo "Copying test-collection.json..."
+    cp "$SCHEMATICS_DIR/test-collection.json" "$DIST_DIR/test-collection.json"
+fi
+
 # Copy schema files and templates
 echo "Copying schema files and templates..."
 

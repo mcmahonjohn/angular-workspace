@@ -182,6 +182,8 @@ Create `schematics/collection.json`:
 }
 ```
 
+    Note: Migration schematics that are intended to run only during package upgrades (for `ng update`) should be listed in `migrations.json` and referenced from your `package.json` `migrations` field. Avoid adding versioned `update-*` entries to the public `collection.json` unless you explicitly want those migrations to also be runnable via `ng generate`. Keeping migrations out of `collection.json` reduces accidental exposure and prevents duplicate-suite/test collisions; for local testing you can provide a separate `test-collection.json` that contains the update entries used only by the test runner.
+
 ## Step 3: Implement ng-new Schematic
 
 ### 3.1 Create Schema Definition

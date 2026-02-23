@@ -1,23 +1,26 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import { UnitTestTree, } from '@angular-devkit/schematics/testing';
 import { Tree } from '@angular-devkit/schematics';
 import { replaceImportPath, updateImports } from './update-imports';
-import * as path from 'path';
 
 describe('update-imports schematic', () => {
-  const collectionPath = path.join(__dirname, '../test-collection.json');
-  const schematicName = 'update-2-0-0';
-  let runner: SchematicTestRunner;
   let appTree: UnitTestTree;
+  let mockContext: any;
 
   beforeEach(() => {
-      runner = new SchematicTestRunner('my-lib', collectionPath);
-      appTree = new UnitTestTree(Tree.empty());
-      appTree.create('src/app/example.ts', `import { Foo } from '@car/core';\nconst x = 1;`);
+    appTree = new UnitTestTree(Tree.empty());
+    appTree.create('src/app/example.ts', `import { Foo } from '@car/core';\nconst x = 1;`);
+
+    mockContext = {
+      logger: {
+        info: jasmine.createSpy('info')
+      }
+    };
   });
 
-  it('should update imports from "@car" to "@door"', async () => {
-    const tree = await runner.runSchematic(schematicName, {}, appTree);
-    const content = tree.readContent('src/app/example.ts');
+  it('should update imports from "@car" to "@door"', () => {
+    updateImports(appTree, mockContext as any);
+
+    const content = appTree.readContent('src/app/example.ts');
     expect(content).toContain(`import { Foo } from '@door/core';`);
     expect(content).not.toContain('@car');
   });

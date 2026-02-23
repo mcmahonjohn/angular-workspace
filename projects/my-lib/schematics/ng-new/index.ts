@@ -107,12 +107,7 @@ export default function (options: NgNewSchema): Rule {
       ),
 
       // Post-processing
-      (tree: Tree) => {
-        // Remove empty constructors
-        removeEmptyConstructors(tree, options);
-
-        return tree;
-      },
+      removeEmptyConstructors(options),
     ]);
   }
 }
@@ -242,24 +237,34 @@ export function createKarmaConfigs(options: NgNewSchema): Rule {
   );
 }
 
-export function removeEmptyConstructors(tree: Tree, options: NgNewSchema): void {
-  const basePath = options.directory || '.';
-  const srcPath = `${basePath}/src`;
+export function removeEmptyConstructors(options: NgNewSchema): Rule {
+  return (tree: Tree) => {
+    const basePath = options.directory || '.';
+    const srcPath = `${basePath}/src`;
 
-  // Remove empty constructors from generated files
-  tree.getDir(srcPath).visit((filePath) => {
-    if (filePath.endsWith('.ts') && !filePath.includes('.spec.ts')) {
-      const content = tree.read(filePath);
-      if (content) {
-        const updatedContent = content
-          .toString()
-          .replace(/\s*constructor\(\)\s*{\s*}\s*/g, '')
-          .replace(/\n\n\n+/g, '\n\n'); // Clean up extra newlines
+    // Remove empty constructors from generated files
+    const dir = tree.getDir(srcPath);
 
-        if (content.toString() !== updatedContent) {
-          tree.overwrite(filePath, updatedContent);
+    if (!dir) {
+      return tree;
+    }
+
+    dir.visit((filePath) => {
+      if (filePath.endsWith('.ts') && !filePath.includes('.spec.ts')) {
+        const content = tree.read(filePath);
+        if (content) {
+          const updatedContent = content
+            .toString()
+            .replace(/\s*constructor\(\)\s*{\s*}\s*/g, '')
+            .replace(/\n\n\n+/g, '\n\n'); // Clean up extra newlines
+
+          if (content.toString() !== updatedContent) {
+            tree.overwrite(filePath, updatedContent);
+          }
         }
       }
-    }
-  });
+    });
+
+    return tree;
+  };
 }

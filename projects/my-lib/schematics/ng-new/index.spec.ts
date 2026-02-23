@@ -831,7 +831,7 @@ export class Component1 {
       `);
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/component1.ts');
 
@@ -853,7 +853,7 @@ export class Component2 {
       `);
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/component2.ts');
 
@@ -872,7 +872,7 @@ export class Component3 {
       `);
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/component3.ts');
 
@@ -893,7 +893,7 @@ describe('Component', () => {
       `);
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/component.spec.ts');
 
@@ -906,7 +906,7 @@ describe('Component', () => {
       testTree.create('src/assets/test.txt', 'constructor() {}');
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/assets/test.txt');
 
@@ -923,7 +923,7 @@ export class Component {
       `);
 
       const options: NgNewSchema = { name: 'my-project', directory: 'custom-dir' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('custom-dir/src/app/component.ts');
 
@@ -950,7 +950,7 @@ export class Component4 {
       `);
 
       const options: NgNewSchema = { name: 'my-project' };
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/component4.ts');
 
@@ -1085,7 +1085,7 @@ export class TestComponent {
       const options: NgNewSchema = { name: 'test-workspace' };
 
       // Simulate the post-processing step
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('src/app/test.ts');
       if (content.includes('constructor() {}')) {
@@ -1199,7 +1199,7 @@ export class AppComponent {
       }
 
       // Test the post-processing step (this covers lines 89-97)
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       // Verify all steps executed successfully
       const updatedAngular = JSON.parse(testTree.readContent('angular.json'));
@@ -1363,7 +1363,7 @@ export class Service {
       const options: NgNewSchema = { name: 'test-workspace' };
 
       // Test the post-processing step
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const appContent = testTree.readContent('src/app/app.component.ts');
       const serviceContent = testTree.readContent('src/app/service.ts');
@@ -1394,7 +1394,7 @@ export class Component {
       const options: NgNewSchema = { name: 'test-workspace', directory: 'custom-dir' };
 
       // Test post-processing with custom directory
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const content = testTree.readContent('custom-dir/src/app/component.ts');
 
@@ -1927,7 +1927,7 @@ export class AppComponent {
 
       // Don't create src directory - test error handling
       try {
-        removeEmptyConstructors(testTree, options);
+        removeEmptyConstructors(options)(testTree, {} as any);
         // Should handle missing directory gracefully
       } catch (error) {
         // If it throws, that's also acceptable behavior
@@ -1963,7 +1963,7 @@ export class Patterns {
       const options: NgNewSchema = { name: 'test-workspace' };
       const originalContent = testTree.readContent('src/app/patterns.ts');
       
-      removeEmptyConstructors(testTree, options);
+      removeEmptyConstructors(options)(testTree, {} as any);
 
       const updatedContent = testTree.readContent('src/app/patterns.ts');
 

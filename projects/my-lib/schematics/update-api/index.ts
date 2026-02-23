@@ -10,7 +10,7 @@ interface Replacement {
 
 interface ChangeSet {
   description?: string;
-  replacements: Replacement[];
+  tsReplacements: Replacement[];
   htmlReplacements?: Replacement[];
 }
 
@@ -66,7 +66,7 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
       const edits: Array<{ start: number; end: number; text: string }> = [];
 
       // identifier-based (non-regex) replacements using AST
-      changes.replacements.forEach((rep) => {
+      changes.tsReplacements.forEach((rep) => {
         if (rep.regex) {
           // fallback to regex replacement across the file (includes comments)
           const re = new RegExp(rep.from, 'g');
@@ -126,7 +126,7 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
     }
 
     // Fallback: apply replacements as before for other file types
-    changes.replacements.forEach((rep) => {
+    changes.tsReplacements.forEach((rep) => {
       if (rep.regex) {
         const re = new RegExp(rep.from, 'g');
         content = content.replace(re, rep.to);

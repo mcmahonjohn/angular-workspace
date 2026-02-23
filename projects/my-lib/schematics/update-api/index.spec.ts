@@ -70,7 +70,7 @@ describe('update-api schematic', () => {
     const tree = new UnitTestTree(Tree.empty());
     tree.create('src/app/service.ts', `function call(){ oldMethod('x'); }`);
 
-    const cs = { replacements: [{ from: 'oldMethod\\(', to: 'newMethod(', regex: true }] } as any;
+    const cs = { tsReplacements: [{ from: 'oldMethod\\(', to: 'newMethod(', regex: true }] } as any;
 
     applyChangeSet(tree as any, { logger: { info: () => {} } } as any, cs);
 
@@ -82,7 +82,7 @@ describe('update-api schematic', () => {
     const tree = new UnitTestTree(Tree.empty());
     tree.create('src/app/foo.ts', `const s = 'value 123abc here';`);
 
-    const cs = { replacements: [{ from: '123abc', to: 'REPLACED', regex: false }] } as any;
+    const cs = { tsReplacements: [{ from: '123abc', to: 'REPLACED', regex: false }] } as any;
 
     applyChangeSet(tree as any, { logger: { info: () => {} } } as any, cs);
 
@@ -94,7 +94,7 @@ describe('update-api schematic', () => {
     const tree = new UnitTestTree(Tree.empty());
     tree.create('src/app/test.html', `<div class="app-old">text</div>`);
 
-    const cs = { htmlReplacements: [{ from: 'app-old', to: 'app-new', regex: true }], replacements: [] } as any;
+    const cs = { htmlReplacements: [{ from: 'app-old', to: 'app-new', regex: true }], tsReplacements: [] } as any;
 
     applyChangeSet(tree as any, { logger: { info: () => {} } } as any, cs);
 
@@ -106,7 +106,7 @@ describe('update-api schematic', () => {
     const tree = new UnitTestTree(Tree.empty());
     tree.create('src/app/data.txt', `OldSharedModule is referenced here`);
 
-    const cs = { replacements: [{ from: 'OldSharedModule', to: 'NewSharedModule', regex: false }] } as any;
+    const cs = { tsReplacements: [{ from: 'OldSharedModule', to: 'NewSharedModule', regex: false }] } as any;
 
     applyChangeSet(tree as any, { logger: { info: () => {} } } as any, cs);
 

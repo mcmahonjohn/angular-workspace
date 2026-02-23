@@ -10,7 +10,7 @@ File: `api-changes.json`
 
 ChangeSet shape
 - `description` (optional): human-friendly description of the change set.
-- `replacements`: array of replacement objects applied to TypeScript files (`.ts`):
+- `tsReplacements`: array of replacement objects applied to TypeScript files (`.ts`):
   - `from`: string (literal identifier or regex pattern)
   - `to`: string (replacement text)
   - `regex` (optional, boolean): when `true` the `from` field is treated as a JavaScript regular expression (it will be used as `new RegExp(from, 'g')`). When `false` non-regex `from` values are treated as whole-word identifiers and replaced via an AST-aware approach (also updates comments).
@@ -37,7 +37,7 @@ Examples
 {
   "description": "Rename input 'oldInput' to 'newInput' and selector 'app-old' to 'app-new'",
   "filePatterns": ["**/*.component.ts", "**/*.component.html"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "oldInput", "to": "newInput", "regex": false },
     { "from": "app-old", "to": "app-new", "regex": false }
   ]
@@ -50,7 +50,7 @@ Examples
 {
   "description": "Update directive occurrences",
   "filePatterns": ["**/*.directive.ts", "**/*.component.html"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "oldDirective", "to": "newDirective", "regex": false }
   ]
 }
@@ -62,7 +62,7 @@ Examples
 {
   "description": "Rename service method 'oldMethod' to 'newMethod'",
   "filePatterns": ["**/*.service.ts"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "oldMethod\\(", "to": "newMethod(", "regex": true }
   ]
 }
@@ -74,7 +74,7 @@ Examples
 {
   "description": "Update pipe usage in templates",
   "filePatterns": ["**/*.pipe.ts", "**/*.component.html"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "| oldPipe", "to": "| newPipe", "regex": false }
   ]
 }
@@ -86,7 +86,7 @@ Examples
 {
   "description": "Replace OldSharedModule with NewSharedModule",
   "filePatterns": ["**/*.module.ts"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "OldSharedModule", "to": "NewSharedModule", "regex": false }
   ]
 }
@@ -98,7 +98,7 @@ Examples
 {
   "description": "Resolvers and interceptors example",
   "filePatterns": ["**/*resolver*.ts", "**/*interceptor*.ts"],
-  "replacements": [
+  "tsReplacements": [
     { "from": "resolveOld(\\", "to": "resolveNew(", "regex": true }
   ]
 }

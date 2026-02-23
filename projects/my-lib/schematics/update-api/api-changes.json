@@ -2,7 +2,7 @@
   "components": [
     {
       "description": "Rename input property 'oldInput' to 'newInput' and selector 'app-old' to 'app-new'",
-      "replacements": [
+      "tsReplacements": [
         { "from": "oldInput", "to": "newInput", "regex": false }
       ],
       "htmlReplacements": [
@@ -13,7 +13,7 @@
   "directives": [
     {
       "description": "Update directive name occurrences",
-      "replacements": [
+      "tsReplacements": [
         { "from": "oldDirective", "to": "newDirective", "regex": false }
       ]
     }
@@ -21,7 +21,7 @@
   "services": [
     {
       "description": "Rename service method 'oldMethod' to 'newMethod'",
-      "replacements": [
+      "tsReplacements": [
         { "from": "oldMethod\\(", "to": "newMethod(", "regex": true }
       ]
     }
@@ -29,7 +29,7 @@
   "pipes": [
     {
       "description": "Update pipe transform signature usages",
-      "replacements": [
+      "tsReplacements": [
         { "from": "| oldPipe", "to": "| newPipe", "regex": false }
       ]
     }
@@ -37,7 +37,7 @@
   "modules": [
     {
       "description": "Replace Module import names",
-      "replacements": [
+      "tsReplacements": [
         { "from": "OldSharedModule", "to": "NewSharedModule", "regex": false }
       ]
     }
@@ -45,7 +45,7 @@
   "models": [
     {
       "description": "Update model/interface names or properties",
-      "replacements": [
+      "tsReplacements": [
         { "from": "OldModelName", "to": "NewModelName", "regex": false }
       ]
     }
@@ -53,7 +53,7 @@
   "other": [
     {
       "description": "Resolvers and interceptors",
-      "replacements": [
+      "tsReplacements": [
         { "from": "resolveOld\\(", "to": "resolveNew(", "regex": true }
       ]
     }

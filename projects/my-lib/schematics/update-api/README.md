@@ -17,7 +17,8 @@ ChangeSet shape
   - `regex` (optional, boolean): when `true` the `from` field is treated as a JavaScript regular expression (it will be used as `new RegExp(from, 'g')`). When `false` a simple literal string replacement is performed.
 
 Notes on filename styles
-- The schematic expands common filePattern variants so you can author patterns using the familiar `.component.` (dot) style and the schematic will also match `-component.` (dash) variants. You do not need to duplicate both styles in `filePatterns` (but you may if you prefer explicitness).
+- The schematic expands common `filePatterns` so you can author patterns using the familiar `.component.` (dot) style and the schematic will also match `-component.` (dash) variants. You do not need to duplicate both styles in `filePatterns` (but you may if you prefer explicitness).
+- Important: for `component`, `service`, `directive`, and `models` (model/interface) files the newer filename styles may omit the type segment entirely (for example `car.ts` instead of `car.model.ts` or `sample.ts` instead of `sample.component.ts`). The schematic generates matching variants that remove the segment so a pattern like `**/*.component.ts` will also match `**/*.ts` where appropriate. Prefer targeted patterns (e.g., `src/app/**/` prefixes) to avoid overly-broad matches.
 
 Examples
 

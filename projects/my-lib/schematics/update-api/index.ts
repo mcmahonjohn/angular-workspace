@@ -28,8 +28,14 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
   const mm = require('minimatch');
   const matchFn = typeof mm === 'function' ? mm : mm.minimatch;
 
-  // Expand file patterns to support old and new filename separators
-  const knownSegments = ['component', 'directive', 'service', 'pipe', 'module'];
+  // Expand file patterns to support old (.component.ts), new (-component.ts)
+  // and "no-segment" styles (e.g. `foo.ts`) for certain types.
+  const knownSegments = ['component', 'directive', 'service', 'pipe', 'module', 'model', 'interface'];
+
+  // For these segments, also generate a pattern that removes the segment entirely
+  // to support new style that omits the type (e.g. `foo.ts`).
+  const segmentsAllowRemoval = new Set(['component', 'directive', 'service', 'model', 'interface']);
+
   const expandPattern = (pattern: string) => {
     const variants = new Set<string>();
     variants.add(pattern);
@@ -39,10 +45,28 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
       const dashSegment = `-${seg}.`;
 
       if (pattern.indexOf(dotSegment) !== -1) {
+        // dot -> dash variant
         variants.add(pattern.split(dotSegment).join(dashSegment));
+
+        // dot -> removed-segment variant (e.g. `*.component.ts` -> `*.ts`)
+        if (segmentsAllowRemoval.has(seg)) {
+          variants.add(pattern.split(dotSegment).join('.'));
+        }
       }
 
+      if (pattern.indexOf(dashSegment) !== -1) {
+        // dash -> dot variant
+        variants.add(pattern.split(dashSegment).join(dotSegment));
+
+        // dash -> removed-segment variant (e.g. `*-component.ts` -> `*.ts`)
+        if (segmentsAllowRemoval.has(seg)) {
+          variants.add(pattern.split(dashSegment).join('-').replace(new RegExp(`-${seg}(?=\.)`), ''));
+          // also try replacing the dash-segment with just '.' for patterns like `name-component.html` -> `name.html`
+          variants.add(pattern.split(dashSegment).join('.'));
+        }
+      }
     });
+
     return Array.from(variants);
   };
 

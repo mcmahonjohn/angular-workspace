@@ -12,7 +12,7 @@
   "directives": [
     {
       "description": "Update directive name occurrences",
-      "filePatterns": ["**/*.directive.ts", "**/*.component.html"],
+      "filePatterns": ["**/*.directive.ts", "**/*.component.ts", "**/*.component.html"],
       "replacements": [
         { "from": "oldDirective", "to": "newDirective", "regex": false }
       ]
@@ -30,7 +30,7 @@
   "pipes": [
     {
       "description": "Update pipe transform signature usages",
-      "filePatterns": ["**/*.pipe.ts", "**/*.component.html"],
+      "filePatterns": ["**/*.pipe.ts", "**/*.component.ts", "**/*.component.html"],
       "replacements": [
         { "from": "| oldPipe", "to": "| newPipe", "regex": false }
       ]
@@ -45,9 +45,18 @@
       ]
     }
   ],
+  "models": [
+    {
+      "description": "Update model/interface names or properties",
+      "filePatterns": ["**/*.model.ts", "**/*.interface.ts", "**/*.ts"],
+      "replacements": [
+        { "from": "OldModelName", "to": "NewModelName", "regex": false }
+      ]
+    }
+  ],
   "other": [
     {
-      "description": "Resolvers and interceptors example",
+      "description": "Resolvers and interceptors",
       "filePatterns": ["**/*resolver*.ts", "**/*interceptor*.ts"],
       "replacements": [
         { "from": "resolveOld(\\", "to": "resolveNew(", "regex": true }

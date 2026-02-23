@@ -355,12 +355,16 @@ describe('ng-new', () => {
 
   describe('updateTsConfig function', () => {
     beforeEach(() => {
-      // Create a mock tsconfig.json
+      mockTree = new UnitTestTree(new EmptyTree());
+
       const tsconfig = {
         compilerOptions: {
-          strict: true
+          strict: true,
+          target: 'ES2022'
         },
-        angularCompilerOptions: {}
+        angularCompilerOptions: {
+          enableI18nLegacyMessageIdFormat: true
+        }
       };
 
       mockTree.create('tsconfig.json', JSON.stringify(tsconfig, null, 2));
@@ -389,6 +393,128 @@ describe('ng-new', () => {
 
       if (typeof tsconfig.angularCompilerOptions !== 'object') {
         fail('angularCompilerOptions should be an object');
+      }
+    });
+
+    it('should update Angular compiler options', () => {
+      const options: NgNewSchema = { name: 'my-project' };
+      updateTsConfig(mockTree, options);
+
+      const content = mockTree.readContent('tsconfig.json');
+      const tsconfig = JSON.parse(content);
+
+      const angularOptions = tsconfig.angularCompilerOptions;
+
+      if (angularOptions.enableI18nLegacyMessageIdFormat !== false) {
+        fail('Should disable legacy message ID format');
+      }
+
+      if (angularOptions.fullTemplateTypeCheck !== true) {
+        fail('Should enable full template type check');
+      }
+
+      if (angularOptions.strictInjectionParameters !== true) {
+        fail('Should enable strict injection parameters');
+      }
+
+      if (angularOptions.strictInputAccessModifiers !== true) {
+        fail('Should enable strict input access modifiers');
+      }
+
+      if (angularOptions.strictTemplates !== true) {
+        fail('Should enable strict templates');
+      }
+
+      if (angularOptions.strictStandalone !== true) {
+        fail('Should enable strict standalone');
+      }
+    });
+
+    it('should handle tsconfig with directory option', () => {
+      const options: NgNewSchema = { name: 'my-project', directory: 'custom-dir' };
+
+      // Create tsconfig in custom directory
+      mockTree.create('custom-dir/tsconfig.json', JSON.stringify({
+        compilerOptions: {},
+        angularCompilerOptions: {}
+      }, null, 2));
+
+      updateTsConfig(mockTree, options);
+
+      if (!mockTree.exists('custom-dir/tsconfig.json')) {
+        fail('Should handle custom directory path');
+      }
+
+      const content = mockTree.readContent('custom-dir/tsconfig.json');
+      const tsconfig = JSON.parse(content);
+
+      if (!tsconfig.angularCompilerOptions.strictTemplates) {
+        fail('Should update tsconfig in custom directory');
+      }
+    });
+
+    it('should handle missing tsconfig.json gracefully', () => {
+      const emptyTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'my-project' };
+
+      try {
+        updateTsConfig(emptyTree, options);
+        // Should not throw when file doesn't exist
+      } catch (error) {
+        fail(`Should handle missing tsconfig.json gracefully: ${error}`);
+      }
+    });
+
+    it('should handle empty tsconfig.json file', () => {
+      const mockTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'my-project' };
+
+      // Create an empty file (no content)
+      mockTree.create('tsconfig.json', '');
+
+      try {
+        updateTsConfig(mockTree, options);
+        // Should handle empty file gracefully
+      } catch (error) {
+        fail(`Should handle empty tsconfig.json gracefully: ${error}`);
+      }
+    });
+
+    it('should handle invalid JSON in tsconfig.json', () => {
+      const mockTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'my-project' };
+
+      // Create a file with invalid JSON
+      mockTree.create('tsconfig.json', '{ "invalid": json }');
+
+      try {
+        updateTsConfig(mockTree, options);
+        // Should handle invalid JSON gracefully
+      } catch (error) {
+        fail(`Should handle invalid JSON in tsconfig.json gracefully: ${error}`);
+      }
+    });
+
+    it('should handle null content in tsconfig.json', () => {
+      const mockTree = new UnitTestTree(new EmptyTree());
+
+      // Create file but simulate null content scenario
+      mockTree.create('tsconfig.json', JSON.stringify({
+        compilerOptions: {},
+        angularCompilerOptions: {}
+      }));
+
+      const options: NgNewSchema = { name: 'my-project' };
+
+      // Test the early return path when content exists
+      updateTsConfig(mockTree, options);
+
+      // Verify file was processed (not early return)
+      const content = mockTree.readContent('tsconfig.json');
+      const tsconfig = JSON.parse(content);
+
+      if (!tsconfig.angularCompilerOptions.strictTemplates) {
+        fail('Should process valid tsconfig content');
       }
     });
   });
@@ -603,148 +729,6 @@ describe('Test', () => {
 
       if (workspacePath !== expectedPath) {
         fail(`Path construction should create '${expectedPath}', got '${workspacePath}'`);
-      }
-    });
-  });
-
-  describe('updateTsConfig function', () => {
-    let testTree: UnitTestTree;
-
-    beforeEach(() => {
-      testTree = new UnitTestTree(new EmptyTree());
-
-      const tsconfig = {
-        compilerOptions: {
-          strict: true,
-          target: 'ES2022'
-        },
-        angularCompilerOptions: {
-          enableI18nLegacyMessageIdFormat: true
-        }
-      };
-
-      testTree.create('tsconfig.json', JSON.stringify(tsconfig, null, 2));
-    });
-
-    it('should update Angular compiler options', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateTsConfig(testTree, options);
-
-      const content = testTree.readContent('tsconfig.json');
-      const tsconfig = JSON.parse(content);
-
-      const angularOptions = tsconfig.angularCompilerOptions;
-
-      if (angularOptions.enableI18nLegacyMessageIdFormat !== false) {
-        fail('Should disable legacy message ID format');
-      }
-
-      if (angularOptions.fullTemplateTypeCheck !== true) {
-        fail('Should enable full template type check');
-      }
-
-      if (angularOptions.strictInjectionParameters !== true) {
-        fail('Should enable strict injection parameters');
-      }
-
-      if (angularOptions.strictInputAccessModifiers !== true) {
-        fail('Should enable strict input access modifiers');
-      }
-
-      if (angularOptions.strictTemplates !== true) {
-        fail('Should enable strict templates');
-      }
-
-      if (angularOptions.strictStandalone !== true) {
-        fail('Should enable strict standalone');
-      }
-    });
-
-    it('should handle tsconfig with directory option', () => {
-      const options: NgNewSchema = { name: 'my-project', directory: 'custom-dir' };
-
-      // Create tsconfig in custom directory
-      testTree.create('custom-dir/tsconfig.json', JSON.stringify({
-        compilerOptions: {},
-        angularCompilerOptions: {}
-      }, null, 2));
-
-      updateTsConfig(testTree, options);
-
-      if (!testTree.exists('custom-dir/tsconfig.json')) {
-        fail('Should handle custom directory path');
-      }
-
-      const content = testTree.readContent('custom-dir/tsconfig.json');
-      const tsconfig = JSON.parse(content);
-
-      if (!tsconfig.angularCompilerOptions.strictTemplates) {
-        fail('Should update tsconfig in custom directory');
-      }
-    });
-
-    it('should handle missing tsconfig.json gracefully', () => {
-      const emptyTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      try {
-        updateTsConfig(emptyTree, options);
-        // Should not throw when file doesn't exist
-      } catch (error) {
-        fail(`Should handle missing tsconfig.json gracefully: ${error}`);
-      }
-    });
-
-    it('should handle empty tsconfig.json file', () => {
-      const testTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Create an empty file (no content)
-      testTree.create('tsconfig.json', '');
-
-      try {
-        updateTsConfig(testTree, options);
-        // Should handle empty file gracefully
-      } catch (error) {
-        fail(`Should handle empty tsconfig.json gracefully: ${error}`);
-      }
-    });
-
-    it('should handle invalid JSON in tsconfig.json', () => {
-      const testTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Create a file with invalid JSON
-      testTree.create('tsconfig.json', '{ "invalid": json }');
-
-      try {
-        updateTsConfig(testTree, options);
-        // Should handle invalid JSON gracefully
-      } catch (error) {
-        fail(`Should handle invalid JSON in tsconfig.json gracefully: ${error}`);
-      }
-    });
-
-    it('should handle null content in tsconfig.json', () => {
-      const testTree = new UnitTestTree(new EmptyTree());
-
-      // Create file but simulate null content scenario
-      testTree.create('tsconfig.json', JSON.stringify({
-        compilerOptions: {},
-        angularCompilerOptions: {}
-      }));
-
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Test the early return path when content exists
-      updateTsConfig(testTree, options);
-
-      // Verify file was processed (not early return)
-      const content = testTree.readContent('tsconfig.json');
-      const tsconfig = JSON.parse(content);
-
-      if (!tsconfig.angularCompilerOptions.strictTemplates) {
-        fail('Should process valid tsconfig content');
       }
     });
   });

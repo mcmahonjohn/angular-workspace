@@ -28,9 +28,29 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
   const mm = require('minimatch');
   const matchFn = typeof mm === 'function' ? mm : mm.minimatch;
 
+  // Expand file patterns to support old and new filename separators
+  const knownSegments = ['component', 'directive', 'service', 'pipe', 'module'];
+  const expandPattern = (pattern: string) => {
+    const variants = new Set<string>();
+    variants.add(pattern);
+
+    knownSegments.forEach((seg) => {
+      const dotSegment = `.${seg}.`;
+      const dashSegment = `-${seg}.`;
+
+      if (pattern.indexOf(dotSegment) !== -1) {
+        variants.add(pattern.split(dotSegment).join(dashSegment));
+      }
+
+    });
+    return Array.from(variants);
+  };
+
+  const expandedPatterns = changes.filePatterns.flatMap((p) => expandPattern(p));
+
   tree.visit((filePath) => {
-    // check whether filePath matches any of the patterns
-    const matchesPattern = changes.filePatterns.some((pattern) => matchFn(filePath, pattern));
+    // check whether filePath matches any of the expanded patterns
+    const matchesPattern = expandedPatterns.some((pattern) => matchFn(filePath, pattern));
     if (!matchesPattern) return;
 
     const buffer = tree.read(filePath);

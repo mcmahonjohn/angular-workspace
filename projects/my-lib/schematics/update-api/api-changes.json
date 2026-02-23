@@ -54,7 +54,7 @@
     {
       "description": "Resolvers and interceptors",
       "replacements": [
-        { "from": "resolveOld(\\", "to": "resolveNew(", "regex": true }
+        { "from": "resolveOld\\(", "to": "resolveNew(", "regex": true }
       ]
     }
   ]

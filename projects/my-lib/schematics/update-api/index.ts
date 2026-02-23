@@ -28,9 +28,7 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
   const mm = require('minimatch');
   const matchFn = typeof mm === 'function' ? mm : mm.minimatch;
 
-  const allowedScopes = ['src/app/', 'src/lib/'];
-
-  const inAllowedScope = (p: string) => allowedScopes.some((s) => p.startsWith(s));
+  const inAllowedScope = (p: string) => /(^|\/)src\/(app|lib)\//.test(p);
 
   tree.visit((filePath) => {
     if (!inAllowedScope(filePath)) return; // restrict to src/app and src/lib

@@ -162,8 +162,10 @@ describe('ng-new', () => {
   });
 
   describe('updateAngularJson function', () => {
+
     beforeEach(() => {
-      // Create a mock angular.json structure
+      mockTree = new UnitTestTree(new EmptyTree());
+
       const angularJson = {
         projects: {
           'test-workspace': {
@@ -171,21 +173,24 @@ describe('ng-new', () => {
               build: {
                 configurations: {
                   production: {
-                    optimization: {}
+                    optimization: {
+                      fonts: true
+                    }
                   }
                 }
               }
             }
           }
         },
-        cli: {}
+        cli: {
+          packageManager: 'yarn'
+        }
       };
 
       mockTree.create('angular.json', JSON.stringify(angularJson, null, 2));
     });
 
     it('should process angular.json file when it exists', () => {
-      const options: NgNewSchema = { name: 'test-workspace' };
 
       // Since updateAngularJson is not exported, we test through the main function
       // This tests that the function can read and process angular.json
@@ -216,6 +221,134 @@ describe('ng-new', () => {
 
       if (!workspace.projects['test-workspace']) {
         fail('Workspace should have test-workspace project');
+      }
+    });
+
+    it('should disable CLI analytics', () => {
+      const options: NgNewSchema = { name: 'test-workspace' };
+      updateAngularJson(mockTree, 'angular.json', options);
+
+      const content = mockTree.readContent('angular.json');
+      const workspace = JSON.parse(content);
+
+      if (workspace.cli.analytics !== false) {
+        fail('CLI analytics should be disabled');
+      }
+    });
+
+    it('should set package manager to npm', () => {
+      const options: NgNewSchema = { name: 'test-workspace' };
+      updateAngularJson(mockTree, 'angular.json', options);
+
+      const content = mockTree.readContent('angular.json');
+      const workspace = JSON.parse(content);
+
+      if (workspace.cli.packageManager !== 'npm') {
+        fail('Package manager should be set to npm');
+      }
+    });
+
+    it('should add schematic collections', () => {
+      const options: NgNewSchema = { name: 'test-workspace' };
+      updateAngularJson(mockTree, 'angular.json', options);
+
+      const content = mockTree.readContent('angular.json');
+      const workspace = JSON.parse(content);
+
+      const expectedCollections = ['@schematics/angular', '@angular-eslint/schematics', '@cypress/schematic'];
+
+      if (!workspace.cli.schematicCollections) {
+        fail('Schematic collections should be defined');
+        return;
+      }
+
+      expectedCollections.forEach(collection => {
+        if (!workspace.cli.schematicCollections.includes(collection)) {
+          fail(`Should include schematic collection: ${collection}`);
+        }
+      });
+    });
+
+    it('should update production optimization settings', () => {
+      const options: NgNewSchema = { name: 'test-workspace' };
+      updateAngularJson(mockTree, 'angular.json', options);
+
+      const content = mockTree.readContent('angular.json');
+      const workspace = JSON.parse(content);
+
+      const project = workspace.projects['test-workspace'];
+      const buildConfig = project.architect.build;
+      const prodConfig = buildConfig.configurations.production;
+
+      if (!prodConfig.optimization.styles || prodConfig.optimization.styles.inlineCritical !== false) {
+        fail('Production optimization should disable inline critical styles');
+      }
+    });
+
+    it('should add e2e-ci configuration', () => {
+      const options: NgNewSchema = { name: 'test-workspace' };
+      updateAngularJson(mockTree, 'angular.json', options);
+
+      const content = mockTree.readContent('angular.json');
+      const workspace = JSON.parse(content);
+
+      const project = workspace.projects['test-workspace'];
+      const e2eConfig = project.architect['e2e-ci'];
+
+      if (!e2eConfig) {
+        fail('e2e-ci configuration should be added');
+        return;
+      }
+
+      if (e2eConfig.builder !== '@cypress/schematic:cypress') {
+        fail('e2e-ci should use Cypress builder');
+      }
+
+      if (e2eConfig.options.devServerTarget !== 'test-workspace:serve') {
+        fail('e2e-ci should target correct dev server');
+      }
+    });
+
+    it('should handle missing angular.json gracefully', () => {
+      const emptyTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'test-workspace' };
+
+      // Should not throw when file doesn't exist
+      try {
+        updateAngularJson(emptyTree, 'angular.json', options);
+        // Function should return without error when file doesn't exist
+      } catch (error) {
+        fail(`Should handle missing angular.json gracefully: ${error}`);
+      }
+    });
+
+    it('should handle empty angular.json file', () => {
+      const testTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'test-workspace' };
+
+      // Create an empty file
+      testTree.create('angular.json', '');
+
+      try {
+        updateAngularJson(testTree, 'angular.json', options);
+        // Should handle empty file gracefully
+      } catch (error) {
+        fail(`Should handle empty angular.json gracefully: ${error}`);
+      }
+    });
+
+    it('should handle invalid JSON in angular.json', () => {
+      const testTree = new UnitTestTree(new EmptyTree());
+      const options: NgNewSchema = { name: 'test-workspace' };
+
+      // Create a file with invalid JSON
+      testTree.create('angular.json', '{ invalid json }');
+
+      try {
+        updateAngularJson(testTree, 'angular.json', options);
+        // Should handle invalid JSON gracefully
+      } catch (error) {
+        fail(`Should handle invalid JSON in angular.json gracefully: ${error}`);
       }
     });
   });
@@ -470,166 +603,6 @@ describe('Test', () => {
 
       if (workspacePath !== expectedPath) {
         fail(`Path construction should create '${expectedPath}', got '${workspacePath}'`);
-      }
-    });
-  });
-
-  // Direct function tests now that functions are exported
-  describe('updateAngularJson function', () => {
-    let testTree: UnitTestTree;
-
-    beforeEach(() => {
-      testTree = new UnitTestTree(new EmptyTree());
-
-      const angularJson = {
-        projects: {
-          'my-project': {
-            architect: {
-              build: {
-                configurations: {
-                  production: {
-                    optimization: {
-                      fonts: true
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        cli: {
-          packageManager: 'yarn'
-        }
-      };
-
-      testTree.create('angular.json', JSON.stringify(angularJson, null, 2));
-    });
-
-    it('should disable CLI analytics', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateAngularJson(testTree, 'angular.json', options);
-
-      const content = testTree.readContent('angular.json');
-      const workspace = JSON.parse(content);
-
-      if (workspace.cli.analytics !== false) {
-        fail('CLI analytics should be disabled');
-      }
-    });
-
-    it('should set package manager to npm', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateAngularJson(testTree, 'angular.json', options);
-
-      const content = testTree.readContent('angular.json');
-      const workspace = JSON.parse(content);
-
-      if (workspace.cli.packageManager !== 'npm') {
-        fail('Package manager should be set to npm');
-      }
-    });
-
-    it('should add schematic collections', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateAngularJson(testTree, 'angular.json', options);
-
-      const content = testTree.readContent('angular.json');
-      const workspace = JSON.parse(content);
-
-      const expectedCollections = ['@schematics/angular', '@angular-eslint/schematics', '@cypress/schematic'];
-
-      if (!workspace.cli.schematicCollections) {
-        fail('Schematic collections should be defined');
-        return;
-      }
-
-      expectedCollections.forEach(collection => {
-        if (!workspace.cli.schematicCollections.includes(collection)) {
-          fail(`Should include schematic collection: ${collection}`);
-        }
-      });
-    });
-
-    it('should update production optimization settings', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateAngularJson(testTree, 'angular.json', options);
-
-      const content = testTree.readContent('angular.json');
-      const workspace = JSON.parse(content);
-
-      const project = workspace.projects['my-project'];
-      const buildConfig = project.architect.build;
-      const prodConfig = buildConfig.configurations.production;
-
-      if (!prodConfig.optimization.styles || prodConfig.optimization.styles.inlineCritical !== false) {
-        fail('Production optimization should disable inline critical styles');
-      }
-    });
-
-    it('should add e2e-ci configuration', () => {
-      const options: NgNewSchema = { name: 'my-project' };
-      updateAngularJson(testTree, 'angular.json', options);
-
-      const content = testTree.readContent('angular.json');
-      const workspace = JSON.parse(content);
-
-      const project = workspace.projects['my-project'];
-      const e2eConfig = project.architect['e2e-ci'];
-
-      if (!e2eConfig) {
-        fail('e2e-ci configuration should be added');
-        return;
-      }
-
-      if (e2eConfig.builder !== '@cypress/schematic:cypress') {
-        fail('e2e-ci should use Cypress builder');
-      }
-
-      if (e2eConfig.options.devServerTarget !== 'my-project:serve') {
-        fail('e2e-ci should target correct dev server');
-      }
-    });
-
-    it('should handle missing angular.json gracefully', () => {
-      const emptyTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Should not throw when file doesn't exist
-      try {
-        updateAngularJson(emptyTree, 'angular.json', options);
-        // Function should return without error when file doesn't exist
-      } catch (error) {
-        fail(`Should handle missing angular.json gracefully: ${error}`);
-      }
-    });
-
-    it('should handle empty angular.json file', () => {
-      const testTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Create an empty file
-      testTree.create('angular.json', '');
-
-      try {
-        updateAngularJson(testTree, 'angular.json', options);
-        // Should handle empty file gracefully
-      } catch (error) {
-        fail(`Should handle empty angular.json gracefully: ${error}`);
-      }
-    });
-
-    it('should handle invalid JSON in angular.json', () => {
-      const testTree = new UnitTestTree(new EmptyTree());
-      const options: NgNewSchema = { name: 'my-project' };
-
-      // Create a file with invalid JSON
-      testTree.create('angular.json', '{ invalid json }');
-
-      try {
-        updateAngularJson(testTree, 'angular.json', options);
-        // Should handle invalid JSON gracefully
-      } catch (error) {
-        fail(`Should handle invalid JSON in angular.json gracefully: ${error}`);
       }
     });
   });

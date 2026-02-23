@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Update API Options",
+  "type": "object",
+  "properties": {
+    "categories": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of categories to apply (components, directives, services, pipes, modules, other). If omitted, all categories are applied."
+    }
+  },
+  "additionalProperties": false
+}

@@ -11,5 +11,12 @@
       "factory": "./nest-ng-new/index#default",
       "schema": "./nest-ng-new/schema.json"
     }    
+    ,
+    "update-api": {
+      "version": "2.0.0",
+      "description": "Update public API usage across components, directives, services, pipes and modules.",
+      "factory": "./update-api/index#default",
+      "schema": "./update-api/schema.json"
+    }
   }
 }

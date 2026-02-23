@@ -7,6 +7,13 @@
       "recommended": true
     },
     {
+      "version": "2.0.0",
+      "factory": "./update-api/index#default",
+      "description": "Optional API surface updates (components, directives, services, pipes, modules).",
+      "recommended": true,
+      "optional": true
+    },
+    {
       "version": "3.0.0",
       "factory": "./update-3-0-0/index#default",
       "description": "Update to v3.0.0",

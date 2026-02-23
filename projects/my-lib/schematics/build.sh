@@ -41,9 +41,11 @@ fi
 # Copy schema files and templates
 echo "Copying schema files and templates..."
 
-for folder in nest-ng-new ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
+for folder in nest-ng-new ng-new update-api 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
 
     if [ "$folder" == "ng-new" ] || [ "$folder" == "nest-ng-new" ]; then
+        SUB_DIR=$folder
+    elif [[ "$folder" == update-* ]]; then
         SUB_DIR=$folder
     else
         SUB_DIR="update-$folder"
@@ -59,6 +61,11 @@ for folder in nest-ng-new ng-new 2-0-0 3-0-0 4-0-0 5-0-0 6-0-0; do
     fi
 
     cp "$SCHEMATICS_DIR/$SUB_DIR/schema.json" "$DIST_DIR/$SUB_DIR/schema.json"
+
+        # Copy api-changes.json if present (used by update-api schematic)
+        if [ -f "$SCHEMATICS_DIR/$SUB_DIR/api-changes.json" ]; then
+            cp "$SCHEMATICS_DIR/$SUB_DIR/api-changes.json" "$DIST_DIR/$SUB_DIR/api-changes.json"
+        fi
 
     # Copy static directory if it exists
     if [ -d "$SCHEMATICS_DIR/$SUB_DIR/static" ]; then

@@ -10,7 +10,6 @@ interface Replacement {
 
 interface ChangeSet {
   description?: string;
-  filePatterns: string[];
   replacements: Replacement[];
   htmlReplacements?: Replacement[];
 }
@@ -29,60 +28,12 @@ function applyChangeSet(tree: Tree, ctx: SchematicContext, changes: ChangeSet): 
   const mm = require('minimatch');
   const matchFn = typeof mm === 'function' ? mm : mm.minimatch;
 
-  // Expand file patterns to support old (.component.ts), new (-component.ts)
-  // and "no-segment" styles (e.g. `foo.ts`) for certain types.
-  const knownSegments = ['component', 'directive', 'service', 'pipe', 'module', 'model', 'interface'];
-
-  // For these segments, also generate a pattern that removes the segment entirely
-  // to support new style that omits the type (e.g. `foo.ts`).
-  const segmentsAllowRemoval = new Set(['component', 'directive', 'service', 'model', 'interface']);
-
-  const expandPattern = (pattern: string) => {
-    const variants = new Set<string>();
-    variants.add(pattern);
-
-    knownSegments.forEach((seg) => {
-      const dotSegment = `.${seg}.`;
-      const dashSegment = `-${seg}.`;
-
-      if (pattern.indexOf(dotSegment) !== -1) {
-        // dot -> dash variant
-        variants.add(pattern.split(dotSegment).join(dashSegment));
-
-        // dot -> removed-segment variant (e.g. `*.component.ts` -> `*.ts`)
-        if (segmentsAllowRemoval.has(seg)) {
-          variants.add(pattern.split(dotSegment).join('.'));
-        }
-      }
-
-      if (pattern.indexOf(dashSegment) !== -1) {
-        // dash -> dot variant
-        variants.add(pattern.split(dashSegment).join(dotSegment));
-
-        // dash -> removed-segment variant (e.g. `*-component.ts` -> `*.ts`)
-        if (segmentsAllowRemoval.has(seg)) {
-          variants.add(pattern.split(dashSegment).join('-').replace(new RegExp(`-${seg}(?=\.)`), ''));
-          // also try replacing the dash-segment with just '.' for patterns like `name-component.html` -> `name.html`
-          variants.add(pattern.split(dashSegment).join('.'));
-        }
-      }
-    });
-
-    return Array.from(variants);
-  };
-
-  const expandedPatterns = changes.filePatterns.flatMap((p) => expandPattern(p));
-
   const allowedScopes = ['src/app/', 'src/lib/'];
 
   const inAllowedScope = (p: string) => allowedScopes.some((s) => p.startsWith(s));
 
   tree.visit((filePath) => {
     if (!inAllowedScope(filePath)) return; // restrict to src/app and src/lib
-
-    // check whether filePath matches any of the expanded patterns
-    const matchesPattern = expandedPatterns.some((pattern) => matchFn(filePath, pattern));
-    if (!matchesPattern) return;
 
     const buffer = tree.read(filePath);
     if (!buffer) return;

@@ -5,16 +5,17 @@ This folder contains the `update-api` schematic which applies JSON-driven, text-
 DO NOT expect the schematic to rename or move files; it only performs content replacements. The schematic supports both the old Angular filename style (`*.component.ts`, `*.component.html`) and the newer dash-separated style (`*-component.ts`, `*-component.html`) when matching `filePatterns`.
 
 File: `api-changes.json`
-- Top-level keys are categories (for example: `components`, `directives`, `services`, `pipes`, `modules`, `other`).
+- Top-level keys are categories (for example: `components`, `directives`, `services`, `pipes`, `modules`, `models`, `other`).
 - Each category is an array of ChangeSet objects.
 
 ChangeSet shape
 - `description` (optional): human-friendly description of the change set.
-- `filePatterns`: array of glob patterns (minimatch-compatible) describing files to visit. Example: `**/*.component.ts`, `**/*.component.html`.
-- `replacements`: array of replacement objects:
-  - `from`: string (literal or regex pattern)
+- `replacements`: array of replacement objects applied to TypeScript files (`.ts`):
+  - `from`: string (literal identifier or regex pattern)
   - `to`: string (replacement text)
-  - `regex` (optional, boolean): when `true` the `from` field is treated as a JavaScript regular expression (it will be used as `new RegExp(from, 'g')`). When `false` a simple literal string replacement is performed.
+  - `regex` (optional, boolean): when `true` the `from` field is treated as a JavaScript regular expression (it will be used as `new RegExp(from, 'g')`). When `false` non-regex `from` values are treated as whole-word identifiers and replaced via an AST-aware approach (also updates comments).
+- `htmlReplacements` (optional): array of replacements applied to HTML files (`.html`) under `src/app` and `src/lib`:
+  - `from`, `to`, `regex` (same semantics as above). Non-regex `htmlReplacements` are applied as whole-word replacements.
 
 Notes on filename styles
 - The schematic expands common `filePatterns` so you can author patterns using the familiar `.component.` (dot) style and the schematic will also match `-component.` (dash) variants. You do not need to duplicate both styles in `filePatterns` (but you may if you prefer explicitness).

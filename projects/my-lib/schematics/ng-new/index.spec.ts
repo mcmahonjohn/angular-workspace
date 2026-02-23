@@ -706,8 +706,10 @@ describe('Test', () => {
         // Here we test the condition that would trigger the error
         const workspacePath = 'angular.json';
         if (!emptyTree.exists(workspacePath)) {
+
           // This simulates the error condition
           const errorMessage = `Workspace file not found at ${workspacePath}`;
+
           if (!errorMessage.includes('not found')) {
             fail('Error message should indicate file not found');
           }
@@ -1172,7 +1174,7 @@ export class AppComponent {
 
     it('should handle workspace configuration step correctly', () => {
       const testTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create angular.json
       testTree.create('angular.json', JSON.stringify({
         projects: {
@@ -1222,7 +1224,7 @@ export class AppComponent {
 
     it('should handle workspace configuration with custom directory', () => {
       const testTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create angular.json in custom directory
       testTree.create('custom-dir/angular.json', JSON.stringify({
         projects: {
@@ -1310,7 +1312,7 @@ export class AppComponent {
 export class Service {
   constructor() {
   }
-  
+
   method() {
     return 'test';
   }
@@ -1415,7 +1417,7 @@ export class Component {
 
     it('should test main schematic chain creation and execution logic', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Import and test the default export function (this exercises the main function)
       const indexModule = require('./index');
       const mainSchematic = indexModule.default;
@@ -1432,8 +1434,8 @@ export class Component {
       }
 
       // Test with different options to ensure the main function handles variations
-      const optionsWithDir: NgNewSchema = { 
-        name: 'test-workspace', 
+      const optionsWithDir: NgNewSchema = {
+        name: 'test-workspace',
         directory: 'custom-dir',
         routing: false,
         minimal: true
@@ -1672,7 +1674,7 @@ export class Component {
 
     it('should test createKarmaConfigs filter logic', () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Test the filter regex that's used in createKarmaConfigs
       const filterRegex = /karma\.conf.*\.js\.template$/;
 
@@ -1687,7 +1689,7 @@ export class Component {
 
       const expectedMatches = [
         'karma.conf.js.template',
-        'karma.conf.ci.js.template', 
+        'karma.conf.ci.js.template',
         'karma.conf.dev.js.template'
       ];
 
@@ -1813,13 +1815,13 @@ export class Component {
 
     it('should test chain execution with mock external schematic', async () => {
       const options: NgNewSchema = { name: 'test-workspace' };
-      
+
       // Create a test runner with a mock collection that includes our schematic
       const testRunner = new SchematicTestRunner('test', collectionPath);
-      
+
       // Mock the external schematic by creating what it would produce
       let initialTree = new UnitTestTree(new EmptyTree());
-      
+
       // Create the basic workspace structure that ng-new would create
       initialTree.create('angular.json', JSON.stringify({
         projects: {
@@ -1835,12 +1837,12 @@ export class Component {
         },
         cli: {}
       }, null, 2));
-      
+
       initialTree.create('tsconfig.json', JSON.stringify({
         compilerOptions: { strict: true },
         angularCompilerOptions: {}
       }, null, 2));
-      
+
       initialTree.create('src/app/app.component.ts', `
 export class AppComponent {
   title = 'test-workspace';
@@ -1852,7 +1854,7 @@ export class AppComponent {
       // However, this will at least execute the main function and part of the chain
       try {
         const result = await testRunner.runSchematic('ng-new', options, initialTree);
-        
+
         // If it succeeds, verify the output
         if (result.exists('angular.json')) {
           const angularJson = JSON.parse(result.readContent('angular.json'));
@@ -1864,8 +1866,8 @@ export class AppComponent {
         // Expected to fail due to external schematic requirements
         // The important thing is that we tried to execute the chain and got to the external schematic call
         const errorMessage = (error as Error).message;
-        if (errorMessage.includes('must have required property') || 
-            errorMessage.includes('@schematics/angular') || 
+        if (errorMessage.includes('must have required property') ||
+            errorMessage.includes('@schematics/angular') ||
             errorMessage.includes('external') ||
             errorMessage.includes('Collection') ||
             errorMessage.includes('version') ||
@@ -1902,16 +1904,16 @@ export class AppComponent {
 export class Patterns {
   // These should be removed
   constructor() {}
-  
+
   constructor() {
   }
-  
+
   // This one has content, should not be removed
   constructor() {
     console.log('not empty');
   }
-  
-  // This one has parameters, should not be removed  
+
+  // This one has parameters, should not be removed
   constructor(private service: Service) {
   }
 }
@@ -1919,7 +1921,7 @@ export class Patterns {
 
       const options: NgNewSchema = { name: 'test-workspace' };
       const originalContent = testTree.readContent('src/app/patterns.ts');
-      
+
       removeEmptyConstructors(options)(testTree, {} as any);
 
       const updatedContent = testTree.readContent('src/app/patterns.ts');

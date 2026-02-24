@@ -33,9 +33,6 @@ interface ArchitectConfig {
 }
 
 export default function (options: NgNewSchema): Rule {
-  if (options.dryRun === undefined) {
-    options.dryRun = true;
-  }
 
   return async () => {
 
@@ -43,9 +40,7 @@ export default function (options: NgNewSchema): Rule {
       // Create the workspace with Angular's ng-new schematic
       externalSchematic('@schematics/angular', 'ng-new', {
         name: options.name,
-        collection: options.schematicCollections,
         directory: options.directory,
-        dryRun: options.dryRun,
         minimal: options.minimal ?? false,
         routing: options.routing ?? true,
         skipGit: options.skipGit,
@@ -53,7 +48,6 @@ export default function (options: NgNewSchema): Rule {
         createApplication: true,
         inlineStyle: false,
         inlineTemplate: false,
-        interactive: true,
         packageManager: 'npm',
         prefix: 'app',
         ssr: false,

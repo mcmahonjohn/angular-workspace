@@ -11,19 +11,9 @@ export interface BaseNgNewSchema {
   docker?: boolean;
 
   /**
-   * Run schematic in dry-run mode (no files written to disk).
-   */
-  dryRun?: boolean;
-
-  /**
    * The name of the workspace and initial project.
    */
   name: string;
-
-  /**
-   * Additional schematic collections to register with the Nest CLI.
-   */
-  schematicCollections?: string[];
 
   /**
    * Skip git repository initialization.

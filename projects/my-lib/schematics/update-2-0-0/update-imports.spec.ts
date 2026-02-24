@@ -189,7 +189,6 @@ describe('update-imports schematic', () => {
 });
 
 describe('replaceImportPath', () => {
-  // const { replaceImportPath } = require('./update-imports');
 
   it('should replace TypeScript single quote import', () => {
     const input = "import { Foo } from '@car/core';";

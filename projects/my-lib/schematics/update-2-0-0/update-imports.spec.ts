@@ -40,9 +40,9 @@ describe('update-imports schematic', () => {
 
     it('should update single quotes import', () => {
       testTree.create('/test.ts', `import { Service } from '@car/core';`);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/test.ts');
       expect(content).toContain(`import { Service } from '@door/core';`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
@@ -50,9 +50,9 @@ describe('update-imports schematic', () => {
 
     it('should update double quotes import', () => {
       testTree.create('/test.ts', `import { Component } from "@car/core";`);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/test.ts');
       expect(content).toContain(`import { Component } from "@door/core";`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /test.ts');
@@ -64,9 +64,9 @@ describe('update-imports schematic', () => {
         import { Component } from "@car/core";
         import { Utils } from '@car/core';
       `);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/test.ts');
       expect(content).toContain(`import { Service } from '@door/core';`);
       expect(content).toContain(`import { Component } from "@door/core";`);
@@ -77,9 +77,9 @@ describe('update-imports schematic', () => {
 
     it('should handle files with no @car imports', () => {
       testTree.create('/test.ts', `import { Component } from '@angular/core';\nconst x = 1;`);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/test.ts');
       expect(content).toContain(`import { Component } from '@angular/core';`);
       expect(mockContext.logger.info).not.toHaveBeenCalled();
@@ -89,9 +89,9 @@ describe('update-imports schematic', () => {
       testTree.create('/test.js', `import { Service } from '@car/core';`);
       testTree.create('/test.html', `<div>@car/core</div>`);
       testTree.create('/test.scss', `@import '@car/core';`);
-      
+
       updateImports(testTree, mockContext);
-      
+
       // JS, HTML, and CSS files should not be modified
       expect(testTree.readContent('/test.js')).toContain('@car/core');
       expect(testTree.readContent('/test.html')).toContain('@car/core');
@@ -103,9 +103,9 @@ describe('update-imports schematic', () => {
 
     it('should handle empty TypeScript files', () => {
       testTree.create('/empty.ts', '');
-      
+
       updateImports(testTree, mockContext);
-      
+
       expect(testTree.readContent('/empty.ts')).toEqual('');
       expect(mockContext.logger.info).not.toHaveBeenCalled();
     });
@@ -114,19 +114,20 @@ describe('update-imports schematic', () => {
       testTree.create('/mixed.ts', `
         import { Service } from '@car/core';
         import { Component } from '@angular/core';
-        
+
         const myLibString = 'this contains @car/core but should not be changed';
         // Comment about @car/core
         export class TestClass {
           // @car/core reference in comment
         }
       `);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/mixed.ts');
       expect(content).toContain(`import { Service } from '@door/core';`);
       expect(content).toContain(`import { Component } from '@angular/core';`);
+
       // Only imports should be changed, not other occurrences
       expect(content).toContain(`const myLibString = 'this contains @car/core but should not be changed';`);
       expect(content).toContain(`// Comment about @car/core`);
@@ -140,9 +141,9 @@ describe('update-imports schematic', () => {
         import { default as DefaultExport } from '@car/core';
         import MyLibDefault, { Service, Component } from '@car/core';
       `);
-      
+
       updateImports(testTree, mockContext);
-      
+
       const content = testTree.readContent('/complex.ts');
       expect(content).toContain(`import * as MyLib from '@door/core';`);
       expect(content).toContain(`import { default as DefaultExport } from '@door/core';`);
@@ -154,9 +155,9 @@ describe('update-imports schematic', () => {
     it('should handle nested directory structures', () => {
       testTree.create('/src/app/components/test.ts', `import { Service } from '@car/core';`);
       testTree.create('/src/lib/utils/helper.ts', `import { Utils } from '@car/core';`);
-      
+
       updateImports(testTree, mockContext);
-      
+
       expect(testTree.readContent('/src/app/components/test.ts')).toContain(`import { Service } from '@door/core';`);
       expect(testTree.readContent('/src/lib/utils/helper.ts')).toContain(`import { Utils } from '@door/core';`);
       expect(mockContext.logger.info).toHaveBeenCalledWith('Updated imports in /src/app/components/test.ts');
@@ -173,12 +174,12 @@ describe('update-imports schematic', () => {
         read: jasmine.createSpy('read').and.returnValue(null),
         overwrite: jasmine.createSpy('overwrite')
       };
-      
+
       // This should not throw an error and should handle null buffer gracefully
       expect(() => {
         updateImports(mockTree, mockContext);
       }).not.toThrow();
-      
+
       // Verify that read was called but overwrite was not (due to null buffer)
       expect(mockTree.read).toHaveBeenCalledWith('/unreadable.ts');
       expect(mockTree.overwrite).not.toHaveBeenCalled();
